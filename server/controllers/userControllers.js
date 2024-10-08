@@ -93,30 +93,30 @@ export const Signin=async(req,res)=>{
       }
   }
 
+  export const updateUser = async(req, res)=>{
+    const {role}=req.body;
+    const id=req.params.id;
+    console.log(id)
+    console.log(role)
 
-  export const updateUser = async (req, res) => {
-    const id = req.params.id
-  console.log("hitt")
-  console.log(id)
-  if(!req.file) {
-    return res.send("file is not visible")
+const updateduser = await UserModel.findOneAndUpdate(
+    { _id: id },
+    { role },
+    {
+      new: true,
     }
-    const updateduser = await UserModel.findOneAndUpdate(
-      { _id: id },
-      { address,city,state,country,pin,countryCode,contactNumber,profilePicture },
-      {
-        new: true,
-      }
-    );
+  );
+  if (!updateduser) {
+    return res.send("USer is not updated");
+  }
+  console.log(updateduser);
+
+  res.status(200).json({
+    success: true,
+    updateduser,
+});
+}
   
-    if (!updateduser) {
-      return res.send("USer is not updated");
-    }
-    console.log(updateduser);
-    return res.send(updateduser);
-
-  };
-
 
 
 
