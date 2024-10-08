@@ -59,7 +59,10 @@ export const Signin=async(req,res)=>{
       }
       const token=await generateToken(userExist._id)
       res.cookie("token",token)
-      return res.status(200).json({ message: "Logged in successfully"})
+      return res.json({ 
+        message: "Logged in successfully",  
+        role:userExist.role
+      })
     }
     catch(error){
       console.log("error",error)
@@ -68,4 +71,74 @@ export const Signin=async(req,res)=>{
     
     
     }
+
+
+    //userprofile
+    export const profile = async(req,res,next)=>{
+      try {
+        const {user}=req
+      const userData = await UserModel.findById(user.id).select('-password')
+     
+
+   
+
+
+
+        res.json({success:true,message:"user profile fetched",userData})
+      } 
+      catch (error) {
+          console.log(error);
+          res.status(error.status||500).json({error:error.message || "internal server error"})
+          
+      }
+  }
+
+
+  export const updateUser = async (req, res) => {
+    const id = req.params.id
+  console.log("hitt")
+  console.log(id)
+  if(!req.file) {
+    return res.send("file is not visible")
+    }
+    const updateduser = await UserModel.findOneAndUpdate(
+      { _id: id },
+      { address,city,state,country,pin,countryCode,contactNumber,profilePicture },
+      {
+        new: true,
+      }
+    );
+  
+    if (!updateduser) {
+      return res.send("USer is not updated");
+    }
+    console.log(updateduser);
+    return res.send(updateduser);
+
+  };
+
+
+
+
       
+  export const User_Logout =async (req, res, next) => {
+
+  try{
+    res.clearCookie('token')
+    res.json({success:true,message:"user logged out",userData})
+  }catch(error){
+    console.log(error)
+    res.status(error.status||500).json({error:error.message || "internal server error"})
+
+  }
+  };
+  export const checkUser = async (req, res, next) => {
+    try {
+
+        res.json({ success: true, message: "user autherized" });
+    } catch (error) {
+        console.log(error);
+        res.status(error.statusCode || 500).json(error.message || 'Internal server error')
+    }
+};
+     

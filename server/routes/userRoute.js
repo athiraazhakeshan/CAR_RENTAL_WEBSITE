@@ -1,26 +1,14 @@
 import express from 'express';
-import { Signin, Signup } from '../controllers/userControllers.js';
+import { checkUser, profile, Signin, Signup, updateUser, User_Logout } from '../controllers/userControllers.js';
+import authUser from '../middlewares/authUser.js';
+
 const router = express.Router();
 
 router.post("/signup",Signup)
 router.post("/signin",Signin)
-router.get('/getcars',(req,res,next)=>{
-
-})
-router.get('/getcarbyid/:id',(req,res,next)=>{
-
-})
-router.get("/getOfficebylocation/:city",(req,res,next)=>{
-
-})
-router.get("/getAllOffices",(req,res,next)=>{
-
-})
-router.get("/getcarbylocation/:city",(req,res,next)=>{
-
-})
-router.get("/logout",(req,res,next)=>{
-
-})
+router.get('/profile',authUser,profile)
+router.patch('/updateuser/:id',authUser,updateUser)
+router.post("/logout",User_Logout,authUser)
+/router.get('/checkuser',authUser,checkUser)
 
 export {router as userRouter};

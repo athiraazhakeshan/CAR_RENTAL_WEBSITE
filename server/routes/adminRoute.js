@@ -1,31 +1,16 @@
 import express from 'express';
+import { admin_Logout, adminprofile, checkAdmin, deleteUserAcount, getAllUsers, Updateuserasadmin } from '../controllers/adminController.js';
+import { authAdmin } from '../middlewares/authAdmin.js';
 const router = express.Router();
 
+router.get('/profile',adminprofile,authAdmin)
+router.put('/updateuser/:id',Updateuserasadmin,authAdmin)
+router.delete('/deleteuser/:id',deleteUserAcount,authAdmin)
+router.get('/getallusers',getAllUsers,authAdmin)
+router.get('/checkadmin',checkAdmin,authAdmin)
 
-router.post("/signup",(req,res,next)=>{
 
-})
-router.post("/signin",(req,res,next)=>{
-
-})
-router.get('/getcars',(req,res,next)=>{
-
-})
-router.get('/getcarbyid/:id',(req,res,next)=>{
-
-})
-router.get("/getOfficebylocation/:city",(req,res,next)=>{
-
-})
-router.get("/getAllOffices",(req,res,next)=>{
-
-})
-router.get("/getcarbylocation/:city",(req,res,next)=>{
-
-})
-router.get("/logout",(req,res,next)=>{
-
-})
+router.post("/adminlogout",admin_Logout,authAdmin)
 
 
 export {router as adminRouter};
