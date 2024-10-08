@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
         maxlength:20
 
     },
-    Password:{
+    password:{
         type:String,
         required:true,
         minlength:8
@@ -56,7 +56,7 @@ profilePicture: {
 },
 role: {
     type: String,
-    enum: ['customer','admin'],
+    enum: ['user','admin'],
 },
 order: [
     {

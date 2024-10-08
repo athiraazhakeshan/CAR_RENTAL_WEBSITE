@@ -38,6 +38,9 @@ type:String,
         toJSON: { virtuals: true },
     }
 );
+orderSchema.methods.calculateTotalPrice=function(){
+
+};
 
 const Order = mongoose.model('Order', orderSchema);
 export default Order;
