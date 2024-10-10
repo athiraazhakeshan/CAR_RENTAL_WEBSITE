@@ -29,7 +29,7 @@ const carSchema = new mongoose.Schema(
         },
         transmission:{
             type:String,
-            // required:true,
+            required:true,
         },
         carMileage: {
             type: String,

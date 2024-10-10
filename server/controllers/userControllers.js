@@ -125,13 +125,15 @@ const updateduser = await UserModel.findOneAndUpdate(
 
   try{
     res.clearCookie('token')
-    res.json({success:true,message:"user logged out",userData})
+    res.json({success:true,message:"user logged out "})
   }catch(error){
     console.log(error)
     res.status(error.status||500).json({error:error.message || "internal server error"})
 
   }
   };
+
+  //checkuser
   export const checkUser = async (req, res, next) => {
     try {
 
