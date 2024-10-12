@@ -12,13 +12,13 @@ try{
         return res.status(401).json({message:`Please login again.`})
       }
 
-      const decoded = jwt.verify(token,"SECRET_CODE");
-      if(!decoded){
+      const tokenVarified = jwt.verify(token,"SECRET_CODE");
+      if(!tokenVarified){
         return res.status(401).json({message:`Please login again.`})
     }
       
-      console.log(decoded,'====tocken varified')
-      req.user=decoded
+      console.log(tokenVarified,'====tocken varified')
+      req.user=tokenVarified
     
       next()
 

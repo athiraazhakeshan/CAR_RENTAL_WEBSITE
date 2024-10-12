@@ -1,28 +1,29 @@
+import dotenv from "dotenv";
 import jwt from 'jsonwebtoken'
+import UserModel from "../models/userModel.js";
+dotenv.config();
 
-export const authAdmin = (req,res,next)=>{
-    try {
-        const {token} = req.cookies;
-        if(!token){
-          return res.status(401).json({message:'user not autherised'}) 
-        }
-        
-        const tokenVerified = jwt.verify(token,"SECRET_CODE");
-        if(!tokenVerified){
-            return res.status(401).json({message:'user not autherised'}) 
-        }
+export const authAdmin = (req, res, next)=>{
 
-        
-        if(tokenVerified.role !== 'admin' ){
-            return res.status(401).json({message:'access denied'}) 
-        }
+try{
+    
+      const {token} = req.cookies;
+      if(!token){
+        return res.status(401).json({message:`Please login again.`})
+      }
 
-        req.user=tokenVerified
-        
-        next()
-        
-    } catch (error) {
-        
-        return res.status(401).json({message:'user autherization failed'}) 
+      const tokenVarified = jwt.verify(token,"SECRET_CODE");
+      if(!tokenVarified){
+        return res.status(401).json({message:`Please login again.`})
     }
+      
+      console.log(tokenVarified,'====tocken varified')
+      req.admin=tokenVarified
+    
+      next()
+
+  }catch(error){
+    return res.status(401).json({message:`Please login again.`})
 }
+  }
+export default authAdmin

@@ -56,7 +56,8 @@ profilePicture: {
 },
 role: {
     type: String,
-    default: 'customer',
+    enum:['admin','user'],
+    default: 'user',
 },
 order: [
     {

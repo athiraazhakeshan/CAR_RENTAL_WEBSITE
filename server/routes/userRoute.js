@@ -1,21 +1,23 @@
 import express from 'express';
-import { checkUser, profile, Signin, Signup, updateUser, User_Logout } from '../controllers/userControllers.js';
-import authUser from '../middlewares/authUser.js';
+import { checkUser, Profile, Signin, Signup, User_Logout, userUpdate } from '../controllers/userControllers.js';
+//import authUser from '../middlewares/authUser.js';
 import { getcarbyid, getCars } from '../controllers/carController.js';
+import authMiddleware from '../middlewares/authToken.js';
+import authUser from '../middlewares/authUser.js';
 
 const router = express.Router();
 
 router.post("/signup",Signup)
 router.post("/signin",Signin)
-router.get('/profile',authUser,profile)
-router.patch('/updateuser/:id',authUser,updateUser)
-router.post("/logout",User_Logout,authUser)
-/router.get('/checkuser',authUser,checkUser)
+router.get('/profile',authUser,Profile)
+router.patch('/updateuser/:id',userUpdate)
+router.post("/logout",User_Logout)
+/router.get('/checkuser',checkUser)
 
 
 //carcontroller
-router.get('/getcars',getCars,authUser)
-router.get('/getcarbyid/:id',getcarbyid,authUser)
+router.get('/getcars',getCars)
+router.get('/getcarbyid/:id',getcarbyid)
 router.get("/getcarbylocation/:city",(req, res) => {})
 
 //officecontroller

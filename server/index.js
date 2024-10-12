@@ -6,12 +6,13 @@ import cookieParser from 'cookie-parser';
 
 
 
+
 const app = express()
 const port = 3000
 dotenv.config();
 connectDB();
 
-
+app.use(cookieParser());
 app.get('/',(req,res)=>{
     res.send('hello world')
 })

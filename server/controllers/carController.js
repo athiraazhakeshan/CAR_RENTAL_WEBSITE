@@ -1,4 +1,6 @@
+import { cloudinaryInstance } from "../config/cloudinary.js";
 import Car from "../models/carModel.js";
+import { handleImageUpload } from "../util/imageupload.js";
 
 
 
@@ -8,27 +10,25 @@ import Car from "../models/carModel.js";
 export const createCar = async (req, res) => {
     try {
 
-      const { carName, carModel,transmission, carCompany, carPicture,carCategory,
+
+
+      let imageUrl;
+      const { carName, carModel,transmission, carCompany,carPicture,carCategory,
         carEngine,carMileage, carSeatCapacity, carFuelType,rentalPriceCharge } = req.body;
-        //const carPicture=req.body
+   
         console.log('image====',req.file);
 
-        console.log('carName:', carName);
-        console.log('carModel:', carModel);
-        console.log('transmission:', transmission);
-        console.log('carCompany:', carCompany);
-        console.log('carPicture:', carPicture);
-        console.log('carCategory:', carCategory);
-        console.log('carEngine:', carEngine);
-        console.log('carMileage:', carMileage);
-        console.log('carSeatCapacity:', carSeatCapacity);
-        console.log('carFuelType:', carFuelType);
-        console.log('rentalPriceCharge:', rentalPriceCharge);
-    
+       if(req.file){
+         const cloudinaryRes=await cloudinaryInstance.uploader.upload(req.file.path)
+         imageUrl=cloudinaryRes.url;
+        //imageUrl=await handleImageUpload(req.file.path)
+       }
+
+    console.log(imageUrl,"===imagrUrl");
         
        
 
-        const createCar = new Car({carName, carModel,transmission, carCompany,carPicture, carCategory,
+        const createCar = new Car({carName, carModel,transmission, carCompany,carPicture:imageUrl, carCategory,
             carEngine,carMileage, carSeatCapacity, carFuelType,rentalPriceCharge});
            
         
@@ -36,7 +36,14 @@ export const createCar = async (req, res) => {
         if (!newCarCreated) {
           return res.send("car is not created");
         }
-        res.json({message:"car is created",data:newCarCreated});
+        //    const {id}=req.params;
+        // const carExist = await Car.findById(id)
+        // if(carExist)
+        //   {
+        //      return  res.status(400).json({error:"car already exist"})
+        //   }
+        
+      res.json({message:"car is created",data:newCarCreated});
       
     }catch(error){
         console.log(error);
@@ -79,7 +86,7 @@ export const createCar = async (req, res) => {
   
 export const updateCar = async (req, res) => {
     const id = req.params.id
-  console.log("hitt")
+    console.log("updated")
   console.log(id)
       const body = req.body;
       console.log(body, "body");
@@ -96,7 +103,8 @@ export const updateCar = async (req, res) => {
       return res.send("Car is not updated");
     }
     console.log(updatedCar);
-    return res.send(updatedCar);
+    return res.send({data:updatedCar,message:"car is updated"});
+    
  };
 
 
@@ -104,11 +112,11 @@ export const updateCar = async (req, res) => {
 
   export const deleteCar = async (req, res) => {
     const id = req.params.id;
-    console.log("hitted")
+    console.log("deleted")
     const deleteId = await Car.deleteOne({ _id: id });
     if (!deleteId) {
       return res.send("not deleted");
     }
-    res.send("deleted car");
+    return res.send({data:deleteId,message:"car is deleted"});
   };
 
