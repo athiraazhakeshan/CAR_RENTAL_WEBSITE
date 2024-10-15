@@ -1,12 +1,23 @@
 import UserModel from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import generateToken from "../util/token.js";
+import { cloudinaryInstance } from "../config/cloudinary.js";
 
 
 export const Signup = async(req,res,next)=>{
     try {
-        console.log(req.body,"body");
+      let imageUrl;
+        
         const {firstName,lastName,email,password,address,city,state,country,profilePicture}=req.body;
+        console.log('image====',req.file);
+        if(req.file){
+          const cloudinaryRes=await cloudinaryInstance.uploader.upload(req.file.path)
+          imageUrl=cloudinaryRes.url;
+         //imageUrl=await handleImageUpload(req.file.path)
+        }
+ 
+     console.log(imageUrl,"===imagrUrl");
+         
       if(!firstName||!lastName||!email||!password||!address||!city||!state||!country){
        return res.status(400).json({message:"All fields are required"})
       }
@@ -34,7 +45,7 @@ export const Signup = async(req,res,next)=>{
 
 
         const newUser =new UserModel({
-            firstName,lastName,email,password:hashPassword,address,city,state,country,profilePicture
+            firstName,lastName,email,password:hashPassword,address,city,state,country,profilePicture:imageUrl
         })
         const savedUser= await newUser.save()
 
@@ -114,14 +125,22 @@ export const Signin=async(req,res)=>{
     console.log("hit");
     console.log(id);
 
-
-    const { address, city, state, country, pin, countryCode, contactNumber } = req.body;
-    console.log(req.body, "body");
+    let imageUrl;
+    const { address, city, state, country, pin, countryCode, contactNumber,profilePicture } = req.body;
+    console.log('image====',req.file);
+        if(req.file){
+          const cloudinaryRes=await cloudinaryInstance.uploader.upload(req.file.path)
+          imageUrl=cloudinaryRes.url;
+         //imageUrl=await handleImageUpload(req.file.path)
+        }
+ 
+     console.log(imageUrl,"===imagrUrl");
+    
 
     try {
-        const updatedUser = await UserModel.findOneAndUpdate(
+        const updatedUser = await UserModel.findByIdAndUpdate(
             { _id: id },
-            { address, city, state, country, pin, countryCode, contactNumber },
+            { address, city, state, country, pin, countryCode, contactNumber,profilePicture:imageUrl },
             { new: true, select: '-password' }
             
         );

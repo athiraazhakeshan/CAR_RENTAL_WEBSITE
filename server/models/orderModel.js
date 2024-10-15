@@ -4,30 +4,30 @@ const orderSchema = new mongoose.Schema(
     {
         officeLocation: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "OfficeLocation",
+            ref: 'OfficeLocation',
             required: true
         },
         car: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Car",
+            ref: 'Car',
             required: true
         },
         user: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "UserModel",
+            ref: 'UserModel',
             required: true
         },
      
         totalPrice: {
             type: Number,
-            required: true,
+            // required: true,
             default: 0
         },razorpayOrderId:{
 type:String,
         },
         orderStatus: {
             type: String,
-            required: true,
+            //required: true,
             default: "Processing",
         },
         pickedAt: Date,
@@ -38,9 +38,7 @@ type:String,
         toJSON: { virtuals: true },
     }
 );
-orderSchema.methods.calculateTotalPrice=function(){
 
-};
 
 const Order = mongoose.model('Order', orderSchema);
 export default Order;

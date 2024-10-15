@@ -1,6 +1,7 @@
 import { cloudinaryInstance } from "../config/cloudinary.js";
 import Car from "../models/carModel.js";
-import { handleImageUpload } from "../util/imageupload.js";
+import OfficeLocation from "../models/officelocationModel.js";
+
 
 
 
@@ -14,7 +15,14 @@ export const createCar = async (req, res) => {
 
       let imageUrl;
       const { carName, carModel,transmission, carCompany,carPicture,carCategory,
-        carEngine,carMileage, carSeatCapacity, carFuelType,rentalPriceCharge } = req.body;
+        carEngine,carMileage, carSeatCapacity, carFuelType,rentalPriceCharge,office } = req.body;
+        const { city } = office;
+        const findlocation = await OfficeLocation.findOne({ office:city });
+        console.log(findlocation)
+                if (!findlocation) {
+                  return res.send("please add instructor first");
+                }
+          
    
         console.log('image====',req.file);
 
@@ -29,9 +37,9 @@ export const createCar = async (req, res) => {
        
 
         const createCar = new Car({carName, carModel,transmission, carCompany,carPicture:imageUrl, carCategory,
-            carEngine,carMileage, carSeatCapacity, carFuelType,rentalPriceCharge});
+            carEngine,carMileage, carSeatCapacity, carFuelType,rentalPriceCharge,office:findlocation._id});
            
-        
+         
             const newCarCreated = await createCar.save();;
         if (!newCarCreated) {
           return res.send("car is not created");
@@ -81,19 +89,61 @@ export const createCar = async (req, res) => {
 }};
 
 
+//getcarby officelocation ref:pfficelocation
+ 
+  export const getcarbylocation=async  (req,res)=>{
+    const officeLocation= req.params.city
+    console.log(officeLocation)
+    console.log(officeLocation)
+    try {
+      if (typeof officeLocation !== 'string') {
+        throw new Error(`officeLocation is not a string: ${typeof officeLocation}`);
+      }
+      const offices = await OfficeLocation.find({ city: officeLocation });
+      
+      const officeIds = offices.map(office => office._id);
+      console.log(officeIds)
+  
+      const cars = await Car.find({ office: { $in: officeIds } }).populate('office');
+  
+      res.status(200).json(cars);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching cars', error });
+    }
+  };
+  
+
+
+
 
     //update 
   
 export const updateCar = async (req, res) => {
-    const id = req.params.id
+
     console.log("updated")
   console.log(id)
       const body = req.body;
       console.log(body, "body");
-  const {carName, carModel,transmission, carCompany,carCategory,carEngine,carMileage, carSeatCapacity, carFuelType,rentalPriceCharge}=req.body;
-    const updatedCar = await Car.findOneAndUpdate(
+      let imageUrl;
+      const { city } = office;
+  const {carName, carModel,transmission, carCompany,carPicture,carCategory,carEngine,carMileage, carSeatCapacity, carFuelType,rentalPriceCharge,office}=req.body;
+  const findlocation = await OfficeLocation.findOne({ city:office });
+  console.log(findlocation)
+          if (!findlocation) {
+            return res.send("please add instructor first");
+          }
+  console.log('image====',req.file);
+
+  if(req.file){
+    const cloudinaryRes=await cloudinaryInstance.uploader.upload(req.file.path)
+    imageUrl=cloudinaryRes.url;
+   //imageUrl=await handleImageUpload(req.file.path)
+  }
+
+console.log(imageUrl,"===imagrUrl");  
+  const updatedCar = await Car.findByIdAndUpdate(
       { _id: id },
-      { carName, carModel,transmission, carCompany, carCategory,carEngine,carMileage, carSeatCapacity, carFuelType,rentalPriceCharge },
+      { carName, carModel,transmission, carCompany,carPicture:imageUrl, carCategory,carEngine,carMileage, carSeatCapacity, carFuelType,rentalPriceCharge,office:findlocation._id },
       {
         new: true,
       }

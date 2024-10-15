@@ -32,6 +32,12 @@ const locationSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
+        order: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Order',
+            },
+        ],
     },
     {
         timestamps: true,
