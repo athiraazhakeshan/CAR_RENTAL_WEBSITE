@@ -29,7 +29,7 @@ export const adminSignup = async(req,res,next)=>{
       })
       const savedAdmin= await newUser.save()
 
-      if(savedUser){
+      if(savedAdmin){
         const token = generateToken(isuserExist._id);
         res.cookie("token", token, { httpOnly: true });
         return res.json({

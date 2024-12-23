@@ -8,10 +8,10 @@ import { getOrderById, getuserAllOrders, OrderCreation } from '../controllers/or
 
 const router = express.Router();
 
-router.post("/signup",upload.single('profilePicture'),Signup)
+router.post("/signup",Signup)
 router.post("/signin",Signin)
 router.get('/profile',authUser,Profile)
-router.patch('/updateuser/:id',upload.single('profilePicture'),userUpdate)
+router.patch('/updateuser/:id',userUpdate)
 router.post("/logout",User_Logout)
 /router.get('/checkuser',checkUser)
 

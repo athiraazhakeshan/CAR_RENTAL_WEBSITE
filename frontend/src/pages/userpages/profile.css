@@ -1,0 +1,26 @@
+
+
+.profile {
+  text-align: left;
+  padding: 20px;
+}
+
+
+.profile-name {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.profile-email,
+.profile-address,
+.profile-contact,
+.profile-role {
+  font-size: 18px;
+  color: #555;
+}
+.logout-button{
+  border: 1;
+  color:black;
+  background-color: red;
+  
+}

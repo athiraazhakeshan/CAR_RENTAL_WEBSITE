@@ -8,7 +8,7 @@ export const Signup = async(req,res,next)=>{
     try {
       let imageUrl;
         
-        const {firstName,lastName,email,password,address,city,state,country,profilePicture}=req.body;
+        const {firstName,lastName,email,password,address,city,state,country,contactNumber}=req.body;
         console.log('image====',req.file);
         if(req.file){
           const cloudinaryRes=await cloudinaryInstance.uploader.upload(req.file.path)
@@ -45,7 +45,7 @@ export const Signup = async(req,res,next)=>{
 
 
         const newUser =new UserModel({
-            firstName,lastName,email,password:hashPassword,address,city,state,country,profilePicture:imageUrl
+            firstName,lastName,email,password:hashPassword,address,city,state,country,contactNumber
         })
         const savedUser= await newUser.save()
 
@@ -90,7 +90,8 @@ export const Signin=async(req,res)=>{
       res.cookie("token", token, { httpOnly: true });
       return res.json({ 
         message: "Logged in successfully",  
-        role:userExist.role
+        role:userExist.role,
+        firstName: userExist.firstName
       })
       
     }
@@ -105,20 +106,41 @@ export const Signin=async(req,res)=>{
 
     //userprofile
     export const Profile = async (req, res, next) => {
-      try {
+  //     try {
         
-        const {user} = req;
+  //       const {user} = req;
         
-          const userData = await UserModel.findById(user.id).select('-password')
+  //         const userData = await UserModel.findById(user.id).select('-password')
             
           
   
-          res.json({ success: true, message: "user profile fetched",userData });
-      } catch (error) {
-          console.log(error);
-          res.status(error.statusCode || 500).json(error.message || 'Internal server error')
-      }
-  };
+  //         res.json({ success: true, message: "user profile fetched",userData });
+  //     } catch (error) {
+  //         console.log(error);
+  //         res.status(error.statusCode || 500).json(error.message || 'Internal server error')
+  //     }
+  // };
+  try {
+    // The userId is now available in req.user because of the authUser middleware
+    const userId = req.user.id; // Assuming the token includes userId
+    const userData = await UserModel.findById(userId).select('-password').select('-order').select('-profilePicture'); // Exclude password from the response
+   
+    if (!userData) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // Send back the user data in the response
+    res.json({
+      success: true,
+      message: 'User profile fetched successfully.',
+      userData
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 //update user
   export const userUpdate = async (req, res) => {
     const id = req.params.id;
@@ -126,7 +148,7 @@ export const Signin=async(req,res)=>{
     console.log(id);
 
     let imageUrl;
-    const { address, city, state, country, pin, countryCode, contactNumber,profilePicture } = req.body;
+    const { address, city, state, country, pin, countryCode, contactNumber } = req.body;
     console.log('image====',req.file);
         if(req.file){
           const cloudinaryRes=await cloudinaryInstance.uploader.upload(req.file.path)
@@ -140,7 +162,7 @@ export const Signin=async(req,res)=>{
     try {
         const updatedUser = await UserModel.findByIdAndUpdate(
             { _id: id },
-            { address, city, state, country, pin, countryCode, contactNumber,profilePicture:imageUrl },
+            { address, city, state, country, pin, countryCode, contactNumber },
             { new: true, select: '-password' }
             
         );

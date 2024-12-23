@@ -7,8 +7,8 @@ import { upload } from '../middlewares/multer.js';
 import authAdmin from '../middlewares/authAdmin.js';
 import { addOffice, deleteOffice, getAllOffice, getofficebyid, updateOffice } from '../controllers/officeController.js';
 const router = express.Router();
-router.get('/adminsignup',adminSignup)
-router.get('/adminlogin',adminSignin)
+router.post('/adminsignup',adminSignup)
+router.post('/adminlogin',adminSignin)
 router.get('/profile',authAdmin,adminprofile)
 router.put('/updateuser/:id',updateUser)
 router.delete('/deleteuser/:id',deleteUserAcount)
