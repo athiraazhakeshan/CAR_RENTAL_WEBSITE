@@ -21,7 +21,15 @@ import UserDetails from "../pages/adminpages/UserDetails.jsx";
 import { AdminProfile } from "../pages/adminpages/AdminProfile.jsx";
 import OrderDetails from "../pages/adminpages/OrderDetails.jsx";
 import OrderPage from "../pages/userpages/OrderPage.jsx";
-
+import AddOffice from "../pages/adminpages/AddOffice.jsx";
+import Offices from "../pages/adminpages/Offices.jsx";
+import OfficeDtails from "../pages/adminpages/OfficeDetails.jsx";
+import UpdateOffice from "../pages/adminpages/UpdateOffice.jsx";
+import CarList from "../pages/adminpages/CarList.jsx";
+import CarDetailsAdmin from "../pages/adminpages/CarDetailsAdmin.jsx";
+import CarByLocation from "../pages/userpages/CarByLocation.jsx";
+import AddCar from "../pages/adminpages/AddCar.jsx";
+// import Hero from "../components/Hero.jsx";
 export const router = createBrowserRouter(
   [
     {
@@ -59,6 +67,10 @@ export const router = createBrowserRouter(
         {
           path: "cars/:carId",
           element: <CarDetails />,
+        },
+        {
+          path: "/user/carsbylocation/:city",
+          element: <CarByLocation/>,
         },
         {
           path: '/user/carorder1/:carId',
@@ -117,6 +129,34 @@ export const router = createBrowserRouter(
           path: "orders/:userId",
           element: <OrderDetails/>,
         },
+        {
+          path: "admin/addoffice",
+          element: <AddOffice/>,
+        },
+        {
+          path:"admin/offices",
+          element:<Offices/>
+        },
+        {
+          path:"admin/offices/:officeId",
+          element:<OfficeDtails/>
+        },
+        {
+          path:"admin/updateOffice/:officeId",
+          element:<UpdateOffice/>
+        },
+        {
+          path:"admin/carlist",
+          element:<CarList/>
+        },
+        {
+          path:"/admin/carlist/:carId",
+          element:<CarDetailsAdmin/>
+        },
+        {
+          path:"admin/addcar",
+          element:<AddCar/>
+        },
       
         {
           path: "/admin",
@@ -134,8 +174,8 @@ export const router = createBrowserRouter(
            
             {
               path: "office",
-              element: <h2>Office Management</h2>,
-            },
+              element: <h2>office</h2>
+             },
           ],
         },
       ],

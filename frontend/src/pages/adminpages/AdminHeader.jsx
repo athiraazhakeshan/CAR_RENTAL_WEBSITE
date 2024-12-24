@@ -14,10 +14,10 @@ export const AdminHeader = () => {
 
       <nav className="flex gap-16 items-center font-semibold">
       <Link to="/home">Home</Link>
-          <Link to="/cars">Cars</Link>
+          <Link to="admin/carlist">Cars</Link>
           <Link to="/users">Users</Link>
           
-          <Link to="/office">Office</Link>
+          <Link to="/admin/offices">Office</Link>
         
       </nav>
 
