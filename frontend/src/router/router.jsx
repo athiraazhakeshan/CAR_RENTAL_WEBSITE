@@ -29,6 +29,7 @@ import CarList from "../pages/adminpages/CarList.jsx";
 import CarDetailsAdmin from "../pages/adminpages/CarDetailsAdmin.jsx";
 import CarByLocation from "../pages/userpages/CarByLocation.jsx";
 import AddCar from "../pages/adminpages/AddCar.jsx";
+import UpdateCarForm from "../pages/adminpages/UpdateCarForm.jsx";
 // import Hero from "../components/Hero.jsx";
 export const router = createBrowserRouter(
   [
@@ -156,6 +157,10 @@ export const router = createBrowserRouter(
         {
           path:"admin/addcar",
           element:<AddCar/>
+        },
+        {
+          path: "/admin/updatecar/:carId",
+          element:<UpdateCarForm/>
         },
       
         {

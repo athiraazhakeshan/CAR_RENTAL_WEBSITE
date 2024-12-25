@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../../config/axiosInstance";
 
 const schema = yup
@@ -17,7 +17,7 @@ const schema = yup
     carSeatCapacity: yup.string().required(),
     carFuelType: yup.string().required(),
     rentalPriceCharge: yup.string().required(),
-    officeLocation: yup.string().required(), // Change from officeEmail to officeLocation
+    office: yup.string().required(),
   })
   .required();
 
@@ -52,13 +52,12 @@ const AddCar = () => {
     formData.append("carSeatCapacity", data.carSeatCapacity);
     formData.append("carFuelType", data.carFuelType);
     formData.append("rentalPriceCharge", data.rentalPriceCharge);
-    formData.append("officeEmail", data.officeEmail);
+    formData.append("office", data.office);
     formData.append("carPicture", data.carPicture[0]);
-    console.log(formData);
-  
+
     try {
       const res = await axiosInstance.post(
-        "/admin/add-cars", // Make sure there's no space at the beginning
+        "/admin/add-cars",
         formData,
         {
           withCredentials: true,
@@ -67,13 +66,11 @@ const AddCar = () => {
           },
         }
       );
-      console.log(res.data);
-      navigate("/admin/cars", { replace: true });
+      navigate("/admin/carlist", { replace: true });
     } catch (error) {
       console.error("Error adding car:", error);
     }
   };
-  
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
@@ -165,19 +162,19 @@ const AddCar = () => {
         />
         {errors.carPicture && <p>{errors.carPicture.message}</p>}
 
-        <select {...register("officeLocation")} className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-2 py-1.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500">
+        <select {...register("office")} className="block w-full rounded-lg border border-gray-300 bg-gray-50 px-2 py-1.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500">
+          <option value="">Select Office City</option>
           {offices.map((office, index) => (
             <option key={index} value={office.city}>
               {office.city}
             </option>
           ))}
         </select>
-        {errors.officeLocation && <p>{errors.officeLocation.message}</p>}
+        {errors.office && <p>{errors.office.message}</p>}
 
-        <input
-          type="submit"
-          className="rounded-md bg-blue-500 py-1 text-white"
-        />
+        <button type="submit" className="mt-4 rounded bg-blue-500 px-4 py-2 text-white">
+          Add Car
+        </button>
       </form>
     </div>
   );

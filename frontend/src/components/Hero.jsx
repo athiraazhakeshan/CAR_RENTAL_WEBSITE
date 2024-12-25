@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from "react";
-// import car from "../assets/assets/images/white-car.png";
 import { axiosInstance } from "../config/axiosInstance";
 import AOS from "aos";
 import * as yup from "yup";
 import "aos/dist/aos.css"; // Add this import to include AOS styles
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";  // Make sure to import useNavigate
+import { useNavigate } from "react-router-dom";
 import About from "../pages/userpages/About";
+import { useSearch } from "./context/SearchContext";
 
 const schema = yup.object({
   officeLocation: yup.string().required(),
 }).required();
 
 export const Hero = () => {
+  useEffect(() => {
+    AOS.refresh();
+  }, []);
   const navigate = useNavigate();
   const [offices, setOffice] = useState([]);
-  const [searchData, setSearchData] = useState({
-    pickupDate: '',
-    returnDate: '',
-    location: ''
-  });
+  const { searchData, setSearchData } = useSearch();
 
   // Fetch office locations on initial render
   useEffect(() => {
@@ -41,13 +40,22 @@ export const Hero = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
 
   const onSubmit = (data) => {
+    // Set the location in the search data context
     setSearchData({
       location: data.officeLocation,
       pickupDate: searchData.pickupDate,
       returnDate: searchData.returnDate
     });
-    navigate("/user/carsbylocation/:city", { state: { location: data.officeLocation } });
+  
+    // Pass the location in the URL path
+    // navigate(`/user/carsbylocation/${officeLocation}`);  // Ensure the dynamic part is passed correctly
+    // navigate(`/user/carsbylocation/${city}`, { state: { location: city } });
+    navigate(`/user/carsbylocation/${data.officeLocation}`);
+
+
   };
+  
+  
 
   const uniqueCities = [...new Set(offices.map(office => office.city))];
 

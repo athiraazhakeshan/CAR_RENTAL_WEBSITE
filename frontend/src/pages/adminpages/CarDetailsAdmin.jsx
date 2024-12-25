@@ -7,47 +7,41 @@ import { axiosInstance } from '../../config/axiosInstance';
 
 const CarDetailsAdmin = () => {
   const navigate = useNavigate();
-  const [cars, setCars] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state for the API call
-  const [error, setError] = useState(null); // Error state to handle any API issues
+  const [car, setCar] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const { carId } = useParams(); // Get the carId from the URL
+  const { carId } = useParams();
 
   useEffect(() => {
     const getCarDetails = async () => {
-        try {
-          // Fetch details of the specific car
-          const res = await axiosInstance.get("/user/getcars");
-          console.log(res.data); // Debug response structure
-          if (Array.isArray(res.data)) {
-            setCars(res.data); // If the response is an array, set the entire array
-          } else {
-            setCars([res.data]); // If the response is an object, wrap it in an array
-          }
-        } catch (error) {
-          console.log(error);
-          setError("Failed to fetch car details");
-        } finally {
-          setLoading(false);
+      try {
+        const res = await axiosInstance.get("/user/getcars");
+        if (Array.isArray(res.data.data)) {
+          const car = res.data.data.find(car => car._id === carId);
+          setCar(car);
+        } else {
+          setError("Unexpected response format");
         }
-      };
-      
-      
+      } catch (error) {
+        console.log(error);
+        setError("Failed to fetch car details");
+      } finally {
+        setLoading(false);
+      }
+    };
+    
     getCarDetails();
   }, [carId]);
 
-  // If data is still loading, show a spinner
   if (loading) {
     return <Box p={5}><Spinner size="xl" /></Box>;
   }
 
-  // If there was an error fetching the data, show an error message
   if (error) {
     return <Box p={5}><Text color="red.500">{error}</Text></Box>;
   }
 
-  // If no car is found with the given ID, show a message
-  const car = cars[0]; // Since we're now storing the car as an array
   if (!car) {
     return <Text>Car not found</Text>;
   }
@@ -56,18 +50,23 @@ const CarDetailsAdmin = () => {
     navigate(`/admin/updatecar/${carId}`);
   };
 
-  const handleDelete = async () => {
-    try {
-      const res = await axiosInstance.delete(`/admin/deletecar/${carId}`);
-      if (res.data === "deleted car") {
-        alert("Deleted successfully");
-        navigate("/admin/carlist");
+   const handleDelete = async () => {
+      try {
+        const res = await axiosInstance.delete(`/admin/deletecar/${carId}`);
+        console.log(res);
+        if (res.data === 'deleted Office') {
+          alert('Deleted successfully');
+          navigate('/admin/carlist');
+        } else {
+          alert('Deleted successfully');
+          navigate('/admin/carlist');
+        }
+      } catch (error) {
+        console.log(error);
+        alert('An error occurred while deleting the office');
       }
-    } catch (error) {
-      console.log(error);
-      alert("Failed to delete the car");
-    }
-  };
+    };
+
 
   return (
     <Flex direction={{ base: 'column', md: 'row' }} p="4" maxW="1200px" mx="auto">

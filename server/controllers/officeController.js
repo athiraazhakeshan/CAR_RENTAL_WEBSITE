@@ -47,22 +47,33 @@ return res.send(office);
    
 }
   //get an by location
-  export const getOfficebylocation =async(req, res)=>{
 
-    const officelocation = req.params.city
-    const office = await OfficeLocation.find({city: officelocation});
-console.log(officelocation)
-console.log(office)
-if(!office){
-        return res.send("no car to display")
-    }
 
-    return res.status(200).json({
+  // Get office by location
+  export const getOfficebylocation = async (req, res) => {
+    try {
+      const officelocation = req.params.city;
+      console.log(`Requested office location: ${officelocation}`);
+  
+      const office = await OfficeLocation.find({ city: officelocation });
+      console.log(`Office data retrieved from database: ${JSON.stringify(office)}`);
+  
+      if (!office || office.length === 0) {
+        console.log("No office found for the specified location.");
+        return res.status(404).json({ success: false, message: "No office found." });
+      }
+  
+      return res.status(200).json({
         success: true,
-        message: 'office Found.',
-        office
-    })
-}
+        message: "Office Found.",
+        office,
+      });
+    } catch (error) {
+      console.error("Error fetching office:", error);
+      return res.status(500).json({ success: false, message: "Internal server error." });
+    }
+  };
+  
 
 
 //update location

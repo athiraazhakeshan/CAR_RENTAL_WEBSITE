@@ -119,20 +119,20 @@ export const createCar = async (req, res) => {
     //update 
   
 export const updateCar = async (req, res) => {
-
+  const id = req.params.id;
     console.log("updated")
   console.log(id)
       const body = req.body;
       console.log(body, "body");
       let imageUrl;
-      const { city } = office;
+      // const { city } = office;
   const {carName, carModel,transmission, carCompany,carPicture,carCategory,carEngine,carMileage, carSeatCapacity, carFuelType,rentalPriceCharge,office}=req.body;
-  const findlocation = await OfficeLocation.findOne({ city:office });
-  console.log(findlocation)
-          if (!findlocation) {
-            return res.send("please add instructor first");
-          }
-  console.log('image====',req.file);
+  // const findlocation = await OfficeLocation.findOne({ city:office });
+  // console.log(findlocation)
+  //         if (!findlocation) {
+  //           return res.send("please add instructor first");
+  //         }
+  // console.log('image====',req.file);
 
   if(req.file){
     const cloudinaryRes=await cloudinaryInstance.uploader.upload(req.file.path)
@@ -143,7 +143,7 @@ export const updateCar = async (req, res) => {
 console.log(imageUrl,"===imagrUrl");  
   const updatedCar = await Car.findByIdAndUpdate(
       { _id: id },
-      { carName, carModel,transmission, carCompany,carPicture:imageUrl, carCategory,carEngine,carMileage, carSeatCapacity, carFuelType,rentalPriceCharge,office:findlocation._id },
+      { carName, carModel,transmission, carCompany,carPicture:imageUrl, carCategory,carEngine,carMileage, carSeatCapacity, carFuelType,rentalPriceCharge},
       {
         new: true,
       }
