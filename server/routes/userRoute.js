@@ -13,7 +13,7 @@ router.post("/signin",Signin)
 router.get('/profile',authUser,Profile)
 router.patch('/updateuser/:id',userUpdate)
 router.post("/logout",User_Logout)
-/router.get('/checkuser',checkUser)
+router.get('/checkuser',checkUser)
 
 
 //carcontroller
@@ -29,6 +29,11 @@ router.get("/getAllOffices",getAllOffice)
 router.post("/createorder",authUser,OrderCreation)
 router.get("/getorderbyid/:id",authUser,getOrderById)
 router.get("/getorder",authUser,getuserAllOrders)
+
+
+//cartcontroller
+
+
 
 
 export {router as userRouter};

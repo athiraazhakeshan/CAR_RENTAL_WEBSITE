@@ -12,10 +12,10 @@ const orderSchema = new mongoose.Schema(
             ref: 'Car',
             required: true
         },
-        user: {
+        userId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'UserModel',
-            required: true
+            ref: "UserModel",
+            required: true,
         },
      
         totalPrice: {

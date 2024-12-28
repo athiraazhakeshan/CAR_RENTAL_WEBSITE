@@ -54,19 +54,23 @@ const UserDetails = () => {
 
     return (
         <Box p={5}>
-            <Flex direction={{ base: 'column', md: 'row' }} p="3" maxW="800px" mx="auto" mb="4" boxShadow="md" borderWidth="1px" borderRadius="md" bg="white">
+            <Flex direction={{ base: 'column', md: 'row' }} p="3" maxW="400px" mx="auto" mb="4" boxShadow="md" borderWidth="1px" borderRadius="md" bg="white">
                 <Box flex="1">
-                    <Image src={user.image} alt={user.name} objectFit="cover" w="100%" h="auto" borderRadius="md" />
+                    <Image alt={user.name} objectFit="cover" w="100%" h="auto" borderRadius="md" />
                 </Box>
                 <Box flex="1" p="3">
-                    <Heading as="h3" size="md" mb="3">{user.firstName}</Heading>
+                    <Heading as="h3" size="md" mb="3">{user.firstName} {user.lastName}</Heading>
                     <Text fontSize="md" mb="3">Email: {user.email}</Text>
+                    <Text fontSize="md" mb="3">address: {user.address}</Text>
+                    <Text fontSize="md" mb="3">country: {user.country}</Text>
+                    <Text fontSize="md" mb="3">state: {user.state}</Text>
+                    <Text fontSize="md" mb="3">city: {user.city}</Text>
                     {/* <Text fontSize="md" mb="3">Phone: {user.contactNumber}</Text> */}
                     <Text fontSize="md">{user.details}</Text>
                     <VStack spacing="2" mt="3">
-                        {user.role !== 'admin' && (
+                        {/* {user.role !== 'admin' && (
                             <Button onClick={handleOrders} colorScheme="blue">View Orders</Button>
-                        )}
+                        )} */}
                         <Button onClick={handleDelete} colorScheme="red">Delete</Button>
                     </VStack>
                 </Box>

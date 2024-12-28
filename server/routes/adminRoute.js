@@ -6,6 +6,7 @@ import { upload } from '../middlewares/multer.js';
 
 import authAdmin from '../middlewares/authAdmin.js';
 import { addOffice, deleteOffice, getAllOffice, getofficebyid, updateOffice } from '../controllers/officeController.js';
+import { getuserAllOrders } from '../controllers/orderController.js';
 const router = express.Router();
 router.post('/adminsignup',adminSignup)
 router.post('/adminlogin',adminSignin)
@@ -25,7 +26,7 @@ router.get('/getcars',getCars)
 router.get('/getcarbyid/:id',getcarbyid)
 
 //orderController
-router.get("/getorder/:id",(req, res) => {})
+//router.get("/getorder/:id",authAdmin,getuserAllOrders)
 
 //officeController
 router.post("/addOfficeLocation",addOffice);

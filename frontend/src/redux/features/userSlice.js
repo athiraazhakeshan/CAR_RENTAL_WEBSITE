@@ -11,10 +11,12 @@ export const userSlice = createSlice({
   reducers: {
     saveUser: (state,action) => {
       state.user=action.payload;
+     
       state.userAutherized=true
     },
     clearUser: (state) => {
       state.user={};
+      
       state.userAutherized=false
     },
 

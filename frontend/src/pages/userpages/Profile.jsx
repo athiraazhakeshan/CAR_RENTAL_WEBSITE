@@ -46,6 +46,7 @@ export const Profile = () => {
     // Handle logout
     const handleLogout = () => {
         dispatch(clearUser());
+        console.log("logout successfully")
         navigate('/signin');
     };
 

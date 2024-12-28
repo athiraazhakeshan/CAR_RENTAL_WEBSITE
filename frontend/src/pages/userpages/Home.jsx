@@ -110,7 +110,7 @@
 //     );
 // };
 
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import carImage from "../../assets/white-car.png"; // Update the path based on your file structure
 import About from "./About";
@@ -118,7 +118,6 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useSearch } from "../../components/context/SearchContext";
 import AOS from "aos";
 import "aos/dist/aos.css"; // AOS CSS for animations
 import { axiosInstance } from "../../config/axiosInstance";
@@ -132,7 +131,6 @@ const schema = yup.object({
 
 export const Home = () => {
   const navigate = useNavigate(); // Initialize the navigate function
-  const { setSearchData } = useSearch(); // Access the global context for setting search data
 
   const [formData, setFormData] = useState({
     location: "",
@@ -171,14 +169,14 @@ export const Home = () => {
 
   // Handle form submission
   const onSubmit = (data) => {
-    // Set the search data using setSearchData context
-    setSearchData({
+    // Set the search data using useState
+    setFormData({
       location: data.location,
       pickupDate: data.pickupDate,
       returnDate: data.returnDate
     });
     // Navigate to the 'carsbylocation' page with the form data as state
-    navigate("/user/carsbylocation/:city", { state: { location: data.officeLocation } });
+    navigate("/user/carsbylocation/:city", { state: { location: data.location } });
   };
 
   return (
@@ -272,3 +270,4 @@ export const Home = () => {
     </div>
   );
 };
+

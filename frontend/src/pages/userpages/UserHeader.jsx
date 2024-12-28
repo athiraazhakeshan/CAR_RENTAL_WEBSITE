@@ -2,10 +2,12 @@ import React from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import { DarkMode } from '../../components/shared/DarkMode';
 import { CircleUser } from 'lucide-react';
-
+import { ShoppingBag } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const UserHeader = () => {
-  const navigate=useNavigate()
+  
+
   return (
     <header className="header">
       <div className='flex justify-between items-center w-full px-20 h-24 shadow-2xl'>
@@ -23,6 +25,9 @@ export const UserHeader = () => {
 
       <div className='flex items-center gap-10'>
        <DarkMode/>
+                <Link to={'/user/cart'}>
+                    <ShoppingBag />
+                </Link>
        <Link to={"user/profile"}>
        <CircleUser/>
        </Link>

@@ -89,10 +89,16 @@ export const Signin=async(req,res)=>{
       const token=await generateToken(userExist._id)
       res.cookie("token", token, { httpOnly: true });
       return res.json({ 
-        message: "Logged in successfully",  
+        message: "Logged in successfully",token, 
+        userId:userExist._id, 
         role:userExist.role,
-        firstName: userExist.firstName
-      })
+        firstName: userExist.firstName,
+        email:userExist.email,
+          user:[userExist._id 
+            
+          ]     
+
+            })
       
     }
     catch(error){
@@ -123,7 +129,7 @@ export const Signin=async(req,res)=>{
   try {
     // The userId is now available in req.user because of the authUser middleware
     const userId = req.user.id; // Assuming the token includes userId
-    const userData = await UserModel.findById(userId).select('-password').select('-order').select('-profilePicture'); // Exclude password from the response
+    const userData = await UserModel.findById(userId).select('-password').select('-profilePicture'); // Exclude password from the response
    
     if (!userData) {
       return res.status(404).json({ success: false, message: 'User not found' });
@@ -197,13 +203,29 @@ export const Signin=async(req,res)=>{
   };
 
   //checkuser
+  // export const checkUser = async (req, res, next) => {
+  //   try {
+
+  //       res.json({ success: true, message: "user autherized" });
+  //   } catch (error) {
+  //       console.log(error);
+  //       res.status(error.statusCode || 500).json(error.message || 'Internal server error')
+  //   }
   export const checkUser = async (req, res, next) => {
     try {
+        // Assuming req.user contains user information, including user ID
+        if (req.user && req.user.id) {
+            console.log(`User ID: ${req.user.id}`);
+        } else {
+            console.log("User ID not found.");
+        }
 
-        res.json({ success: true, message: "user autherized" });
+        res.json({ success: true, message: "User authorized"});
     } catch (error) {
         console.log(error);
-        res.status(error.statusCode || 500).json(error.message || 'Internal server error')
+        res.status(error.statusCode || 500).json(error.message || 'Internal server error');
     }
 };
+
+
      

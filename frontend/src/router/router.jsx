@@ -30,6 +30,9 @@ import CarDetailsAdmin from "../pages/adminpages/CarDetailsAdmin.jsx";
 import CarByLocation from "../pages/userpages/CarByLocation.jsx";
 import AddCar from "../pages/adminpages/AddCar.jsx";
 import UpdateCarForm from "../pages/adminpages/UpdateCarForm.jsx";
+import Cart from "../pages/userpages/Cart.jsx";
+
+
 // import Hero from "../components/Hero.jsx";
 export const router = createBrowserRouter(
   [
@@ -105,6 +108,10 @@ export const router = createBrowserRouter(
             {
               path: "booking",
               element: <Home />,
+            },
+            {
+              path: "cart",
+              element:<Cart/>,
             },
           ],
         },

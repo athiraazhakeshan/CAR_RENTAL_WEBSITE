@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSearch } from '../../components/context/SearchContext';
 import { differenceInDays } from 'date-fns';
 import { Box, Image, Text, Heading, Flex, Input, Button } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
@@ -11,8 +10,10 @@ const CarOrderPage1 = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const rentPerDay = state?.rentalPriceCharge;
   const carimage = state?.carPicture;
-  const { searchData, setSearchData } = useSearch();
-  const { location, pickupDate, returnDate } = searchData;
+
+  const [location, setLocation] = useState('');
+  const [pickupDate, setPickupDate] = useState('');
+  const [returnDate, setReturnDate] = useState('');
   const [days, setDays] = useState(0);
   const navigate = useNavigate();
 
@@ -27,7 +28,7 @@ const CarOrderPage1 = () => {
 
   const handleNext = () => {
     if (pickupDate && returnDate) {
-      navigate('/user/order/requirements', { state: { totalAmount, carimage, carId } }); // Update with your next page route
+      navigate('/user/orderpage', { state: { totalAmount, carimage, carId } }); // Update with your next page route
     } else {
       alert('Please select both pickup and return dates.');
     }
@@ -46,7 +47,7 @@ const CarOrderPage1 = () => {
             <Input 
               type="date" 
               value={pickupDate || ''}
-              onChange={(e) => setSearchData(prev => ({ ...prev, pickupDate: e.target.value }))}
+              onChange={(e) => setPickupDate(e.target.value)}
             />
           </Box>
           <Box mb="4">
@@ -54,7 +55,7 @@ const CarOrderPage1 = () => {
             <Input 
               type="date" 
               value={returnDate || ''}
-              onChange={(e) => setSearchData(prev => ({ ...prev, returnDate: e.target.value }))}
+              onChange={(e) => setReturnDate(e.target.value)}
             />
           </Box>
           {pickupDate && returnDate && (

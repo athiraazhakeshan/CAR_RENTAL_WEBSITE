@@ -13,10 +13,10 @@ createRoot(document.getElementById('root')).render(
   <>
   
   <Provider store={store}>
-    <SearchProvider>
+    
     <ChakraProvider>
    <App/>
-  </ChakraProvider></SearchProvider>
+  </ChakraProvider>
   </Provider>
   </>
 )
