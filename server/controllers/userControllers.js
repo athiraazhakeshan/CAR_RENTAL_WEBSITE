@@ -87,7 +87,11 @@ export const Signin=async(req,res)=>{
       // }
       
       const token=await generateToken(userExist._id)
-      res.cookie("token", token, { httpOnly: true });
+      res.cookie("token", token, {
+        httpOnly: true,   // Ensures the cookie is only accessible via HTTP requests (not JavaScript)
+        secure: process.env.NODE_ENV === 'production', // Only set the cookie in secure mode if in production (i.e., HTTPS)
+        sameSite: 'Strict', // Recommended to prevent CSRF
+        maxAge: 3600000})
       return res.json({ 
         message: "Logged in successfully",token, 
         userId:userExist._id, 
