@@ -12,10 +12,5 @@
         "dest": "/"
       }
     ]
-    "functions": {
-    "api/user/signin": {
-      "maxDuration": 60, 
-      "memory": 1024  
-  }
-  }
+   
 }
