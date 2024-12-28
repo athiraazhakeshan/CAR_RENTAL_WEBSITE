@@ -47,11 +47,28 @@ const Cart = () => {
         return <div>Loading...</div>;
     }
 
+
+    const handleRemoveItem = async (carId) => {
+        try {
+            const response = await axiosInstance({
+                method: "DELETE",
+                url: "/cart/remove-car",
+                // data: { courseId : courseId },
+                data:{carId:carId}
+                
+            });
+            toast.success("item removed from cart");
+        } catch (error) {
+            console.log(error);
+            toast.error(error?.response?.data?.message || "error while removing product");
+        }
+    };
+
     return (
         <div>
-            <h2>Total Amount: ${totalAmount}</h2>
+            {/* <h2>Total Amount: ${totalAmount}</h2> */}
             {cartData?.car?.map((value) => (
-                <Cards item={value} key={value._id} totalAmount={totalAmount}/>
+                <Cards item={value} key={value._id} totalAmount={totalAmount}   handleRemove={handleRemoveItem}/>
             ))}
         </div>
     );

@@ -34,16 +34,16 @@ type:String,
 );
 
 
-// cartSchema.methods.calculateTotalPrice = function() {
-//     if (!this.car || !Array.isArray(this.car)) {
-//         this.totalPrice = 0;
-//     } else {
-//         this.totalPrice = this.car.reduce((total, item) => {
-//             const itemPrice = item.price || 0; // Ensure item.price is a number
-//             return total + itemPrice;
-//         }, 0);
-//     }
-// };
+cartSchema.methods.calculateTotalPrice = function() {
+    if (!this.car || !Array.isArray(this.car)) {
+        this.totalPrice = 0;
+    } else {
+        this.totalPrice = this.car.reduce((total, item) => {
+            const itemPrice = item.price || 0; // Ensure item.price is a number
+            return total + itemPrice;
+        }, 0);
+    }
+};
 
  export const Cart =mongoose. model("Cart", cartSchema);
  ;

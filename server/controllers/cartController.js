@@ -106,16 +106,24 @@ export const removeCarFromCart = async (req, res) => {
         const userId = req.user.id;
         const { carId } = req.body;
 
+        // Log received data
+        console.log("userId:", userId);
+        console.log("carId:", carId, typeof carId);
+
         // Find the user's cart
         let cart = await Cart.findOne({ userId });
         if (!cart) {
             return res.status(404).json({ message: "Cart not found" });
         }
 
-        console.log("carId====", carId, typeof carId);
+        // Log the found cart
+        console.log("cart before removal:", JSON.stringify(cart, null, 2));
 
-        // Remove the course from the cart
-        cart.car = cart.car.filter((item) => !item?.carId == carId);
+        // Remove the car from the cart
+        cart.car = cart.car.filter((item) => item?.carId !== carId);
+
+        // Log the updated cart
+        console.log("cart after removal:", JSON.stringify(cart, null, 2));
 
         // Recalculate the total price
         cart.calculateTotalPrice();
@@ -123,8 +131,12 @@ export const removeCarFromCart = async (req, res) => {
         // Save the cart
         await cart.save();
 
-        res.status(200).json({ message: "course removed from cart", data: cart });
+        res.status(200).json({ message: "Car removed from cart", data: cart });
     } catch (error) {
+        // Log the error
+        console.error("Error removing car from cart:", error);
+
         res.status(500).json({ message: "Internal server error", error });
     }
 };
+

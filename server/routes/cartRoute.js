@@ -6,6 +6,6 @@ const router = e.Router();
 router.post("/add-to-cart",authUser,addCarToCart);
 router.get("/get-cart", authUser, getCart);
 router.get("/get-cartItems", authUser, getCartItems);
-router.delete("/remove-course",authUser, removeCarFromCart);
+router.delete("/remove-car",authUser, removeCarFromCart);
 
 export { router as cartRouter };
