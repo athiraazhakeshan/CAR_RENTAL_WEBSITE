@@ -47,7 +47,7 @@ export const Profile = () => {
     const handleLogout = () => {
         dispatch(clearUser());
         console.log("logout successfully")
-        navigate('/signin');
+        navigate('/user/signin');
     };
 
     // If loading, show a loading message

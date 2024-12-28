@@ -67,11 +67,11 @@ const TopBar = () => {
           {user && user.firstName ? (
             <>
               <Text fontSize="sm" mr="4">Hello, {user.firstName}</Text>
-              <Link to="/signin" onClick={handleLogout} style={{ marginLeft: '10px', fontSize: 'sm' }}>Logout</Link>
+              <Link to="/user/signin" onClick={handleLogout} style={{ marginLeft: '10px', fontSize: 'sm' }}>Logout</Link>
             </>
           ) : (
             <>
-              <Link to="/signin" ml="4" fontSize="sm">SignIn | </Link>
+              <Link to="/user/signin" ml="4" fontSize="sm">SignIn | </Link>
               <Link to="/signup" ml="4" fontSize="sm">SignUp | </Link>
               <Link to="/admin/adminlogin" ml="4" fontSize="sm">Admin</Link>
             </>
