@@ -1,5 +1,5 @@
 import adminModel from "../models/adminModel.js";
-import bcrypt from "bcrypt";
+
 import generateToken from "../util/token.js";
 import UserModel from "../models/userModel.js";
 import jwt from 'jsonwebtoken'
@@ -19,13 +19,12 @@ export const adminSignup = async(req,res,next)=>{
          return  res.status(400).json({error:"user already exist"})
       }
     
-      const salt = await bcrypt.genSalt(10)
-      const hashPassword=await bcrypt.hash(password,salt);
+    
 
-   console.log(hashPassword,"hashedpassword");
+ 
 
       const newUser =new adminModel({
-         email,password:hashPassword,role:'admin'
+         email,password,role:'admin'
       })
       const savedAdmin= await newUser.save()
 
@@ -58,10 +57,10 @@ export const adminSignin=async(req,res)=>{
     if(!isuserExist){
       return res.send("admin not exist");
       }
-    const matchpassword=await bcrypt.compare(password,isuserExist.password);
-    if(!matchpassword){
-      return res.status(400).json({error:"Password incorrect"})
-      }
+    // const matchpassword=await bcrypt.compare(password,isuserExist.password);
+    // if(!matchpassword){
+    //   return res.status(400).json({error:"Password incorrect"})
+    //   }
      // Exclude password from response
     // const { password: _, ...userWithoutPassword } = isuserExist.toObject();
 

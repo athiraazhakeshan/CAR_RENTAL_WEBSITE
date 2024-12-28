@@ -1,5 +1,5 @@
 import UserModel from "../models/userModel.js";
-import bcrypt from "bcrypt";
+//import bcrypt from "bcrypt";
 import generateToken from "../util/token.js";
 import { cloudinaryInstance } from "../config/cloudinary.js";
 
@@ -29,10 +29,10 @@ export const Signup = async(req,res,next)=>{
            return  res.status(400).json({error:"user already exist"})
         }
       
-        const salt = await bcrypt.genSalt(10)
-        const hashPassword=await bcrypt.hash(password,salt);
+    //     const salt = await bcrypt.genSalt(10)
+    //     const hashPassword=await bcrypt.hash(password,salt);
 
-     console.log(hashPassword,"hashedpassword");
+    //  console.log(hashPassword,"hashedpassword");
 
 
     
@@ -45,7 +45,7 @@ export const Signup = async(req,res,next)=>{
 
 
         const newUser =new UserModel({
-            firstName,lastName,email,password:hashPassword,address,city,state,country,contactNumber
+            firstName,lastName,email,password,address,city,state,country,contactNumber
         })
         const savedUser= await newUser.save()
 
@@ -78,13 +78,13 @@ export const Signin=async(req,res)=>{
 
      
 
-      const matchpassword=await bcrypt.compare(password,userExist.password);
+    //  const matchpassword=await bcrypt.compare(password,userExist.password);
       
-      if(!matchpassword){
-        return res.status(400).json({error:"Password incorrect"})
+      // if(!matchpassword){
+      //   return res.status(400).json({error:"Password incorrect"})
     
     
-      }
+      // }
       
       const token=await generateToken(userExist._id)
       res.cookie("token", token, { httpOnly: true });
