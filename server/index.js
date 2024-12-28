@@ -49,14 +49,28 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// List of allowed origins
+const allowedOrigins = [
+    "http://localhost:5173", // Development frontend
+    "https://car-rental-website-front-end.vercel.app" // Production frontend
+];
+
+// CORS Middleware with Dynamic Origin Handling
 app.use(cors({
-    origin: ["http://localhost:5173", "https://car-rental-website-front-end.vercel.app"],
-    credentials: true
+    origin: (origin, callback) => {
+        // Allow requests from the allowed origins or if no origin is provided (e.g., server-to-server requests)
+        if (allowedOrigins.includes(origin) || !origin) {
+            callback(null, true);  // Allow request
+        } else {
+            callback(new Error('Not allowed by CORS'));  // Block request
+        }
+    },
+    credentials: true,  // Allow cookies and credentials
 }));
 
-// CORS Middleware Verification
+// CORS Headers Setup (Optional if you want to customize more headers)
 app.use((req, res, next) => {
-   // res.header('Access-Control-Allow-Origin', 'https://car-rental-website-front-end.vercel.app');
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
