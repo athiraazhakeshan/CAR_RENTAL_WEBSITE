@@ -126,10 +126,16 @@ const startServer = async () => {
     app.use(express.json());
 
     // List of allowed origins
+    // const allowedOrigins = [
+    //      "http://localhost:5173", // Development frontend
+    //     "https://car-rental-website-frontend-three.vercel.app/" // Production frontend
+    // ];
+
     const allowedOrigins = [
-         "http://localhost:5173", // Development frontend
-        "https://car-rental-website-frontend-three.vercel.app/" // Production frontend
-    ];
+        
+       "https://car-rental-website-frontend-three.vercel.app" 
+   ];
+    
 
     // CORS Middleware with Dynamic Origin Handling
     app.use(cors({
