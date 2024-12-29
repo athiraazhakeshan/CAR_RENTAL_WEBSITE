@@ -127,7 +127,7 @@ const startServer = async () => {
 
     // List of allowed origins
     const allowedOrigins = [
-        "http://localhost:5173", // Development frontend
+        // "http://localhost:5173", // Development frontend
         "https://car-rental-website-front-end.vercel.app" // Production frontend
     ];
 
@@ -155,6 +155,7 @@ const startServer = async () => {
         res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         res.header("Access-Control-Allow-Credentials", "true");
         if (req.method === "OPTIONS") {
+            res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
             return res.status(204).end();
         }
         next();
@@ -164,15 +165,31 @@ const startServer = async () => {
     app.get('/', (req, res) => {
         res.send('Hello world');
     });
-   
+
+    // Example route to get user by ID
+    app.get('/api/user/:id', async (req, res) => {
+        const userId = req.params.id;
+        console.log(`Fetching user with ID: ${userId}`);
+
+        try {
+            const user = await User.findById(userId);
+            if (!user) {
+                console.error(`User ID not found: ${userId}`);
+                return res.status(404).json({ message: 'User ID not found' });
+            }
+            res.json(user);
+        } catch (error) {
+            console.error(`Error fetching user with ID ${userId}:`, error);
+            res.status(500).json({ message: 'Internal Server Error' });
+        }
+    });
+
     app.use('/api', apiRouter);
 
     // Start server
     app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
     });
-
-    
 };
 
 startServer();
