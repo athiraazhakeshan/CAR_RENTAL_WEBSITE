@@ -29,6 +29,11 @@ import { adminAxiosInstance } from '../../config/axiosInstance';
                     method: "POST",
                     url: admin.login_api,
                     data,
+                    withCredentials: true,
+                    headers: {
+                      'Content-Type': 'application/json'
+                   }
+                
                 });
                 // const response = await axiosInstance({ method: "POST", url: user.login_api, data });
                 console.log(response, "====response");
