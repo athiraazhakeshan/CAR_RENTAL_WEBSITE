@@ -144,8 +144,8 @@ app.use((req, res, next) => {
     // if (allowedOrigins.includes(origin)) {
     //     res.header("Access-Control-Allow-Origin", origin);
     // }
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, Accept");
+    res.header("Access-Control-Allow-Origin", "https://car-rental-website-front-end.vercel.app");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, Accept, x-client-key, x-client-token, x-client-secre");
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     res.header("Access-Control-Allow-Credentials", "true");
     if (req.method === "OPTIONS") {
