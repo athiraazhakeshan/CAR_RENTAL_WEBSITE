@@ -167,23 +167,7 @@ const startServer = async () => {
     });
 
     // Example route to get user by ID
-    app.get('/api/user/:id', async (req, res) => {
-        const userId = req.params.id;
-        console.log(`Fetching user with ID: ${userId}`);
-
-        try {
-            const user = await User.findById(userId);
-            if (!user) {
-                console.error(`User ID not found: ${userId}`);
-                return res.status(404).json({ message: 'User ID not found' });
-            }
-            res.json(user);
-        } catch (error) {
-            console.error(`Error fetching user with ID ${userId}:`, error);
-            res.status(500).json({ message: 'Internal Server Error' });
-        }
-    });
-
+    
     app.use('/api', apiRouter);
 
     // Start server
