@@ -52,7 +52,9 @@ export const Signup = async(req,res,next)=>{
         if(savedUser){
             const token= await  generateToken(savedUser._id)
             
-            res.cookie("token",token)
+            res.cookie("token", token, { httpOnly: true ,
+              secure:true
+            });
             return res.status(200).json({message:"user registration successfull",savedUser})
            
         }
@@ -87,7 +89,9 @@ export const Signin=async(req,res)=>{
       // }
       
       const token=await generateToken(userExist._id)
-      res.cookie("token", token, { httpOnly: true });
+      res.cookie("token", token, { httpOnly: true ,
+        secure:true
+      });
       return res.json({ 
         message: "Logged in successfully",token, 
         userId:userExist._id, 
