@@ -86,6 +86,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { saveUser } from "../../redux/features/userSlice";
 import { axiosInstance } from "../../config/axiosInstance";
+import axios from "axios";
 
 export const SignIn = ({ role = "user" }) => {
   const { register, handleSubmit } = useForm();
@@ -101,9 +102,9 @@ export const SignIn = ({ role = "user" }) => {
 
   const onSubmit = async (data) => {
     try {
-        const response = await axiosInstance({
+        const response = await axios({
             method: "POST",
-            url: user.login_api,
+            url: 'https://car-rental-website-front-end.vercel.app/api/user/signin',
             data,
         });
 
