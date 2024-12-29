@@ -133,7 +133,7 @@ const startServer = async () => {
 
     const allowedOrigins = [
         
-       "https://car-rental-website-frontend-three.vercel.app" 
+       "*" 
    ];
     
 
