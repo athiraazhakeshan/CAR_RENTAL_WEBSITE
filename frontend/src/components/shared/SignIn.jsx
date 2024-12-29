@@ -101,13 +101,20 @@ export const SignIn = ({ role = "user" }) => {
   };
 
   const onSubmit = async (data) => {
+    // try {
+    //     const response = await axiosInstance({
+    //         method: "post",
+    //         url: user.login_api,
+    //         data,
+    //     });
     try {
-        const response = await axiosInstance({
-            method: "post",
-            url: user.login_api,
-            data,
-        });
-
+      const res = await axios.post(
+          "https://car-rental-website-server-iota.vercel.app/api/user/signin",
+          data,
+          {
+              withCredentials: true,
+          }
+      );
         const userData = response.data.user;  // Get the full user object from the API response
         const token = response.data.token;    // Get the token from the API response
 

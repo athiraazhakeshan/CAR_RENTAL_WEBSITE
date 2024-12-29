@@ -119,7 +119,7 @@ app.use(express.json());
 
 // List of allowed origins
 const allowedOrigins = [
-    "http://localhost:5173", // Development frontend
+    // "http://localhost:5173", // Development frontend
     "https://car-rental-website-front-end.vercel.app" // Production frontend
 ];
 
