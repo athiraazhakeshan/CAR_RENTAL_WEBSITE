@@ -95,17 +95,28 @@ export const SignIn = ({ role = "user" }) => {
 
   const user = {
     role: "user",
-    login_api: "user/signin",
+   // login_api: "user/signin",
     profile_route: "/user/profile",
     signup_route: "signup",
   };
 
+  // const onSubmit = async (data) => {
+  //   try {
+  //       const response = await axios({
+  //           method: "POST",
+  //           url: 'https://car-rental-website-front-end.vercel.app/api/user/signin',
+  //           data,
+  //       });
   const onSubmit = async (data) => {
     try {
         const response = await axios({
-            method: "POST",
-            url: 'https://car-rental-website-front-end.vercel.app/api/user/signin',
-            data,
+            method: 'POST',
+            url: 'https://car-rental-website-server-iota.vercel.app/api/user/signin',
+            data: data,
+            withCredentials: true,  // This ensures cookies are sent with the request
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
 
         const userData = response.data.user;  // Get the full user object from the API response
