@@ -103,7 +103,7 @@ export const SignIn = ({ role = "user" }) => {
   const onSubmit = async (data) => {
     try {
         const response = await axios({
-            method: "POST",
+            method: "post",
             url: user.login_api,
             data,
         });

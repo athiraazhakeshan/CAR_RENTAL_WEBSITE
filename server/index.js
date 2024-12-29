@@ -119,7 +119,7 @@ app.use(express.json());
 
 // List of allowed origins
 const allowedOrigins = [
-    "http://localhost:5173", // Development frontend
+    //"http://localhost:5173", // Development frontend
     "https://car-rental-website-front-end.vercel.app" // Production frontend
 ];
 
@@ -137,20 +137,20 @@ app.use(cors({
 }));
 
 // CORS Headers Setup (Optional if you want to customize more headers)
-app.use((req, res, next) => {
-    // const origin = req.headers.origin;
-    // if (allowedOrigins.includes(origin)) {
-    //     res.header("Access-Control-Allow-Origin", origin);
-    // }
-    res.header('Access-Control-Allow-Origin', 'https://car-rental-website-front-end.vercel.app');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    if (req.method === "OPTIONS") {
-        return res.status(204).end();
-    }
-    next();
-});
+// app.use((req, res, next) => {
+//     // const origin = req.headers.origin;
+//     // if (allowedOrigins.includes(origin)) {
+//     //     res.header("Access-Control-Allow-Origin", origin);
+//     // }
+//     res.header('Access-Control-Allow-Origin', 'https://car-rental-website-front-end.vercel.app');
+//     res.header('Access-Control-Allow-Credentials', 'true');
+//     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+//     if (req.method === "OPTIONS") {
+//         return res.status(204).end();
+//     }
+//     next();
+// });
 
 // Routes
 app.get('/', (req, res) => {
