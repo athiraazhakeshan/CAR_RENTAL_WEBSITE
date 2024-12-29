@@ -162,8 +162,8 @@ const startServer = async () => {
     });
 
     // Routes
-    app.get("/", (req, res, next) => {
-        res.json({ message: "hello world" });
+    app.get('/', (req, res) => {
+        res.send('Hello world');
     });
 
     // Example route to get user by ID

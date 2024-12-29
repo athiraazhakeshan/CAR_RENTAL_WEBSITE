@@ -108,25 +108,25 @@ export const SignIn = ({ role = "user" }) => {
 
 
 
-    // try {
-    //     const response = await axiosInstance({
-    //         method: "post",
-    //         url: user.login_api,
-    //         data,
-    //     });
-    
-    
     try {
-      const res = await axios.post(
-          "https://car-rental-website-server-iota.vercel.app/api/user/signin",
-          data,
-          {
-              withCredentials: true,
-              headers: {
-                'Content-Type': 'application/json'
-            }
-          }
-      );
+        const response = await axiosInstance({
+            method: "POST",
+            url: user.login_api,
+            data,
+        });
+    
+    
+    // try {
+    //   const res = await axios.post(
+    //       "https://car-rental-website-server-iota.vercel.app/api/user/signin",
+    //       data,
+    //       {
+    //           withCredentials: true,
+    //           headers: {
+    //             'Content-Type': 'application/json'
+    //         }
+    //       }
+    //   );
         const userData = response.data.user;  // Get the full user object from the API response
         const token = response.data.token;    // Get the token from the API response
 
