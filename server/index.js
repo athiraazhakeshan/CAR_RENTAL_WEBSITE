@@ -118,29 +118,33 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // List of allowed origins
-const allowedOrigins = [
-    "http://localhost:5173", // Development frontend
-    "https://car-rental-website-front-end.vercel.app" // Production frontend
-];
+// const allowedOrigins = [
+//     "http://localhost:5173", // Development frontend
+//     "https://car-rental-website-front-end.vercel.app" // Production frontend
+// ];
 
-// CORS Middleware with Dynamic Origin Handling
-app.use(cors({
-    origin: (origin, callback) => {
-        if (allowedOrigins.includes(origin) || !origin) {
-            callback(null, true); // Allow request
-        } else {
-            callback(new Error('Not allowed by CORS')); // Block request
-        }
-    },
-    credentials: true, // Allow cookies and credentials
-}));
-
+// // CORS Middleware with Dynamic Origin Handling
+// app.use(cors({
+//     origin: (origin, callback) => {
+//         if (allowedOrigins.includes(origin) || !origin) {
+//             callback(null, true); // Allow request
+//         } else {
+//             callback(new Error('Not allowed by CORS')); // Block request
+//         }
+//     },
+//     credentials: true, // Allow cookies and credentials
+// }));
+ app.use(cors({
+       origin:["http://localhost:5173","https://car-rental-website-front-end.vercel.app"],
+         credentials:true
+     }));
 // Global Middleware to set headers for CORS responses
 app.use((req, res, next) => {
-    const origin = req.headers.origin;
-    if (allowedOrigins.includes(origin)) {
-        res.header("Access-Control-Allow-Origin", origin);
-    }
+    // const origin = req.headers.origin;
+    // if (allowedOrigins.includes(origin)) {
+    //     res.header("Access-Control-Allow-Origin", origin);
+    // }
+    res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, Accept");
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     res.header("Access-Control-Allow-Credentials", "true");
