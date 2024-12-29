@@ -113,7 +113,13 @@ export const SignIn = ({ role = "user" }) => {
             method: "POST",
             url: user.login_api,
             data,
-        });
+            
+                       withCredentials: true,
+                        headers: {
+                          'Content-Type': 'application/json'
+                       }
+                    
+    });
     
     
     // try {
