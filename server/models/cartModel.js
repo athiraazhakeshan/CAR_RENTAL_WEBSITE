@@ -14,6 +14,10 @@ const cartSchema = new Schema(
                     ref: "Car",
                     required: true, // Ensure the name matches the car model name
                 },
+                price: {
+                    type: Number,
+                    required: true,
+                },
               
             },
         ],
@@ -34,16 +38,10 @@ type:String,
 );
 
 
-cartSchema.methods.calculateTotalPrice = function() {
-    if (!this.car || !Array.isArray(this.car)) {
-        this.totalPrice = 0;
-    } else {
-        this.totalPrice = this.car.reduce((total, item) => {
-            const itemPrice = item.price || 0; // Ensure item.price is a number
-            return total + itemPrice;
-        }, 0);
-    }
+cartSchema.methods.calculateTotalPrice = function () {
+    this.totalPrice = this.car.reduce((total, car) => total + car.price, 0);
 };
+
 
  export const Cart =mongoose. model("Cart", cartSchema);
  ;

@@ -83,7 +83,7 @@ export const addCarToCart = async (req, res) => {
         // Add the car to the cart
         cart.car.push({
             carId,
-            totalPrice: car.rentalPriceCharge,
+            price: car.price,
             pickedAt: pickedat,
             returnedAt: returnedat,
             // price: car.rentalPriceCharge, // Ensure price is correctly assigned
@@ -120,7 +120,7 @@ export const removeCarFromCart = async (req, res) => {
         console.log("cart before removal:", JSON.stringify(cart, null, 2));
 
         // Remove the car from the cart
-        cart.car = cart.car.filter((item) => item?.carId !== carId);
+        cart.car = cart.car.filter((item) =>  !item.carId.equals(carId));
 
         // Log the updated cart
         console.log("cart after removal:", JSON.stringify(cart, null, 2));
@@ -139,4 +139,19 @@ export const removeCarFromCart = async (req, res) => {
         res.status(500).json({ message: "Internal server error", error });
     }
 };
+const clearCart = async (req, res) => {
+    try {
+        const userId = req.user._id;
 
+        const cart = await Cart.findOne({ userId });
+        cart.courses = [];
+        cart.calculateTotalPrice();
+        await cart.save();
+
+        res.status(200).json({ message: "cart cleared successfully", data: cart });
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error", error });
+    }
+};
+
+module.exports = { getCart, addCarToCart, removeCarFromCart, clearCart };
