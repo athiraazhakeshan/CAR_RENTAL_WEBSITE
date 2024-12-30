@@ -30,7 +30,9 @@ export const adminSignup = async(req,res,next)=>{
 
       if(savedAdmin){
         const token = generateToken(isuserExist._id);
-        res.cookie("token", token, { httpOnly: true });
+        res.cookie("token", token, { sameSite:"None", httpOnly: true ,
+          secure:true
+        });
         return res.json({
             message: "Logged in successfully",
             role: isuserExist.role})
@@ -70,7 +72,9 @@ export const adminSignin=async(req,res)=>{
 
     
          const token=await generateToken(isuserExist._id)
-         res.cookie("token", token, { httpOnly: true });
+         res.cookie("token", token, { sameSite:"None", httpOnly: true ,
+          secure:true
+        });
          return res.json({ 
            message: "Logged in successfully",  
            role:isuserExist.role
@@ -161,7 +165,9 @@ export const adminprofile = async(req,res,next)=>{
   export const admin_Logout =async (req, res, next) => {
 
     try{
-      res.clearCookie('token')
+      res.clearCookie('token', { sameSite:"None", httpOnly: true ,
+        secure:true
+      });
       res.json({success:true,message:"admin logged out"})
     }catch(error){
       console.log(error)

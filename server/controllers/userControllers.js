@@ -52,7 +52,7 @@ export const Signup = async(req,res,next)=>{
         if(savedUser){
             const token= await  generateToken(savedUser._id)
             
-            res.cookie("token", token, { httpOnly: true ,
+            res.cookie("token", token, { sameSite:"None", httpOnly: true ,
               secure:true
             });
             return res.status(200).json({message:"user registration successfull",savedUser})
@@ -89,7 +89,7 @@ export const Signin=async(req,res)=>{
       // }
       
       const token=await generateToken(userExist._id)
-      res.cookie("token", token, { httpOnly: true ,
+      res.cookie("token", token, { sameSite:"None", httpOnly: true ,
         secure:true
       });
       return res.json({ 
@@ -197,7 +197,11 @@ export const Signin=async(req,res)=>{
   export const User_Logout =async (req, res, next) => {
 
   try{
-    res.clearCookie('token')
+    res.clearCookie("token",{
+      sameSite:"None",
+      secure:true,
+      httpOnly:true
+  });
     res.json({success:true,message:"user logged out "})
   }catch(error){
     console.log(error)
