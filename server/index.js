@@ -92,9 +92,16 @@ app.get('/', (req, res) => {
 app.use('/api', apiRouter);
 
 // Start server
-app.listen(port, () => {
+// app.listen(port, () => {
+//     console.log(`Example app listening on port ${port}`);
+// });
+const server = app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
+
+// Set timeout to 5 minutes (300000 milliseconds)
+server.setTimeout(300000);
+
 
 // export default app;
 // import express from 'express';
