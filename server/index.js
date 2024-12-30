@@ -55,7 +55,7 @@ app.use(express.json());
 app.use(cors({
     origin:["https://car-rental-website-frontend-three.vercel.app"],
     credentials:true,
-    methods:['GET',"POST","PUT","DELETE","OPTIONS"]
+    methods:['GET',"POST","PUT","DELETE","OPTIONS","PATCH"]
 }));
 
 // List of allowed origins
