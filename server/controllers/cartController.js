@@ -139,19 +139,19 @@ export const removeCarFromCart = async (req, res) => {
         res.status(500).json({ message: "Internal server error", error });
     }
 };
-const clearCart = async (req, res) => {
-    try {
-        const userId = req.user._id;
+// const clearCart = async (req, res) => {
+//     try {
+//         const userId = req.user._id;
 
-        const cart = await Cart.findOne({ userId });
-        cart.courses = [];
-        cart.calculateTotalPrice();
-        await cart.save();
+//         const cart = await Cart.findOne({ userId });
+//         cart.courses = [];
+//         cart.calculateTotalPrice();
+//         await cart.save();
 
-        res.status(200).json({ message: "cart cleared successfully", data: cart });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error });
-    }
-};
+//         res.status(200).json({ message: "cart cleared successfully", data: cart });
+//     } catch (error) {
+//         res.status(500).json({ message: "Internal server error", error });
+//     }
+// };
 
-module.exports = { getCart, addCarToCart, removeCarFromCart, clearCart };
+// module.exports = { getCart, addCarToCart, removeCarFromCart, clearCart };
