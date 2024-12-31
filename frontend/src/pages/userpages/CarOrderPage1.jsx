@@ -28,7 +28,7 @@ const CarOrderPage1 = () => {
 
   const handleNext = () => {
     if (pickupDate && returnDate) {
-      navigate('/user/orderpage', { state: { totalAmount, carimage, carId } }); // Update with your next page route
+      navigate('/user/orderpage', { state: { totalAmount, carimage, carId ,pickupDate,returnDate} }); // Update with your next page route
     } else {
       alert('Please select both pickup and return dates.');
     }

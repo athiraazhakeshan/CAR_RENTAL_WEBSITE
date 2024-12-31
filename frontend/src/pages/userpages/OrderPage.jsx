@@ -12,13 +12,19 @@ const OrderPage = () => {
   const { state } = useLocation();
   const carId = state?.carId;
   const totalAmount = state?.totalAmount;
+  
 
   const handleAddToCart = async () => {
     try {
       const response = await axiosInstance({
         method: "POST",
         url: "/cart/add-to-cart",
-        data: { carId: carId }
+        data: {
+          carId: carId, 
+          totalPrice: totalAmount, 
+          pickedat: state?.pickupDate,
+          returnedat: state?.returnDate,
+        },
       });
       toast.success('Product added to cart');
       navigate('/user/cart', { state: { carId, totalAmount } });
@@ -66,6 +72,7 @@ const OrderPage = () => {
                   <Text>Car Mileage: {car.carMileage}</Text>
                   <Text>Seat Capacity: {car.carSeatCapacity}</Text>
                   <Text>Office ID: {car.office}</Text>
+                  
                 </GridItem>
               </SimpleGrid>
               <Text>Total Price: ${totalAmount}</Text>

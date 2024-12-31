@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import toast from "react-hot-toast";
 import { useNavigate } from 'react-router-dom';
-import { adminAxiosInstance } from '../../config/axiosInstance';
+import { axiosInstance } from '../../config/axiosInstance';
 
 
 
@@ -25,7 +25,7 @@ import { adminAxiosInstance } from '../../config/axiosInstance';
     
         const onSubmit = async (data) => {
             try {
-                const response = await adminAxiosInstance({
+                const response = await axiosInstance({
                     method: "POST",
                     url: admin.login_api,
                     data,
