@@ -5,7 +5,7 @@ import { differenceInDays } from "date-fns";
 export const getCart = async (req, res, next) => {
     try {
         const { user } = req;
-        const cart = await Cart.findOne({ userId: user.id }).populate("car.carId");
+        const cart = await Cart.findOne({ userId: user.id }).populate("car.carId").populate("totalPrice");
 
         if (!cart) {
             return res.status(404).json({ message: "cart is empty" });
@@ -17,7 +17,6 @@ export const getCart = async (req, res, next) => {
         res.status(error.statusCode || 500).json(error.message || "Internal server error");
     }
 };
-
 export const getCartItems = async (req, res, next) => {
     try {
         const { user } = req;
@@ -27,15 +26,22 @@ export const getCartItems = async (req, res, next) => {
             return res.status(404).json({ message: "Cart is empty" });
         }
 
-        // Log the cart object to inspect its structure
-        console.log("Fetched Cart:", cart);
-
-        // Ensure that car array exists and has data
+        // Calculate totalPrice from car items in the cart
+        let totalPrice = 0;
         if (cart.car && cart.car.length > 0) {
-            res.json({ message: "Cart details fetched", data: cart.car });
-        } else {
-            res.status(404).json({ message: "No cars in cart" });
+            cart.car.forEach(item => {
+                totalPrice += item.rentalPriceCharge; // Sum the rental price of all cars in the cart
+            });
         }
+
+        // Add totalPrice to the response data
+        res.json({
+            message: "Cart details fetched",
+            data: {
+                car: cart.car,
+                totalPrice: totalPrice
+            }
+        });
     } catch (error) {
         console.log(error);
         res.status(error.statusCode || 500).json(error.message || "Internal server error");
@@ -105,63 +111,31 @@ export const getCartItems = async (req, res, next) => {
 
 export const addCarToCart = async (req, res) => {
     try {
-        const { carId,totalPrice,pickedat, returnedat } = req.body;
+        const { carId, totalPrice, pickedat, returnedat } = req.body;
         const userId = req.user.id;
 
-        // Log input values for debugging
-        console.log('userId:', userId);
-        console.log('carId:', carId);
-
-        // Find the car to ensure it exists and fetch its rent per day
         const car = await Car.findById(carId);
         if (!car) {
-            console.error('Car not found for carId:', carId);
             return res.status(404).json({ message: "Car not found" });
         }
 
-        // Log the retrieved car details for debugging
-        console.log('Retrieved car:', car);
-
-        // Find the user's cart or create a new one if it doesn't exist
         let cart = await Cart.findOne({ userId });
         if (!cart) {
-            cart = new Cart({ userId, car: [], totalPrice,pickedAt: pickedat, returnedAt: returnedat });
+            cart = new Cart({ userId, car: [], totalPrice: 0, pickedAt: pickedat, returnedAt: returnedat });
         }
 
-        // Check if the car is already in the cart
-        const carExists = cart.car.some((item) => item.carId.equals(carId));
-        if (carExists) {
-            console.warn('Car already in cart for carId:', carId);
-            return res.status(400).json({ message: "Car already in cart" });
-        }
+        cart.car.push({ carId, rentalPriceCharge: car.rentalPriceCharge });
 
-        // Calculate the number of rental days
-       
-
-        // Add the car to the cart with the rent per day
-        cart.car.push({
-            carId,
-            rentalPriceCharge: car.rentalPriceCharge,
-           totalPrice:totalPrice
-            
-        });
-
-        // Update pickedAt and returnedAt dates
-        cart.pickedAt = pickedat;
-        cart.returnedAt = returnedat;
-
-        // Recalculate the total price
+        // Recalculate total price
         cart.calculateTotalPrice();
-
         await cart.save();
 
-        console.log('Car added to cart:', cart);
-        res.status(200).json({ message: "Added to cart", data: cart });
+        res.status(200).json({ message: "Car added to cart", data: cart });
     } catch (error) {
-        console.error('Internal server error:', error);
-        res.status(500).json({ message: "Internal server error", error: error.message });
+        res.status(500).json({ message: "Internal server error", error });
     }
 };
+
 
 
 export const removeCarFromCart = async (req, res) => {

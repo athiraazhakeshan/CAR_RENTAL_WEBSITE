@@ -21,10 +21,29 @@ const CarOrderPage1 = () => {
     if (pickupDate && returnDate) {
       const totalDays = differenceInDays(new Date(returnDate), new Date(pickupDate));
       setDays(totalDays >= 0 ? totalDays : 0);
-      const calculatedAmount = rentPerDay * totalDays;
+      let calculatedAmount = rentPerDay * totalDays;
+  
+      // Allow the invalid value, but set a default if invalid
+      if (isNaN(calculatedAmount)) {
+        calculatedAmount = 0; // Or any other default value you prefer
+      }
+  
       setTotalAmount(calculatedAmount);
     }
   }, [pickupDate, returnDate]);
+  
+  // useEffect(() => {
+  //   if (pickupDate && returnDate) {
+  //     const totalDays = differenceInDays(new Date(returnDate), new Date(pickupDate));
+  //     setDays(totalDays >= 0 ? totalDays : 0);
+  //     const calculatedAmount = rentPerDay * totalDays;
+  
+  //     // Ensure the total amount is a valid number
+  //     const validAmount = isNaN(calculatedAmount) ? 0 : calculatedAmount;
+  //     setTotalAmount(validAmount);
+  //   }
+  // }, [pickupDate, returnDate]);
+  
 
   const handleNext = () => {
     if (pickupDate && returnDate) {

@@ -13,27 +13,30 @@ const OrderPage = () => {
   const carId = state?.carId;
   const totalAmount = state?.totalAmount;
   
-
   const handleAddToCart = async () => {
     try {
+      // Ensure totalAmount is a valid number
+      const validTotalAmount = isNaN(state?.totalAmount) || state?.totalAmount <= 0 ? 0 : state?.totalAmount;
+  
       const response = await axiosInstance({
         method: "POST",
         url: "/cart/add-to-cart",
         data: {
-          carId: carId, 
-          totalPrice: totalAmount, 
+          carId: state?.carId,
+          totalPrice: validTotalAmount, // Pass valid total amount
           pickedat: state?.pickupDate,
           returnedat: state?.returnDate,
         },
       });
+  
       toast.success('Product added to cart');
-      navigate('/user/cart', { state: { carId, totalAmount } });
+      navigate('/user/cart', { state: { totalAmount: validTotalAmount, carId: state?.carId } });
     } catch (error) {
       console.log(error);
       toast.error(error?.response?.data?.message || 'Error adding product to cart');
     }
   };
-
+  
   useEffect(() => {
     const fetchCar = async () => {
       try {

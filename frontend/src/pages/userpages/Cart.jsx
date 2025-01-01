@@ -1,32 +1,160 @@
+// import React, { useEffect, useState } from "react";
+// import { useLocation } from 'react-router-dom';
+// import toast from "react-hot-toast";
+// import { axiosInstance } from "../../config/axiosInstance";
+// import Cards from "./Cards"; // Ensure the path is correct
+// import { Box, Button, Grid, Heading, Text } from "@chakra-ui/react";
+// import { loadStripe } from "@stripe/stripe-js";
+
+// const Cart = () => {
+//     const { state } = useLocation();
+//     const [cartData, setCartData] = useState(null);
+//     const [isLoading, setIsLoading] = useState(true);
+//     const [error, setError] = useState("");
+//     const totalAmount = state?.totalAmount;
+
+//     // Fetch cart data
+//     const fetchCartData = async () => {
+//         try {
+//             setIsLoading(true);
+//             const response = await axiosInstance.get("/cart/get-cart");  // Ensure correct endpoint
+//             const data = response?.data?.data;
+
+//             // Ensure the totalPrice is a number
+//             if (data && data.totalPrice !== undefined) {
+//               // Convert totalPrice to number and check if it's a valid number
+//               data.totalPrice = Number(data.totalPrice);
+//               if (isNaN(data.totalPrice) || data.totalPrice <= 0) {
+//                   throw new Error("Invalid total price");
+//               }
+//           } else {
+//               throw new Error("Total price missing in cart data");
+//           }
+//             setCartData(data);
+//             setIsLoading(false);
+//         } catch (err) {
+//             console.error("Error fetching cart data:", err);
+//             setError(err.message || "Failed to fetch cart data");
+//             setIsLoading(false);
+//         }
+//     };
+
+//     useEffect(() => {
+//         fetchCartData();
+//     }, []);
+
+//     useEffect(() => {
+//         if (cartData) {
+//             console.log("Cart data:", cartData);
+//         }
+//     }, [cartData]);
+
+//     if (isLoading) {
+//         return <div>Loading...</div>;
+//     }
+
+//     const handleRemoveItem = async (carId) => {
+//         try {
+//             await axiosInstance({
+//                 method: "DELETE",
+//                 url: "/cart/remove-car",
+//                 data: { carId }
+//             });
+//             toast.success("Item removed from cart");
+//             fetchCartData(); // Refresh the cart data after removal
+//         } catch (error) {
+//             console.log(error);
+//             toast.error(error?.response?.data?.message || "Error while removing product");
+//         }
+//     };
+
+//     const makePayment = async () => {
+//         try {
+//             const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+
+//             const session = await axiosInstance({
+//                 url: "/payment/create-checkout-session",
+//                 method: "POST",
+//                 data: {
+//                     products: cartData?.car,
+//                     totalPrice: isNaN(cartData?.totalPrice) ? 0 : cartData?.totalPrice,
+//                 },
+//             });
+
+//             console.log(session, "=======session");
+//             const result = await stripe.redirectToCheckout({
+//                 sessionId: session?.data?.sessionId,
+//             });
+
+//             if (result.error) {
+//                 toast.error(result.error.message);
+//             }
+//         } catch (error) {
+//             console.log(error);
+//             toast.error(error.message || "Payment failed");
+//         }
+//     };
+
+//     return (
+//         <Box py="8">
+//             <Box maxW="1200px" mx="auto" px="4">
+//                 <Heading as="h1" size="2xl" mb="8">Cars in Your Cart</Heading>
+//                 <Grid templateColumns="repeat(auto-fill, minmax(300px, 1fr))" gap="8">
+//                     {cartData?.car.length > 0 ? (
+//                         cartData?.car.map((value) => (
+//                             <Cards
+//                                 item={value}
+//                                 key={value._id}
+//                                 totalAmount={totalAmount}
+//                                 handleRemove={handleRemoveItem}
+//                             />
+//                         ))
+//                     ) : (
+//                         <Text>No items in the cart</Text>
+//                     )}
+//                 </Grid>
+//             </Box>
+//             <Box maxW="1200px" mx="auto" px="4" mt="8">
+//                 <Text fontSize="lg" fontWeight="semibold">Total Price: ${cartData?.totalPrice}</Text>
+//                 <Button onClick={makePayment} mt="4">Check Out</Button>
+//             </Box>
+//         </Box>
+//     );
+// };
+
+// export default Cart;
 import React, { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom';
 import toast from "react-hot-toast";
 import { axiosInstance } from "../../config/axiosInstance";
-import Cards from "./Cards"; // Make sure the path is correct
+import Cards from "./Cards"; // Ensure the path is correct
 import { Box, Button, Grid, Heading, Text } from "@chakra-ui/react";
+import { loadStripe } from "@stripe/stripe-js";
 
 const Cart = () => {
     const { state } = useLocation();
     const [cartData, setCartData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState("");
-    //const [totalAmount, setTotalAmount] = useState(state?.totalAmount || 0);
-    const totalAmount=state?.totalAmount;
-    
+    const [totalAmount, setTotalAmount] = useState(0); // This will store the total price
 
+    // Fetch cart data
     const fetchCartData = async () => {
         try {
             setIsLoading(true);
-            const response = await axiosInstance.get("/cart/get-cart");
+            const response = await axiosInstance.get("/cart/get-cart");  // Ensure correct endpoint
             const data = response?.data?.data;
+
+            if (!data || !data.car || data.car.length === 0) {
+                throw new Error("No items in cart");
+            }
+
+            // Calculate the total price based on cart items
+            //const calculatedTotal = data.car.reduce((acc, item) => acc + item.rentalPriceCharge, 0);
+
+            // Set cart data and calculated total
             setCartData(data);
-
-            // Calculate total amount if it's not passed through state
-            // if (!totalAmount) {
-            //     const total = data?.car?.reduce((acc, item) => acc + item.carId.rentalPriceCharge, 0);
-            //     setTotalAmount(total);
-            // }
-
+            setTotalAmount(calculatedTotal);
             setIsLoading(false);
         } catch (err) {
             console.error("Error fetching cart data:", err);
@@ -39,79 +167,76 @@ const Cart = () => {
         fetchCartData();
     }, []);
 
-    // useEffect to log cartData whenever it changes
-    useEffect(() => {
-        if (cartData) {
-            console.log("Cart data:", cartData);
+    const handleRemoveItem = async (carId) => {
+        try {
+            await axiosInstance({
+                method: "DELETE",
+                url: "/cart/remove-car",
+                data: { carId }
+            });
+            toast.success("Item removed from cart");
+            fetchCartData(); // Refresh the cart data after removal
+        } catch (error) {
+            console.log(error);
+            toast.error(error?.response?.data?.message || "Error while removing product");
         }
-    }, [cartData]);
+    };
+
+    const makePayment = async () => {
+        try {
+            const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+
+            const session = await axiosInstance({
+                url: "/payment/create-checkout-session",
+                method: "POST",
+                data: {
+                    products: cartData?.car,
+                    totalPrice: cartData?.totalPrice,
+                },
+            });
+
+            const result = await stripe.redirectToCheckout({
+                sessionId: session?.data?.sessionId,
+            });
+
+            if (result.error) {
+                toast.error(result.error.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message || "Payment failed");
+        }
+    };
 
     if (isLoading) {
         return <div>Loading...</div>;
     }
 
-
-    const handleRemoveItem = async (carId) => {
-        try {
-            const response = await axiosInstance({
-                method: "DELETE",
-                url: "/cart/remove-car",
-                // data: { courseId : courseId },
-                data:{carId}
-                
-            });
-            toast.success("item removed from cart");
-        } catch (error) {
-            console.log(error);
-            toast.error(error?.response?.data?.message || "error while removing product");
-        }
-    };
-
-    // return (
-    //     <div>
-    //         {/* <h2>Total Amount: ${totalAmount}</h2> */}
-    //         {cartData?.car?.map((value) => (
-    //             <Cards item={value} key={value._id} totalAmount={totalAmount}   handleRemove={handleRemoveItem}/>
-    //         ))}
-    //         <div className="w-6/12 bg-base-300 flex flex-col items-center gap-5">
-    //             <h2>Price summary</h2>
-
-    //             <h2>Cart Total: {cartData?.totalPrice}</h2>
-
-    //             <button onClick=
-    //             '' className="btn btn-success">Checkout</button>
-    //         </div>
-    //     </div>
-
-    // );
-
-
     return (
         <Box py="8">
-          <Box maxW="1200px" mx="auto" px="4">
-            <Heading as="h1" size="2xl" mb="8">Cars Available</Heading>
-            <Grid templateColumns="repeat(auto-fill, minmax(300px, 1fr))" gap="8">
-              {cartData?.car?.length > 0 ? (
-                cartData.car.map((value) => (
-                  <Cards
-                    item={value}
-                    key={value._id}
-                    totalAmount={totalAmount}
-                    handleRemove={handleRemoveItem}
-                  />
-                ))
-              ) : (
-                <p></p>
-              )}
-            </Grid>
-          </Box>
-          <Box maxW="1200px" mx="auto" px="4">
-             <Text fontSize="lg" fontWeight="semibold" mt="2">Total Price=${cartData?.totalPrice}</Text>
-            <Button >CheckOut</Button>
-          </Box>
+            <Box maxW="1200px" mx="auto" px="4">
+                <Heading as="h1" size="2xl" mb="8">Cars in Your Cart</Heading>
+                <Grid templateColumns="repeat(auto-fill, minmax(300px, 1fr))" gap="8">
+                    {cartData?.car.length > 0 ? (
+                        cartData?.car.map((value) => (
+                            <Cards
+                                item={value}
+                                key={value._id}
+                                totalAmount={totalAmount}
+                                handleRemove={handleRemoveItem}
+                            />
+                        ))
+                    ) : (
+                        <Text>No items in the cart</Text>
+                    )}
+                </Grid>
+            </Box>
+            <Box maxW="1200px" mx="auto" px="4" mt="8">
+                <Text fontSize="lg" fontWeight="semibold">Total Price: ${cartData?.totalPrice}</Text>
+                <Button onClick={makePayment} mt="4">Check Out</Button>
+            </Box>
         </Box>
-       
-      );
-      
-    };
+    );
+};
+
 export default Cart;

@@ -33,6 +33,7 @@ import UpdateCarForm from "../pages/adminpages/UpdateCarForm.jsx";
 import Cart from "../pages/userpages/Cart.jsx";
 
 
+
 // import Hero from "../components/Hero.jsx";
 export const router = createBrowserRouter(
   [
@@ -98,6 +99,10 @@ export const router = createBrowserRouter(
           element: <Home />,
         },
         {
+          path: "user/payment/success",
+          element:<h2>success</h2>
+        },
+        {
           path: "user",
           element: <ProtectRouter />,
           children: [
@@ -112,6 +117,11 @@ export const router = createBrowserRouter(
             {
               path: "cart",
               element:<Cart/>,
+            },
+           
+            {
+              path: "payment/cancel",
+              element:<h2></h2>,
             },
           ],
         },
