@@ -14,7 +14,7 @@ const PaymentSuccess = () => {
         <p className="text-lg mb-2">Thank you for your order.</p>
         <p className="mb-4">Your payment has been successfully processed.</p>
        
-        <Button colorScheme="blue" onClick={() => navigate('/')}>Go to Home</Button>
+        <Button colorScheme="blue" onClick={() => navigate('/home')}>Go to Home</Button>
         
       </div>
     </div>

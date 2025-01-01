@@ -31,6 +31,7 @@ import CarByLocation from "../pages/userpages/CarByLocation.jsx";
 import AddCar from "../pages/adminpages/AddCar.jsx";
 import UpdateCarForm from "../pages/adminpages/UpdateCarForm.jsx";
 import Cart from "../pages/userpages/Cart.jsx";
+import PaymentSuccess from "../pages/userpages/paymentSuccess.jsx";
 
 
 
@@ -100,7 +101,7 @@ export const router = createBrowserRouter(
         },
         {
           path: "user/payment/success",
-          element:<h2>success</h2>
+          element:<PaymentSuccess/>
         },
         {
           path: "user",
