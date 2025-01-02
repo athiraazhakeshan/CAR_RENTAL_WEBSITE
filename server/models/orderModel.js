@@ -1,44 +1,39 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from "mongoose";
 
-const orderSchema = new mongoose.Schema(
-    {
-        officeLocation: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'OfficeLocation',
-            required: true
-        },
-        car: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Car',
-            required: true
-        },
-        userId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "UserModel",
-            required: true,
-        },
-     
-        totalPrice: {
-            type: Number,
-            // required: true,
-            default: 0
-        },razorpayOrderId:{
-type:String,
-        },
-        orderStatus: {
-            type: String,
-            //required: true,
-            default: "Processing",
-        },
-        pickedAt: Date,
-        returnedAt: Date,
+const orderSchema = new Schema(
+  {
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "UserModel",
+      required: true,
     },
-    {
-        timestamps: true,
-        toJSON: { virtuals: true },
-    }
+    car: [
+      {
+        carId: {
+          type: Schema.Types.ObjectId,
+          ref: "Car",
+          required: true,
+        },
+        rentalPriceCharge: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
+    totalPrice: {
+      type: Number,
+      required: true,
+    },
+    stripePaymentIntentId: {
+      type: String,
+      required: true,
+    },
+    pickedAt: Date,
+    returnedAt: Date,
+  },
+  {
+    timestamps: true,
+  }
 );
 
-
-const Order = mongoose.model('Order', orderSchema);
-export default Order;
+export const Order = mongoose.model("Order", orderSchema);
