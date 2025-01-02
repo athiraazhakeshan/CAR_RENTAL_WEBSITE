@@ -49,12 +49,12 @@ const carSchema = new mongoose.Schema(
             type: Number,
             required: true,
         },
-        totalPrice: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Cart',
-            },
-        ],
+        // totalPrice: [
+        //     {
+        //         type: mongoose.Schema.Types.ObjectId,
+        //         ref: 'Cart',
+        //     },
+        // ],
      office:[
         {
             type:mongoose.Schema.Types.ObjectId,

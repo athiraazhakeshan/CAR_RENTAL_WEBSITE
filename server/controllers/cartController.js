@@ -5,7 +5,7 @@ import { differenceInDays } from "date-fns";
 export const getCart = async (req, res, next) => {
     try {
         const { user } = req;
-        const cart = await Cart.findOne({ userId: user.id }).populate("car.carId").populate("totalPrice");
+        const cart = await Cart.findOne({ userId: user.id }).populate("car.carId").populate("userId");
 
         if (!cart) {
             return res.status(404).json({ message: "cart is empty" });

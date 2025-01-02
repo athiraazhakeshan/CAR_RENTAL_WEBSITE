@@ -59,12 +59,12 @@ role: {
     enum:['admin','user'],
     default: 'user',
 },
-order: [
-    {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Order',
-    },
-],
+// order: [
+//     {
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: 'Order',
+//     },
+// ],
  
 } ,
  { timestamps: true }

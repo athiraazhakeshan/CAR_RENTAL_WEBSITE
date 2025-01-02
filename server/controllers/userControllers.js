@@ -133,7 +133,7 @@ export const Signin=async(req,res)=>{
   try {
     // The userId is now available in req.user because of the authUser middleware
     const userId = req.user.id; // Assuming the token includes userId
-    const userData = await UserModel.findById(userId).select('-password').select('-profilePicture'); // Exclude password from the response
+    const userData = await UserModel.findById(userId).select('-password').select('-profilePicture').select('-order'); // Exclude password from the response
    
     if (!userData) {
       return res.status(404).json({ success: false, message: 'User not found' });

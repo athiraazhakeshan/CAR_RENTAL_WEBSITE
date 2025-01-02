@@ -5,7 +5,7 @@ import { Button } from '@chakra-ui/react';
 const PaymentSuccess = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  //const { paymentId, orderId } = location.state || {};
+  
 
   return (
     <div className="flex flex-col items-center justify-center h-screen p-4 bg-gray-100">
@@ -14,7 +14,7 @@ const PaymentSuccess = () => {
         <p className="text-lg mb-2">Thank you for your order.</p>
         <p className="mb-4">Your payment has been successfully processed.</p>
        
-        <Button colorScheme="blue" onClick={() => navigate('/home')}>Go to Home</Button>
+        <Button colorScheme="blue" onClick={() => navigate('/my-order')}>Go to My Order</Button>
         
       </div>
     </div>

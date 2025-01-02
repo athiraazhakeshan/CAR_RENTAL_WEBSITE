@@ -68,9 +68,9 @@ const UserDetails = () => {
                     {/* <Text fontSize="md" mb="3">Phone: {user.contactNumber}</Text> */}
                     <Text fontSize="md">{user.details}</Text>
                     <VStack spacing="2" mt="3">
-                        {/* {user.role !== 'admin' && (
+                        
                             <Button onClick={handleOrders} colorScheme="blue">View Orders</Button>
-                        )} */}
+                       
                         <Button onClick={handleDelete} colorScheme="red">Delete</Button>
                     </VStack>
                 </Box>

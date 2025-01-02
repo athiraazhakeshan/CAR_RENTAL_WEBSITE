@@ -19,7 +19,7 @@ export const UserHeader = () => {
           <Link to="/cars">Cars</Link>
           <Link to="/booking">Booking</Link>
           
-          <Link to="/about">About us</Link>
+          <Link to="/my-order">My Order</Link>
         
       </nav>
 

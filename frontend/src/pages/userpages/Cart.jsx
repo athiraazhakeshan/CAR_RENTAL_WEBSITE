@@ -150,10 +150,11 @@ const Cart = () => {
             }
 
             // Calculate the total price based on cart items
-            //const calculatedTotal = data.car.reduce((acc, item) => acc + item.rentalPriceCharge, 0);
+            const calculatedTotal = data.car.reduce((acc, item) => acc + item.rentalPriceCharge, 0);
 
             // Set cart data and calculated total
             setCartData(data);
+            console.log(data)
             setTotalAmount(calculatedTotal);
             setIsLoading(false);
         } catch (err) {

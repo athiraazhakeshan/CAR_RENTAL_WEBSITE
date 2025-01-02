@@ -105,3 +105,49 @@
 // });
 
 // export { router as orderRouter };
+
+import express from 'express'
+import { Order } from '../models/orderModel.js';
+import authUser from '../middlewares/authUser.js';
+
+
+
+const router = express.Router();
+
+router.use(authUser);
+router.get("/getorder", async (req, res) => {
+    try {
+        const { user } = req;
+               const cart = await Order.find({ userId: user.id }).populate("car.carId");
+       
+               if (!cart) {
+                   return res.status(404).json({ message: "order is successful" });
+               }
+       
+               res.json({ message: "order details fetched", data: cart });
+           } catch (error) {
+               console.log(error);
+               res.status(error.statusCode || 500).json(error.message || "Internal server error");
+           }
+});
+
+
+router.get("/getuserorders/:userId", async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const orders = await Order.find({ userId: userId }).populate("car.carId");
+
+        if (!orders || orders.length === 0) {
+            return res.status(404).json({ message: "No orders found for this user" });
+        }
+
+        res.json({ message: "Orders fetched successfully", orders: orders });
+    } catch (error) {
+        console.log(error);
+        res.status(error.statusCode || 500).json(error.message || "Internal server error");
+    }
+});
+
+
+
+export {router as orderRouter};

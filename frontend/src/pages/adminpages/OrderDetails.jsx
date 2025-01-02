@@ -1,56 +1,66 @@
-import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { Box, Heading, Text, Divider, VStack } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Box, Table, Tbody, Tr, Td, Spinner, Heading } from '@chakra-ui/react';
 import { axiosInstance } from '../../config/axiosInstance';
 
-const OrderDetails = () => {
-  const { userId } = useParams();
-  const [orders, setOrders] = useState([]);
+const UserOrders = () => {
+    const { userId } = useParams();
+    const navigate = useNavigate();
+    const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const getOrders = async () => {
-      try {
-        const response = await axiosInstance.get(`/admin/getorder/${userId}`);
-        const data = response.data;
+    useEffect(() => {
+        const getUserOrders = async () => {
+            try {
+                const res = await axiosInstance.get(`/order/getuserorders/${userId}`);
+                if (res.data && Array.isArray(res.data.orders)) {
+                    setOrders(res.data.orders);
+                } else {
+                    setError("Unexpected response format");
+                }
+            } catch (error) {
+                console.error("Error fetching orders:", error);
+                setError("Failed to fetch orders");
+            } finally {
+                setLoading(false);
+            }
+        };
+        getUserOrders();
+    }, [userId]);
 
-        console.log('API response success:', data.success); // Log success field
-        console.log('API response orders:', data.orders);   // Log orders field
+    if (loading) {
+        return <Box p={5}><Spinner /></Box>;
+    }
 
-        if (data.success && Array.isArray(data.orders)) {
-          setOrders(data.orders);
-        } else {
-          console.error('Received data is not an array:', data.orders);
-        }
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      }
-    };
+    if (error) {
+        return <Box p={5}><Heading size="md" color="red.500">{error}</Heading></Box>;
+    }
 
-    getOrders();
-  }, [userId]);
-
-  return (
-    <Box p={5}>
-      {orders.length > 0 ? (
-        orders.map((order) => (
-          <Box key={order._id} borderWidth="1px" borderRadius="lg" p={4} mb={4}>
-            <Heading size="md" mb={2}>Invoice</Heading>
-            <Divider mb={4} />
-            <VStack align="start" spacing={2}>
-              <Text><strong>ID:</strong> {order._id}</Text>
-              <Text><strong>Name:</strong> {order.user.firstName}</Text>
-              <Text><strong>Car Name:</strong> {order.car.carName}</Text>
-              <Text><strong>Picking date:</strong> {order.pickedAt}</Text>
-              <Text><strong>Returning date:</strong> {order.returnedAt}</Text>
-              <Text><strong>Total price:</strong> {order.totalPrice}</Text>
-            </VStack>
-          </Box>
-        ))
-      ) : (
-        <Text>No orders available</Text>
-      )}
-    </Box>
-  );
+    return (
+        <Box p={5}>
+            <Table variant="simple">
+                <Tbody>
+                    {orders.length > 0 ? (
+                        orders.map(order => (
+                            <Tr key={order._id} style={{ cursor: 'pointer' }}>
+                                <Td>Order ID: {order._id}</Td>
+                                <Td>User ID: {order.userId}</Td>
+                                <Td>Total Price: {order.totalPrice}</Td>
+                                <Td>Order Status: {order.orderStatus}</Td>
+                                <Td>Picked At: {order.pickedAt}</Td>
+                                <Td>Returned At: {order.returnedAt}</Td>
+                            </Tr>
+                        ))
+                    ) : (
+                        <Tr>
+                            <Td colSpan={6}>No orders available</Td>
+                        </Tr>
+                    )}
+                </Tbody>
+            </Table>
+        </Box>
+    );
 };
 
-export default OrderDetails;
+export default UserOrders;
