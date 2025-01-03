@@ -28,7 +28,7 @@ export const Header = () => {
         <Link to="/" className="hover:text-blue-500 transition-colors">Home</Link>
         <Link to="car" className="hover:text-blue-500 transition-colors">Cars</Link>
         <Link to="/aboutus" className="hover:text-blue-500 transition-colors">About</Link>
-        <Link to="/book" className="hover:text-blue-500 transition-colors">Booking</Link>
+        <Link to="/contact" className="hover:text-blue-500 transition-colors">Contact</Link>
       </nav>
     </header>
   );
