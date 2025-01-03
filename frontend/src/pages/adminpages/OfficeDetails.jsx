@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from '../../config/axiosInstance';
 
-const OfficeDtails = () => {
+const OfficeDetails = () => {
   const { officeId } = useParams();
   const navigate = useNavigate();
   const [offices, setOffices] = useState([]);
@@ -49,20 +49,19 @@ const OfficeDtails = () => {
       alert('An error occurred while deleting the office');
     }
   };
-  
 
   return (
-    <Flex direction={{ base: 'column', md: 'row' }} p="4" maxW="1200px" mx="auto">
-      <Box flex="1" p="4">
-        <Text fontSize="lg" mb="4" fontWeight="bold">Email: {office.email}</Text>
-        <Text fontSize="lg" mb="4" fontWeight="bold">Address: {office.address}</Text>
-        <Text fontSize="lg" mb="4" fontWeight="bold">City: {office.city}</Text>
-        <Text fontSize="lg" mb="4" fontWeight="bold">State: {office.state}</Text>
-        <Text fontSize="lg" mb="4" fontWeight="bold">Country: {office.country}</Text>
-        <Text fontSize="lg" mb="4" fontWeight="bold">Pin: {office.pin}</Text>
-        <Text fontSize="lg" mb="4" fontWeight="bold">Contact: {office.contact}</Text>
-        <Flex mt="4">
-          <Button colorScheme="blue" mr="4" onClick={handleUpdate}>Update</Button>
+    <Flex direction={{ base: 'column', sm: 'column', md: 'row' }} p={{ base: '2', sm: '4' }} maxW="1200px" mx="auto">
+      <Box flex="1" p={{ base: '2', sm: '4' }} mb={{ base: '4', sm: '0' }}>
+        <Text fontSize={{ base: 'md', sm: 'lg' }} mb="2" fontWeight="bold">Email: {office.email}</Text>
+        <Text fontSize={{ base: 'md', sm: 'lg' }} mb="2" fontWeight="bold">Address: {office.address}</Text>
+        <Text fontSize={{ base: 'md', sm: 'lg' }} mb="2" fontWeight="bold">City: {office.city}</Text>
+        <Text fontSize={{ base: 'md', sm: 'lg' }} mb="2" fontWeight="bold">State: {office.state}</Text>
+        <Text fontSize={{ base: 'md', sm: 'lg' }} mb="2" fontWeight="bold">Country: {office.country}</Text>
+        <Text fontSize={{ base: 'md', sm: 'lg' }} mb="2" fontWeight="bold">Pin: {office.pin}</Text>
+        <Text fontSize={{ base: 'md', sm: 'lg' }} mb="2" fontWeight="bold">Contact: {office.contact}</Text>
+        <Flex direction={{ base: 'column', sm: 'row' }} mt="4" align="center">
+          <Button colorScheme="blue" mb={{ base: '2', sm: '0' }} mr={{ sm: '4' }} onClick={handleUpdate}>Update</Button>
           <Button colorScheme="red" onClick={handleDelete}>Delete</Button>
         </Flex>
       </Box>
@@ -70,4 +69,4 @@ const OfficeDtails = () => {
   );
 };
 
-export default OfficeDtails;
+export default OfficeDetails;
