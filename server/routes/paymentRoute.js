@@ -34,7 +34,7 @@ router.post("/create-checkout-session", authUser, async (req, res) => {
                     },
                     unit_amount: Math.round(validTotalPrice * 100), // Corrected: should be validTotalPrice instead of totalPrice
                 },
-                quantity: 1,
+                quantity:1,
             };
         });
 
@@ -89,10 +89,17 @@ router.post("/create-checkout-session", authUser, async (req, res) => {
 // Get session status
 export const getSessionStatus = async (req, res) => {
     try {
-        const userId = req.user.id;
-        const orderDetails = await Order.findOne({ userId });
-        const sessionId = orderDetails.sessionId;
-        const session = await stripe.checkout.sessions.retrieve(sessionId);
+        const { orderId } = req.query;
+        if (!orderId) {
+            return res.status(400).json({ message: "Order ID is required" });
+        }
+
+        const orderDetails = await Order.findById(orderId);
+        if (!orderDetails) {
+            return res.status(404).json({ message: "Order not found" });
+        }
+
+        const session = await stripe.checkout.sessions.retrieve(orderDetails.sessionId);
         res.json({
             status: session?.status,
             customer_email: session?.customer_details?.email,
@@ -102,6 +109,7 @@ export const getSessionStatus = async (req, res) => {
         res.status(500).json({ message: error.message || "Internal server error" });
     }
 };
+
 router.get('/session-status', authUser,getSessionStatus);
 
 export { router as paymentRouter };
