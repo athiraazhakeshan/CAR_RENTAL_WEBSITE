@@ -33,6 +33,7 @@ import UpdateCarForm from "../pages/adminpages/UpdateCarForm.jsx";
 import Cart from "../pages/userpages/Cart.jsx";
 import PaymentSuccess from "../pages/userpages/paymentSuccess.jsx";
 import OrderList from "../pages/OrderList.jsx";
+import Contact from "../pages/Contact.jsx";
 
 
 
@@ -54,8 +55,8 @@ export const router = createBrowserRouter(
           element: <About />,
         },
         {
-          path: "/book",
-          element: <Home />,
+          path: "/contact",
+          element: <Contact />,
         },
         {
           path: "/",
