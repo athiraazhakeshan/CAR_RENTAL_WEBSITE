@@ -10,6 +10,8 @@ import * as yup from "yup";
 import AOS from "aos";
 import "aos/dist/aos.css"; // AOS CSS for animations
 import { axiosInstance } from "../../config/axiosInstance";
+import Services from "../Services";
+import Contact from "../Contact";
 
 // Yup validation schema
 const schema = yup.object({
@@ -160,6 +162,12 @@ export const Home = () => {
       </div>
       <div>
         <About />
+      </div>
+      <div>
+        <Services/>
+      </div>
+      <div>
+        <Contact/>
       </div>
     </div>
   );

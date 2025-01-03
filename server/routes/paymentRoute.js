@@ -65,8 +65,11 @@ router.post("/create-checkout-session", authUser, async (req, res) => {
                         console.log("Order saved successfully");
         
                         // Clear the cart
+                        //cart._id;
                         cart.car = [];
                         cart.totalPrice = 0;
+                        // cart.pickedAt=null;
+                        // cart.returnedAt=null;
                         await cart.save();
                         console.log("Cart cleared after order creation");
                     } catch (error) {

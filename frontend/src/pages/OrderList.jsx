@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Table, Spinner, Heading, Tbody, Tr, Td } from '@chakra-ui/react';
+import { Box, Table, Spinner, Heading, Tbody, Tr, Td, useBreakpointValue } from '@chakra-ui/react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { axiosInstance } from '../config/axiosInstance';
 
@@ -10,11 +10,13 @@ const OrderList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
   useEffect(() => {
     const getAllOrders = async () => {
       try {
         const res = await axiosInstance.get("/order/getorder");
-        console.log("API Response:", res); // Log the full response object to understand its structure
+        console.log("API Response:", res);
 
         if (res && res.data && Array.isArray(res.data.data)) {
           setOrders(res.data.data);
@@ -32,11 +34,9 @@ const OrderList = () => {
     getAllOrders();
   }, []);
 
-//   const handleRowClick = (orderId) => {
-//     console.log("Navigating to:", `${location.pathname}/${orderId}`); // Log to check if the path is correct
-//     navigate(`${location.pathname}/${orderId}`);
-//     console.log("Location Pathname:", location.pathname); // Check what this outputs
-//   };
+  const handleRowClick = (orderId) => {
+    navigate(`${location.pathname}/${orderId}`);
+  };
 
   if (loading) {
     return <Box p={5}><Spinner /></Box>;
@@ -48,12 +48,45 @@ const OrderList = () => {
 
   return (
     <Box p={5}>
-      <Table variant="simple">
-        <Tbody>
+      {isMobile ? (
+        // Mobile View: Stacked Order Cards
+        <Box>
           {orders.length > 0 ? (
-            orders.map((order, index) => (
-              order._id ? (
-                <Tr key={order._id} onClick={() => handleRowClick(order._id)} style={{ cursor: 'pointer' }}>
+            orders.map((order) => (
+              <Box
+                key={order._id}
+                p={4}
+                borderWidth={1}
+                borderRadius="lg"
+                mb={4}
+                onClick={() => handleRowClick(order._id)}
+                cursor="pointer"
+                _hover={{ bg: "gray.100" }}
+              >
+                <Heading size="sm">Order ID: {order._id}</Heading>
+                <Box mt={2}>User ID: {order.userId}</Box>
+                <Box>Total Price: {order.totalPrice}</Box>
+                <Box>Order Status: {order.orderStatus}</Box>
+                <Box>Picked At: {order.pickedAt}</Box>
+                <Box>Returned At: {order.returnedAt}</Box>
+              </Box>
+            ))
+          ) : (
+            <Box>No orders available</Box>
+          )}
+        </Box>
+      ) : (
+        // Desktop View: Standard Table
+        <Table variant="simple">
+          <Tbody>
+            {orders.length > 0 ? (
+              orders.map((order) => (
+                <Tr
+                  key={order._id}
+                  onClick={() => handleRowClick(order._id)}
+                  cursor="pointer"
+                  _hover={{ bg: "gray.100" }}
+                >
                   <Td>Order ID: {order._id}</Td>
                   <Td>User ID: {order.userId}</Td>
                   <Td>Total Price: {order.totalPrice}</Td>
@@ -61,19 +94,15 @@ const OrderList = () => {
                   <Td>Picked At: {order.pickedAt}</Td>
                   <Td>Returned At: {order.returnedAt}</Td>
                 </Tr>
-              ) : (
-                <Tr key={index}>
-                  <Td colSpan={6} color="red.500">Error: Invalid order data</Td>
-                </Tr>
-              )
-            ))
-          ) : (
-            <Tr>
-              <Td colSpan={6}>No orders available</Td>
-            </Tr>
-          )}
-        </Tbody>
-      </Table>
+              ))
+            ) : (
+              <Tr>
+                <Td colSpan={6}>No orders available</Td>
+              </Tr>
+            )}
+          </Tbody>
+        </Table>
+      )}
     </Box>
   );
 };

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Table, Flex, Button, Tbody, Tr, Td } from '@chakra-ui/react';
+import { Box, Table, Flex, Button, Tbody, Tr, Td, Spinner, Heading, Thead, Th } from '@chakra-ui/react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { axiosInstance } from '../../config/axiosInstance';
-import { Spinner ,Heading} from '@chakra-ui/react';
 
 const CarList = () => {
   const navigate = useNavigate();
@@ -15,8 +14,8 @@ const CarList = () => {
     const getAllCars = async () => {
       try {
         const res = await axiosInstance.get("/admin/getcars");
-        console.log("API Response:", res); // Log the full response object to understand its structure
-        
+        console.log("API Response:", res);
+
         if (res && res.data && Array.isArray(res.data.data)) {
           setCars(res.data.data);
         } else {
@@ -32,13 +31,10 @@ const CarList = () => {
     };
     getAllCars();
   }, []);
-  const handleRowClick = (carId) => {
-    console.log("Navigating to:", `${location.pathname}/${carId}`); // Log to check if the path is correct
-    navigate(`${location.pathname}/${carId}`);
-    console.log("Location Pathname:", location.pathname); // Check what this outputs
 
+  const handleRowClick = (carId) => {
+    navigate(`${location.pathname}/${carId}`);
   };
-  
 
   const handleAddCarClick = () => {
     navigate('/admin/addcar');
@@ -54,27 +50,52 @@ const CarList = () => {
 
   return (
     <Box p={5}>
+      {/* Add Car Button */}
       <Flex justify="flex-end" mb={4}>
         <Button colorScheme="blue" onClick={handleAddCarClick}>Add Car</Button>
       </Flex>
-      <Table variant="simple">
-        <Tbody>
-          {cars.length > 0 ? (
-            cars.map((car) => (
-              <Tr key={car._id} onClick={() => handleRowClick(car._id)} style={{ cursor: 'pointer' }}>
-                <Td>ID: {car._id}</Td>
-                <Td>Name: {car.carName}</Td>
-                <Td>Rent: {car.rentalPriceCharge}</Td>
-                <Td>Transmission: {car.transmission}</Td>
-              </Tr>
-            ))
-          ) : (
+
+      {/* Responsive Table Container */}
+      <Box 
+        overflowX="auto" 
+        border="1px solid" 
+        borderColor="gray.200" 
+        borderRadius="md" 
+        p={2} 
+        shadow="sm"
+      >
+        <Table variant="simple">
+          <Thead>
             <Tr>
-              <Td colSpan={4}>No cars available</Td>
+              <Th>ID</Th>
+              <Th>Name</Th>
+              <Th>Rent</Th>
+              <Th>Transmission</Th>
             </Tr>
-          )}
-        </Tbody>
-      </Table>
+          </Thead>
+          <Tbody>
+            {cars.length > 0 ? (
+              cars.map((car) => (
+                <Tr 
+                  key={car._id} 
+                  onClick={() => handleRowClick(car._id)} 
+                  style={{ cursor: 'pointer' }}
+                  _hover={{ bg: "gray.100" }}
+                >
+                  <Td>{car._id}</Td>
+                  <Td>{car.carName}</Td>
+                  <Td>{car.rentalPriceCharge}</Td>
+                  <Td>{car.transmission}</Td>
+                </Tr>
+              ))
+            ) : (
+              <Tr>
+                <Td colSpan={4} textAlign="center">No cars available</Td>
+              </Tr>
+            )}
+          </Tbody>
+        </Table>
+      </Box>
     </Box>
   );
 };

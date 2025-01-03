@@ -12,7 +12,7 @@ export const Layout = () => {
     <div className='text-black'> 
     <TopBar />
    
-      
+      <nav><Header/></nav>
    
       <div className='min-h-96'>
         <Outlet />

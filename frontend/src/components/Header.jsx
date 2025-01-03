@@ -1,33 +1,35 @@
 import React from 'react';
-import { Link,useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { DarkMode } from './shared/DarkMode';
 
-
 export const Header = () => {
-  const navigate=useNavigate()
   return (
-    <header className="header">
-      <div className='flex justify-between items-center w-full px-20 h-24 shadow-2xl'>
-      
-      <div className="text-3xl font-bold">CAR RENTAL</div>
+    <header className="bg-white shadow-2xl">
+      <div className="flex flex-wrap justify-between items-center w-full px-4 sm:px-8 lg:px-20 h-16 sm:h-20">
+        {/* Logo */}
+        <div className="text-xl sm:text-2xl lg:text-3xl font-bold">CAR RENTAL</div>
 
-      <nav className="flex gap-16 place-items-end font-semibold">
-       
-          <Link to="/">Home</Link>
-          <Link to="user/cars">Cars</Link>
-          <Link to="/about">About</Link>
-          <Link to="/booking">Booking</Link>
-        
-      </nav>
+        {/* Desktop Navigation */}
+        <nav className="hidden sm:flex gap-4 lg:gap-16 items-center font-semibold">
+          <Link to="/" className="hover:text-blue-500 transition-colors">Home</Link>
+          <Link to="car" className="hover:text-blue-500 transition-colors">Cars</Link>
+          <Link to="/aboutus" className="hover:text-blue-500 transition-colors">About</Link>
+          <Link to="/book" className="hover:text-blue-500 transition-colors">Booking</Link>
+        </nav>
 
-      <div className='flex items-center gap-10'>
-        <DarkMode/>
-       
+        {/* Utilities */}
+        <div className="flex items-center gap-4 sm:gap-10">
+          <DarkMode />
         </div>
-    </div>
+      </div>
+
+      {/* Mobile Navigation */}
+      <nav className="flex sm:hidden bg-gray-100 w-full p-2 justify-around text-sm font-semibold">
+        <Link to="/" className="hover:text-blue-500 transition-colors">Home</Link>
+        <Link to="car" className="hover:text-blue-500 transition-colors">Cars</Link>
+        <Link to="/aboutus" className="hover:text-blue-500 transition-colors">About</Link>
+        <Link to="/book" className="hover:text-blue-500 transition-colors">Booking</Link>
+      </nav>
     </header>
-   
   );
 };
-
-

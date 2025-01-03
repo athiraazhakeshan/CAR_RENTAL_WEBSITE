@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Table, Tbody, Tr, Td, Spinner, Heading } from '@chakra-ui/react';
+import { Box, Table, Tbody, Tr, Td, Spinner, Heading, Thead, Th } from '@chakra-ui/react';
 import { axiosInstance } from '../../config/axiosInstance';
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
 const Users = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [users, setUsers] = useState([]);  // Ensure users are initialized as an empty array
+  const [users, setUsers] = useState([]); 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Get the user from the Redux store
-  const user = useSelector((state) => state.user.user);
-
-  // Retrieve the token from local storage
   const token = localStorage.getItem('token');
 
   useEffect(() => {
@@ -25,8 +21,7 @@ const Users = () => {
             Authorization: `Bearer ${token}`
           }
         });
-        console.log('API response:', response.data);
-        setUsers(response.data || []);  // Set users data directly from response
+        setUsers(response.data || []); 
       } catch (err) {
         setError(err);
       } finally {
@@ -47,34 +42,67 @@ const Users = () => {
   };
 
   if (isLoading) {
-    return <Spinner />;
+    return (
+      <Box p={5} textAlign="center">
+        <Spinner size="lg" />
+      </Box>
+    );
   }
 
   if (error) {
-    return <Heading>Error loading users: {error.message || error}</Heading>;
+    return (
+      <Box p={5} textAlign="center">
+        <Heading size="md" color="red.500">
+          Error loading users: {error.message || error}
+        </Heading>
+      </Box>
+    );
   }
 
   return (
     <Box p={5}>
-      <Table variant="simple">
-        <Tbody>
-          {/* Ensure 'users' is an array before calling map */}
-          {Array.isArray(users) && users.length > 0 ? (
-            users.map((user) => (
-              <Tr key={user._id} onClick={() => handleRowClick(user._id)} style={{ cursor: 'pointer' }}>
-                <Td>ID: {user._id}</Td>
-                <Td>Name: {user.firstName}</Td>
-                <Td>Email: {user.email}</Td>
-                <Td>Address: {user.address}</Td>
-              </Tr>
-            ))
-          ) : (
+      <Box 
+        overflowX="auto" 
+        border="1px solid" 
+        borderColor="gray.200" 
+        borderRadius="md" 
+        p={3} 
+        shadow="sm"
+      >
+        <Table variant="simple" size="sm">
+          <Thead>
             <Tr>
-              <Td colSpan="4">No users available</Td>
+              <Th>ID</Th>
+              <Th>Name</Th>
+              <Th>Email</Th>
+              <Th>Address</Th>
             </Tr>
-          )}
-        </Tbody>
-      </Table>
+          </Thead>
+          <Tbody>
+            {Array.isArray(users) && users.length > 0 ? (
+              users.map((user) => (
+                <Tr 
+                  key={user._id} 
+                  onClick={() => handleRowClick(user._id)} 
+                  _hover={{ bg: "gray.100" }} 
+                  style={{ cursor: 'pointer' }}
+                >
+                  <Td>{user._id}</Td>
+                  <Td>{user.firstName}</Td>
+                  <Td>{user.email}</Td>
+                  <Td>{user.address}</Td>
+                </Tr>
+              ))
+            ) : (
+              <Tr>
+                <Td colSpan={4} textAlign="center">
+                  No users available
+                </Td>
+              </Tr>
+            )}
+          </Tbody>
+        </Table>
+      </Box>
     </Box>
   );
 };

@@ -44,9 +44,34 @@ export const router = createBrowserRouter(
       element: <Layout />,
       errorElement: <ErrorPage />,
       children: [
+
+        {
+          path: "/car",
+          element: <Hero1 />,
+        },
+        {
+          path: "/aboutus",
+          element: <About />,
+        },
+        {
+          path: "/book",
+          element: <Home />,
+        },
         {
           path: "/",
-          element: <Home />,
+          element: <Home/>,
+        },
+        {
+          path: "signup",
+          element: <SignUp />,
+        },
+        {
+          path: "user/signin",
+          element: <SignIn />,
+        },
+        {
+          path: "admin/adminlogin",
+          element: <AdminSignin role="admin"/>,
         },
       ],
     },
@@ -59,14 +84,8 @@ export const router = createBrowserRouter(
           path: "home",
           element: <Home />,
         },
-        {
-          path: "user/signin",
-          element: <SignIn />,
-        },
-        {
-          path: "signup",
-          element: <SignUp />,
-        },
+       
+       
         {
           path: "cars",
           element: <Hero1 />,
@@ -133,10 +152,7 @@ export const router = createBrowserRouter(
       path: "/",
       element: <AdminLayout />,
       children: [
-        {
-          path: "home",
-          element: <AdminLayout />,
-        },
+       
         {
           path:"users/:userId",
           element:<UserDetails/>
@@ -181,15 +197,17 @@ export const router = createBrowserRouter(
           path: "/admin/updatecar/:carId",
           element:<UpdateCarForm/>
         },
+        {
+          path: "homme",
+          element: <Home />,
+        },
+       
       
         {
           path: "/admin",
           element: <AdminRouter />,
           children: [
-            {
-              path: "adminlogin",
-              element: <AdminSignin role="admin"/>,
-            },
+           
            
             {
               path: "profile",
