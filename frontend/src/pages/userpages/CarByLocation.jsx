@@ -8,7 +8,8 @@ import { axiosInstance } from '../../config/axiosInstance';
 
 const CarByLocation = () => {
   const location = useLocation();
-  const officeLocation = location.state?.location ||"kottayam"; // or handle accordingly
+  const { location: officeLocation } = location.state || {};
+  //const officeLocation = location.state?.location ||"kottayam"; // or handle accordingly
  // or handle accordingly
 
   console.log('Received officeLocation in CarByLocation:', officeLocation);
