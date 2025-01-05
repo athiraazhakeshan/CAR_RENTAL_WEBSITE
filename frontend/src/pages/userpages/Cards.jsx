@@ -10,6 +10,7 @@ export const Cards = ({ item, handleRemove, totalAmount }) => {
       <Box position="absolute" bottom="0" left="0" right="0" bg="blackAlpha.700" p="4" color="white">
         <Text fontSize="xl" fontWeight="bold">{item?.carId?.carName}</Text>
         <Text fontSize="lg" fontWeight="semibold" mt="2">${item?.carId?.rentalPriceCharge}/day</Text>
+
         <Button onClick={() => handleRemove(item?._id)}>Remove</Button>
       </Box>
     </Box>

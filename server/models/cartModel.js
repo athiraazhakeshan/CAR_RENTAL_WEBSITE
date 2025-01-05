@@ -33,8 +33,8 @@ const cartSchema = new Schema(
     razorpayOrderId: {
       type: String,
     },
-    pickedAt: Date,
-    returnedAt: Date,
+    pickedAt: { type: Date, default: null }, 
+    returnedAt: { type: Date, default: null }, 
   },
   {
     timestamps: true,

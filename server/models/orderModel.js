@@ -73,8 +73,8 @@ const orderSchema = new Schema(
       type: String,
       required: true,
     },
-    pickedAt: Date,
-    returnedAt: Date,
+    pickedAt: { type: Date, default: null }, 
+    returnedAt: { type: Date, default: null }, 
     orderStatus: {
       type: String,
       enum: [
