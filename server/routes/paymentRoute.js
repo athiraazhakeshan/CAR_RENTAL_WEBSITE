@@ -150,7 +150,7 @@ router.post("/create-checkout-session", authUser, async (req, res) => {
                         name: product?.carId?.carName,
                         images: [product?.carId?.carPicture],
                     },
-                    unit_amount: Math.round((validTotalPrice * 100)/2), // Fixed: Unit price per product
+                    unit_amount: Math.round((validTotalPrice * 100)), // Fixed: Unit price per product
                 },
                 quantity: 1,
             };
