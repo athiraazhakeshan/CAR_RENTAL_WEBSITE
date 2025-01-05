@@ -197,4 +197,29 @@ router.post("/create-checkout-session", authUser, async (req, res) => {
         res.status(500).json({ message: error.message || "Failed to create checkout session" });
     }
 });
+
+export const getSessionStatus = async (req, res) => {
+    try {
+        const { orderId } = req.query;
+        if (!orderId) {
+            return res.status(400).json({ message: "Order ID is required" });
+        }
+
+        const orderDetails = await Order.findById(orderId);
+        if (!orderDetails) {
+            return res.status(404).json({ message: "Order not found" });
+        }
+
+        const session = await stripe.checkout.sessions.retrieve(orderDetails.sessionId);
+        res.json({
+            status: session?.status,
+            customer_email: session?.customer_details?.email,
+            session_data: session,
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message || "Internal server error" });
+    }
+};
+
+router.get('/session-status', authUser, getSessionStatus);
 export { router as paymentRouter };
