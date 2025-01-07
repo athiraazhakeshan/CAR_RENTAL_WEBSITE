@@ -47,22 +47,29 @@ export const getCartItems = async (req, res, next) => {
         res.status(error.statusCode || 500).json(error.message || "Internal server error");
     }
 };
-
 export const addCarToCart = async (req, res) => {
     try {
         const { carId, totalPrice, pickedat, returnedat } = req.body;
         const userId = req.user.id;
 
+        // Check if the car exists
         const car = await Car.findById(carId);
         if (!car) {
             return res.status(404).json({ message: "Car not found" });
         }
 
+        // Find or create the user's cart
         let cart = await Cart.findOne({ userId });
         if (!cart) {
             cart = new Cart({ userId, car: [], totalPrice: 0, pickedAt: pickedat, returnedAt: returnedat });
         }
 
+        // Enforce one-item limit
+        if (cart.car.length > 0) {
+            return res.status(400).json({ message: "Only one car can be added to the cart at a time." });
+        }
+
+        // Add the car to the cart
         cart.car.push({ carId, rentalPriceCharge: car.rentalPriceCharge });
 
         // Recalculate total price
@@ -71,53 +78,81 @@ export const addCarToCart = async (req, res) => {
 
         res.status(200).json({ message: "Car added to cart", data: cart });
     } catch (error) {
+        console.error("Error adding car to cart:", error);
         res.status(500).json({ message: "Internal server error", error });
     }
 };
 
-
-
-export const removeCarFromCart = async (req, res) => {
-    try {
-        const userId = req.user.id;
-        const { carId } = req.body;
-
-        // Find the user's cart
-        let cart = await Cart.findOne({ userId });
-        if (!cart) {
-            return res.status(404).json({ message: "Cart not found" });
-        }
-
-        console.log("carId====", carId, typeof carId);
-
-        // Remove the course from the cart
-        cart.car = cart.car.filter((item) => !item?.carId == carId);
-
-        // Recalculate the total price
-        cart.calculateTotalPrice();
-
-        // Save the cart
-        await cart.save();
-
-        res.status(200).json({ message: "car removed from cart", data: cart });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error });
-    }
-};
-
-// const clearCart = async (req, res) => {
+// export const addCarToCart = async (req, res) => {
 //     try {
-//         const userId = req.user._id;
+//         const { carId, totalPrice, pickedat, returnedat } = req.body;
+//         const userId = req.user.id;
 
-//         const cart = await Cart.findOne({ userId });
-//         cart.courses = [];
+//         const car = await Car.findById(carId);
+//         if (!car) {
+//             return res.status(404).json({ message: "Car not found" });
+//         }
+
+//         let cart = await Cart.findOne({ userId });
+//         if (!cart) {
+//             cart = new Cart({ userId, car: [], totalPrice: 0, pickedAt: pickedat, returnedAt: returnedat });
+//         }
+
+//         cart.car.push({ carId, rentalPriceCharge: car.rentalPriceCharge });
+
+//         // Recalculate total price
 //         cart.calculateTotalPrice();
 //         await cart.save();
 
-//         res.status(200).json({ message: "cart cleared successfully", data: cart });
+//         res.status(200).json({ message: "Car added to cart", data: cart });
 //     } catch (error) {
 //         res.status(500).json({ message: "Internal server error", error });
 //     }
 // };
 
-// module.exports = { getCart, addCarToCart, removeCarFromCart, clearCart };
+
+
+// export const removeCarFromCart = async (req, res) => {
+//     try {
+//         const userId = req.user.id;
+//         const { carId } = req.body;
+
+//         // Find the user's cart
+//         let cart = await Cart.findOne({ userId });
+//         if (!cart) {
+//             return res.status(404).json({ message: "Cart not found" });
+//         }
+
+//         console.log("carId====", carId, typeof carId);
+
+//         // Remove the course from the cart
+//         cart.car = cart.car.filter((item) => !item?.carId == carId);
+
+//         // Recalculate the total price
+//         cart.calculateTotalPrice();
+
+//         // Save the cart
+//         await cart.save();
+
+//         res.status(200).json({ message: "car removed from cart", data: cart });
+//     } catch (error) {
+//         res.status(500).json({ message: "Internal server error", error });
+//     }
+// };
+
+export const removeCarFromCart = async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        // Find and delete the user's cart
+        const cart = await Cart.findOneAndDelete({ userId });
+        if (!cart) {
+            return res.status(404).json({ message: "Cart not found" });
+        }
+
+        res.status(200).json({ message: "Cart deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting cart:", error);
+        res.status(500).json({ message: "Internal server error", error });
+    }
+};
