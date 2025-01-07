@@ -83,6 +83,7 @@ const orderSchema = new Schema(
         "shipping",
         "out for delivery",
         "delivered",
+        "completed",
       ],
       default: "success",
     },

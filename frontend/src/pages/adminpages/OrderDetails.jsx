@@ -139,19 +139,28 @@ const UserOrders = () => {
 
     const handleCheckStatus = async (orderId) => {
         try {
-            const res = await axiosInstance.get(`/payment/session-status`, {
-                params: { orderId },
-            });
+            const res = await axiosInstance.get(`/payment/session-status`, { params: { orderId } });
             const { status } = res.data;
+
             if (status === 'complete') {
                 toast({
                     title: 'Order Completed',
-                    description: `Order ${orderId} is complete.`,
+                    description: `Order ${orderId} payment is marked as complete.`,
                     status: 'success',
                     duration: 3000,
                     isClosable: true,
-                    position: 'top', // Display toast at the top
+                    position: 'top',
                 });
+
+                // Optionally update the order's status in the database
+                const updateRes = await axiosInstance.post(`/payment/verify-order`, { orderId });
+                if (updateRes.status === 200) {
+                    setOrders((prevOrders) =>
+                        prevOrders.map((order) =>
+                            order._id === orderId ? { ...order, orderStatus: 'completed' } : order
+                        )
+                    );
+                }
             } else {
                 toast({
                     title: 'Order Status',
@@ -159,39 +168,21 @@ const UserOrders = () => {
                     status: 'info',
                     duration: 3000,
                     isClosable: true,
-                    position: 'top', // Display toast at the top
+                    position: 'top',
                 });
             }
         } catch (error) {
-            console.error("Error checking session status:", error);
+            console.error('Error checking session status:', error);
             toast({
                 title: 'Error',
-                description: 'Failed to fetch order status',
+                description: 'Failed to fetch order status.',
                 status: 'error',
                 duration: 3000,
                 isClosable: true,
-                position: 'top', // Display toast at the top
+                position: 'top',
             });
         }
     };
-
-    if (loading) {
-        return (
-            <Box p={5} textAlign="center">
-                <Spinner size="lg" />
-            </Box>
-        );
-    }
-
-    if (error) {
-        return (
-            <Box p={5} textAlign="center">
-                <Heading size="md" color="red.500">
-                    {error}
-                </Heading>
-            </Box>
-        );
-    }
 
     return (
         <Box p={5}>
