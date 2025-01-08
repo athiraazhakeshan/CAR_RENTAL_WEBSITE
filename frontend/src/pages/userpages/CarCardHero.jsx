@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Image, Text, Flex } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
-export const CarCard = ({ car }) => {
+export const CarCardHero = ({ cars }) => {
   return (
     <Box as={Link} to={`/car/${car.id}`} position="relative" borderRadius="lg" overflow="hidden" boxShadow="lg">
       <Image src={car.carPicture} alt={car.carName} objectFit="cover" w="100%" h="250px" />
@@ -15,4 +15,4 @@ export const CarCard = ({ car }) => {
   );
 };
 
-export default CarCard;
+export default CarCardHero;
