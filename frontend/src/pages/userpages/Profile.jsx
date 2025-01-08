@@ -44,12 +44,31 @@ export const Profile = () => {
     }, []); // Empty dependency array means this runs once on mount
 
     // Handle logout
-    const handleLogout = () => {
-        dispatch(clearUser());
-        console.log("logout successfully")
-        navigate('/user/signin');
+    // const handleLogout = () => {
+    //     dispatch(clearUser());
+    //     console.log("logout successfully")
+    //     navigate('/user/signin');
+    // };
+    const handleLogout = async () => {
+        try {
+            // Call backend logout endpoint to clear cookies
+            await axiosInstance.post('/user/logout');
+    
+            // Clear token from localStorage
+            localStorage.removeItem('token');
+            sessionStorage.removeItem('token'); // In case you use sessionStorage
+    
+            // Clear Redux state if applicable
+            dispatch(clearUser());
+    
+            console.log("Logout successful");
+            navigate("user/signin");
+        } catch (error) {
+            console.error("Error logging out:", error);
+            alert("Failed to log out. Please try again.");
+        }
     };
-
+    
     // If loading, show a loading message
     if (isLoading) {
         return <div>Loading...</div>;

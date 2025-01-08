@@ -34,7 +34,7 @@ import Cart from "../pages/userpages/Cart.jsx";
 import PaymentSuccess from "../pages/userpages/paymentSuccess.jsx";
 import OrderList from "../pages/OrderList.jsx";
 import Contact from "../pages/Contact.jsx";
-
+import { Hero } from "../pages/userpages/Hero.jsx";
 
 
 // import Hero from "../components/Hero.jsx";
@@ -60,7 +60,7 @@ export const router = createBrowserRouter(
         },
         {
           path: "/",
-          element: <Home/>,
+          element: <Hero/>,
         },
         {
           path: "signup",
@@ -73,6 +73,14 @@ export const router = createBrowserRouter(
         {
           path: "admin/adminlogin",
           element: <AdminSignin role="admin"/>,
+        },
+        {
+          path: "carsbylocation/:city",
+          element: <CarByLocation/>,
+        },
+        {
+          path: "cars/:carId",
+          element: <carDetailsHero />,
         },
       ],
     },

@@ -11,7 +11,7 @@ export const ProtectRouter = () => {
 
     useEffect(() => {
         if (!userAutherized) {
-            navigate("signin");
+            navigate("user/signin");
         }
     }, [userAutherized, navigate]);
 
