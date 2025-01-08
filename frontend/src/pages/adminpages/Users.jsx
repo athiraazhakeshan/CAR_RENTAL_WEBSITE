@@ -124,29 +124,30 @@ const Users = () => {
 
   const token = localStorage.getItem('token'); // Fetch token from localStorage
 
-  useEffect(() => {
-    const getAllUsers = async () => {
-      try {
-        if (!token) {
-          throw new Error('No token found');
-        }
+// In the frontend Users component
+useEffect(() => {
+  const getAllUsers = async () => {
+    console.log("Fetching users...");
 
-        const response = await axiosInstance.get('/admin/getAllUsers', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+    try {
+      const response = await axiosInstance.get('/admin/getAllUsers', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("API Response:", response.data);
+      setUsers(response.data || []);
+    } catch (err) {
+      console.error("API Error:", err);
+      setError(err.message || 'An error occurred while fetching users');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-        setUsers(response.data || []);
-      } catch (err) {
-        setError(err.message || 'An error occurred while fetching users');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  getAllUsers();
+}, [token]);
 
-    getAllUsers();
-  }, [token]);
 
   const handleRowClick = (userId) => {
     navigate(`${location.pathname}/${userId}`);

@@ -1,39 +1,4 @@
-// import React from "react";
-// import { useDispatch} from 'react-redux';
-// import { clearUser } from "../../redux/features/userSlice";
-// import { useNavigate } from 'react-router-dom';
-// //import { axiosInstance } from "../../config/axiosInstance";
-// import {  Button } from '@chakra-ui/react';
-//  // Ensure the path is correct
 
-// export const AdminProfile = () => {
-
-
-//     const dispatch = useDispatch();
-//     const navigate = useNavigate();
-// // Empty dependency array means this runs once on mount
-
-//     // Handle logout
-//     const handleLogout = () => {
-//         dispatch(clearUser());
-//         navigate('/admin/adminlogin');
-//     };
-
-  
-//     // Render the profile data
-//     return (
-//         <div className="profile">
-//             <div className="text-center lg:text-left">
-//                         <h1 className="text-5xl font-bold">Welcome! Admin </h1>
-//                         <p className="py-6">
-//                             Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque
-//                             aut repudiandae et a id nisi.
-//                         </p>
-//                     </div>
-//              <Button onClick={handleLogout} size="sm" colorScheme="red">Logout</Button>
-//         </div>
-//     );
-// };
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { clearUser } from "../../redux/features/userSlice";
@@ -42,7 +7,7 @@ import { axiosInstance } from "../../config/axiosInstance";
 import {  Button } from '@chakra-ui/react';
 import "./adminprofile.css"
 
-export const Profile = () => {
+export const AdminProfile = () => {
     // State to store user profile, loading state, and error message
     const [userProfile, setUserProfile] = useState({
        
@@ -93,7 +58,7 @@ export const Profile = () => {
             dispatch(clearUser());
     
             console.log("Logout successful");
-            navigate("admin/adminlogin");
+            navigate("/admin/adminlogin");
         } catch (error) {
             console.error("Error logging out:", error);
             alert("Failed to log out. Please try again.");
@@ -121,10 +86,9 @@ export const Profile = () => {
     // Render the profile data
     return (
         <div className="profile">
-            <h1 className="profile-name">Hello! {firstName} {lastName}</h1>
+            <h1 className="profile-name">Hello!Admin</h1>
             <p className="profile-email">Mail id: {email}</p>
-            <p className="profile-address">Address: {address}, {city}, {state}, {country}</p>
-            {/* <p className="profile-contact">Contact Number: {contactNumber}</p> */}
+         {/* <p className="profile-contact">Contact Number: {contactNumber}</p> */}
             <p className="profile-role">Role: {role}</p>
              <Button onClick={handleLogout} size="sm" colorScheme="red">Logout</Button>
         </div>

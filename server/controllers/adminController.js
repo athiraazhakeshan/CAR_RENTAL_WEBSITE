@@ -232,6 +232,9 @@ export const adminSignin = async (req, res) => {
     if (!isUserExist) {
       return res.status(404).json({ message: "Admin not found" });
     }
+    if (isUserExist.password !== password) {
+      return res.status(400).json({ error: "Invalid email or password" });
+    }
 
     const token = generateToken(isUserExist._id);
     res.cookie("token", token, { 

@@ -16,7 +16,7 @@ export const AdminHeader = () => {
 
         {/* Navigation */}
         <nav className="flex flex-col md:flex-row gap-4 md:gap-16 items-center font-semibold mt-4 md:mt-0">
-          <Link to="/homme" className="hover:text-blue-600">Home</Link>
+          {/* <Link to="/homme" className="hover:text-blue-600">Home</Link> */}
           <Link to="admin/carlist" className="hover:text-blue-600">Cars</Link>
           <Link to="/users" className="hover:text-blue-600">Users</Link>
           <Link to="/admin/offices" className="hover:text-blue-600">Office</Link>

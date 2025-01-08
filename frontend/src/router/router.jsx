@@ -208,10 +208,10 @@ export const router = createBrowserRouter(
           path: "/admin/updatecar/:carId",
           element:<UpdateCarForm/>
         },
-        {
-          path: "homme",
-          element: <Home />,
-        },
+        // {
+        //   path: "homme",
+        //   element: <Home />,
+        // },
        
       
         {

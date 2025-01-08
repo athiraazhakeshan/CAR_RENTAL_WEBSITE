@@ -13,7 +13,7 @@ router.post('/adminlogin',adminSignin)
 router.get('/profile',authAdmin,adminProfile)
 router.put('/updateuser/:id',updateUser)
 router.delete('/deleteuser/:id',deleteUserAcount)
-router.get('/getallusers',getAllUsers)
+router.get('/getallusers',getAllUsers,authAdmin)
 router.get('/checkadmin',checkAdmin)
 router.post("/adminlogout",adminLogout)
 
