@@ -148,7 +148,7 @@ export const SignIn = ({ role = "user" }) => {
         toast.success("Log-in success");
         navigate(user.profile_route);  // Navigate to the user's profile route
     } catch (error) {
-        toast.error("Log-in failed");
+        toast.error("INVALID EMAIL OR PASSWORD");
         console.log(error);
     }
 };

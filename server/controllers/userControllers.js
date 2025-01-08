@@ -66,52 +66,93 @@ export const Signup = async(req,res,next)=>{
         
     }
 }
+export const Signin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-     //signin
-export const Signin=async(req,res)=>{
-    try{
-      const {email,password}=req.body;
-      const userExist=await UserModel.findOne({email});
+    // Check if the user exists in the database
+    const userExist = await UserModel.findOne({ email });
+
+    if (!userExist) {
+      return res.status(400).json({ error: "User does not exist" });
+    }
+
+    // Compare plain-text passwords
+    if (userExist.password !== password) {
+      return res.status(400).json({ error: "Invalid email or password" });
+    }
+
+    // Generate token
+    const token = await generateToken(userExist._id);
+
+    // Set the token as a cookie
+    res.cookie("token", token, {
+      sameSite: "None",
+      httpOnly: true,
+      secure: true,
+    });
+
+    // Send user information as response
+    return res.json({
+      message: "Logged in successfully",
+      token,
+      userId: userExist._id,
+      role: userExist.role,
+      firstName: userExist.firstName,
+      email: userExist.email,
+    });
+  } catch (error) {
+    console.error("Error during sign-in:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+//      //signin
+// export const Signin=async(req,res)=>{
+//     try{
+//       const {email,password}=req.body;
+//       const userExist=await UserModel.findOne({email});
       
-      if(!userExist){
-        return res.send("user not exist");
-        }
+//       if(!userExist){
+//         return res.send("user not exist");
+//         }
       
 
      
 
-    //  const matchpassword=await bcrypt.compare(password,userExist.password);
+//     //  const matchpassword=await bcrypt.compare(password,userExist.password);
       
-      // if(!matchpassword){
-      //   return res.status(400).json({error:"Password incorrect"})
+//       // if(!matchpassword){
+//       //   return res.status(400).json({error:"Password incorrect"})
     
     
-      // }
+//       // }
       
-      const token=await generateToken(userExist._id)
-      res.cookie("token", token, { sameSite:"None", httpOnly: true ,
-        secure:true
-      });
-      return res.json({ 
-        message: "Logged in successfully",token, 
-        userId:userExist._id, 
-        role:userExist.role,
-        firstName: userExist.firstName,
-        email:userExist.email,
-          user:[userExist._id 
+//       const token=await generateToken(userExist._id)
+//       res.cookie("token", token, { sameSite:"None", httpOnly: true ,
+//         secure:true
+//       });
+//       return res.json({ 
+//         message: "Logged in successfully",token, 
+//         userId:userExist._id, 
+//         role:userExist.role,
+//         firstName: userExist.firstName,
+//         email:userExist.email,
+//           user:[userExist._id 
             
-          ]     
+//           ]     
 
-            })
+//             })
       
-    }
-    catch(error){
-      console.log("error",error)
-      res.status(error.status||500).json({error:error.message || "internal server error"})
-    }
+//     }
+//     catch(error){
+//       console.log("error",error)
+//       res.status(error.status||500).json({error:error.message || "internal server error"})
+//     }
     
     
-    }
+//     }
 
 
     //userprofile

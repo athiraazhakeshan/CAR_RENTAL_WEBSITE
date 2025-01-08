@@ -3,7 +3,7 @@ import { HomeLayout } from "../layout/HomeLayout";
 import { AdminLayout } from "../layout/AdminLayout";
 import { ErrorPage } from "../components/ErrorPage";
 import { Home } from "../pages/userpages/Home";
-import { Car } from "../pages/userpages/Car";
+
 import { SignUp } from "../components/shared/SignUp";
 import { SignIn } from "../components/shared/SignIn";
 import { AdminSignin } from "../components/shared/AdminSignin";
@@ -36,6 +36,8 @@ import OrderList from "../pages/OrderList.jsx";
 import Contact from "../pages/Contact.jsx";
 import { Hero } from "../pages/userpages/Hero.jsx";
 import CarDetailsHero from "../pages/userpages/carDetailsHero.jsx";
+import CarByLocationHero from "../pages/userpages/CarByLocationHero.jsx";
+import Car from "../../../server/models/carModel.js";
 
 // import Hero from "../components/Hero.jsx";
 export const router = createBrowserRouter(
@@ -48,7 +50,7 @@ export const router = createBrowserRouter(
 
         {
           path: "/car",
-          element: <Hero1 />,
+          element:<Car
         },
         {
           path: "/aboutus",
@@ -75,11 +77,11 @@ export const router = createBrowserRouter(
           element: <AdminSignin role="admin"/>,
         },
         {
-          path: "carsbylocation/:city",
-          element: <CarByLocation/>,
+          path: "carsbylocations/:city",
+          element: <CarByLocationHero/>,
         },
         {
-          path: "car/:carId",
+          path: "carr/:carId",
           element: <CarDetailsHero />,
         },
       ],

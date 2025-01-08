@@ -71,7 +71,7 @@ export const Hero = () => {
       returnDate: data.returnDate
     });
     // Navigate to the 'carsbylocation' page with the form data as state
-    navigate("carsbylocation/:city", { state: { location: data.location } });
+    navigate("carsbylocations/:city", { state: { location: data.location } });
   };
 
   return (

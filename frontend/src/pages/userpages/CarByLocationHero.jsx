@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import CarCard from './CarCard';
 import { Box, Grid, Heading } from '@chakra-ui/react';
 import { axiosInstance } from '../../config/axiosInstance';
+import CarCardHero from './CarCardHero';
 
 
 const CarByLocationHero = () => {
@@ -50,7 +51,7 @@ const CarByLocationHero = () => {
         <Grid templateColumns="repeat(auto-fill, minmax(300px, 1fr))" gap="8">
           {cars.length > 0 ? (
             cars.map((car, index) => (
-              <CarCard key={index} car={car} />
+              <CarCardHero key={index} car={car} />
             ))
           ) : (
             <p>No cars available for this location.</p>
