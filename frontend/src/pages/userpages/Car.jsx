@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../config/axiosInstance";
-import { CarCard } from "./CarCard";
+import { CarCardH
 
 
 export const Car = () => {
@@ -24,7 +24,7 @@ export const Car = () => {
       fetchCar();
     }, []);
     return <div>
-    {cars.map((value,index)=>(
+    {car.map((value,index)=>(
      <CarCard car={value} key={value?._id}/>
     ))}
     </div>;

@@ -35,7 +35,7 @@ import PaymentSuccess from "../pages/userpages/paymentSuccess.jsx";
 import OrderList from "../pages/OrderList.jsx";
 import Contact from "../pages/Contact.jsx";
 import { Hero } from "../pages/userpages/Hero.jsx";
-
+import CarDetailsHero from "../pages/userpages/carDetailsHero.jsx";
 
 // import Hero from "../components/Hero.jsx";
 export const router = createBrowserRouter(
@@ -79,8 +79,8 @@ export const router = createBrowserRouter(
           element: <CarByLocation/>,
         },
         {
-          path: "cars/:carId",
-          element: <carDetailsHero />,
+          path: "car/:carId",
+          element: <CarDetailsHero />,
         },
       ],
     },

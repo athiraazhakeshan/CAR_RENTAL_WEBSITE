@@ -6,7 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Image, Text, Heading, Flex, Button } from '@chakra-ui/react';
 import { axiosInstance } from '../../config/axiosInstance';
 
-const carDetailsHero = () => {
+const CarDetailsHero = () => {
   const navigate = useNavigate();
   const [cars, setCars] = useState([]);
   const { carId } = useParams();
@@ -66,4 +66,4 @@ const carDetailsHero = () => {
   );
 };
 
-export default carDetailsHero;
+export default CarDetailsHero;
