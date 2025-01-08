@@ -6,7 +6,7 @@ import { axiosInstance } from '../../config/axiosInstance.jsx';
 import CarCardHero from './CarCardHero.jsx';
 
 
-const Car = () => {
+export const Car = () => {
   const [cars, setCars] = useState([]);
 
   useEffect(() => {

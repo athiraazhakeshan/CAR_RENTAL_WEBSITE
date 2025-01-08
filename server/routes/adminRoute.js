@@ -1,5 +1,5 @@
 import express from 'express';
-import { admin_Logout, adminprofile, adminSignin, adminSignup, checkAdmin, deleteUserAcount, getAllUsers, updateUser } from '../controllers/adminController.js';
+import {  adminLogout, adminProfile, adminSignin, adminSignup, checkAdmin, deleteUserAcount, getAllUsers, updateUser } from '../controllers/adminController.js';
 
 import { createCar, deleteCar, getcarbyid, getCars, updateCar } from '../controllers/carController.js';
 import { upload } from '../middlewares/multer.js';
@@ -10,12 +10,12 @@ import { addOffice, deleteOffice, getAllOffice, getofficebyid, updateOffice } fr
 const router = express.Router();
 router.post('/adminsignup',adminSignup)
 router.post('/adminlogin',adminSignin)
-router.get('/profile',authAdmin,adminprofile)
+router.get('/profile',authAdmin,adminProfile)
 router.put('/updateuser/:id',updateUser)
 router.delete('/deleteuser/:id',deleteUserAcount)
 router.get('/getallusers',getAllUsers)
 router.get('/checkadmin',checkAdmin)
-router.post("/adminlogout",admin_Logout)
+router.post("/adminlogout",adminLogout)
 
 //admin actions
 //carController

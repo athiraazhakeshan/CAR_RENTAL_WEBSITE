@@ -3,7 +3,7 @@ import { HomeLayout } from "../layout/HomeLayout";
 import { AdminLayout } from "../layout/AdminLayout";
 import { ErrorPage } from "../components/ErrorPage";
 import { Home } from "../pages/userpages/Home";
-
+import {Car}  from "../pages/userpages/Car.jsx";
 import { SignUp } from "../components/shared/SignUp";
 import { SignIn } from "../components/shared/SignIn";
 import { AdminSignin } from "../components/shared/AdminSignin";
@@ -37,7 +37,7 @@ import Contact from "../pages/Contact.jsx";
 import { Hero } from "../pages/userpages/Hero.jsx";
 import CarDetailsHero from "../pages/userpages/carDetailsHero.jsx";
 import CarByLocationHero from "../pages/userpages/CarByLocationHero.jsx";
-import Car from "../../../server/models/carModel.js";
+// import Car from "../../../server/models/carModel.js";
 
 // import Hero from "../components/Hero.jsx";
 export const router = createBrowserRouter(
@@ -50,7 +50,7 @@ export const router = createBrowserRouter(
 
         {
           path: "/car",
-          element:<Car
+          element:<Car/>
         },
         {
           path: "/aboutus",
