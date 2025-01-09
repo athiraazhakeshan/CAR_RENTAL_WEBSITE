@@ -54,28 +54,47 @@ const UserDetails = () => {
 
     return (
         <Box p={5}>
-            <Flex direction={{ base: 'column', md: 'row' }} p="3" maxW="400px" mx="auto" mb="4" boxShadow="md" borderWidth="1px" borderRadius="md" bg="white">
-                <Box flex="1">
-                    <Image alt={user.name} objectFit="cover" w="100%" h="auto" borderRadius="md" />
-                </Box>
-                <Box flex="1" p="3">
-                    <Heading as="h3" size="md" mb="3">{user.firstName} {user.lastName}</Heading>
-                    <Text fontSize="md" mb="3">Email: {user.email}</Text>
-                    <Text fontSize="md" mb="3">address: {user.address}</Text>
-                    <Text fontSize="md" mb="3">country: {user.country}</Text>
-                    <Text fontSize="md" mb="3">state: {user.state}</Text>
-                    <Text fontSize="md" mb="3">city: {user.city}</Text>
-                    {/* <Text fontSize="md" mb="3">Phone: {user.contactNumber}</Text> */}
-                    <Text fontSize="md">{user.details}</Text>
-                    <VStack spacing="2" mt="3">
-                        
-                            <Button onClick={handleOrders} colorScheme="blue">View Orders</Button>
-                       
-                        <Button onClick={handleDelete} colorScheme="red">Delete</Button>
-                    </VStack>
-                </Box>
-            </Flex>
-        </Box>
+        <Flex
+            direction={{ base: 'column', md: 'row' }}
+            p="6"
+            maxW="500px"
+            mx="auto"
+            boxShadow="lg"
+            borderWidth="1px"
+            borderRadius="lg"
+            bg="gray.50"
+        >
+            <Box flex="1" p="4">
+                <Heading as="h3" size="lg" mb="3" color="gray.700">
+                    {user.firstName} {user.lastName}
+                </Heading>
+                <Text fontSize="md" mb="2" color="gray.600">
+                    <strong>Email:</strong> {user.email}
+                </Text>
+                <Text fontSize="md" mb="2" color="gray.600">
+                    <strong>Address:</strong> {user.address}
+                </Text>
+                <Text fontSize="md" mb="2" color="gray.600">
+                    <strong>Country:</strong> {user.country}
+                </Text>
+                <Text fontSize="md" mb="2" color="gray.600">
+                    <strong>State:</strong> {user.state}
+                </Text>
+                <Text fontSize="md" mb="2" color="gray.600">
+                    <strong>City:</strong> {user.city}
+                </Text>
+                <VStack spacing="4" mt="4">
+                    <Button onClick={handleOrders} colorScheme="blue" width="30%">
+                        View Orders
+                    </Button>
+                    <Button onClick={handleDelete} colorScheme="red" width="30%">
+                        Delete
+                    </Button>
+                </VStack>
+            </Box>
+        </Flex>
+    </Box>
+    
     );
 };
 

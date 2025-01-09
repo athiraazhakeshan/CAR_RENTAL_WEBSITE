@@ -34,17 +34,17 @@ const OrderList = () => {
     getAllOrders();
   }, []);
 
-  const handleRowClick = (orderId) => {
-    navigate(`${location.pathname}/${orderId}`);
-  };
+  // const handleRowClick = (orderId) => {
+  //   navigate(`${location.pathname}/${orderId}`);
+  // };
 
-  if (loading) {
-    return <Box p={5}><Spinner /></Box>;
-  }
+  // if (loading) {
+  //   return <Box p={5}><Spinner /></Box>;
+  // }
 
-  if (error) {
-    return <Box p={5}><Heading size="md" color="red.500">{error}</Heading></Box>;
-  }
+  // if (error) {
+  //   return <Box p={5}><Heading size="md" color="red.500">{error}</Heading></Box>;
+  // }
 
   return (
     <Box p={5}>
@@ -59,9 +59,9 @@ const OrderList = () => {
                 borderWidth={1}
                 borderRadius="lg"
                 mb={4}
-                onClick={() => handleRowClick(order._id)}
-                cursor="pointer"
-                _hover={{ bg: "gray.100" }}
+                // onClick={() => handleRowClick(order._id)}
+                // cursor="pointer"
+                // _hover={{ bg: "gray.100" }}
               >
                 <Heading size="sm">Order ID: {order._id}</Heading>
                 <Box mt={2}>User ID: {order.userId}</Box>
@@ -83,9 +83,9 @@ const OrderList = () => {
               orders.map((order) => (
                 <Tr
                   key={order._id}
-                  onClick={() => handleRowClick(order._id)}
-                  cursor="pointer"
-                  _hover={{ bg: "gray.100" }}
+                  // onClick={() => handleRowClick(order._id)}
+                  // cursor="pointer"
+                  // _hover={{ bg: "gray.100" }}
                 >
                   <Td>Order ID: {order._id}</Td>
                   <Td>User ID: {order.userId}</Td>

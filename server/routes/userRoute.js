@@ -12,7 +12,7 @@ const router = express.Router();
 router.post("/signup",Signup)
 router.post("/signin",Signin)
 router.get('/profile',authUser,Profile)
-router.patch('/updateuser/:id',userUpdate)
+router.patch('/updateuser/:id',authUser,userUpdate)
 router.post("/logout",User_Logout)
 router.get('/checkuser',checkUser)
 

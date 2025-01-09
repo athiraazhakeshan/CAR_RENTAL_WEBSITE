@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearUser } from "../../redux/features/userSlice";
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from "../../config/axiosInstance";
-import {  Button } from '@chakra-ui/react';
+import {  Box, Button, Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import "./adminprofile.css"
 
 export const AdminProfile = () => {
@@ -85,12 +85,39 @@ export const AdminProfile = () => {
 
     // Render the profile data
     return (
-        <div className="profile">
-            <h1 className="profile-name">Hello!Admin</h1>
-            <p className="profile-email">Mail id: {email}</p>
-         {/* <p className="profile-contact">Contact Number: {contactNumber}</p> */}
-            <p className="profile-role">Role: {role}</p>
-             <Button onClick={handleLogout} size="sm" colorScheme="red">Logout</Button>
-        </div>
+        // <div className="profile">
+        //     <h1 className="profile-name">Hello!Admin</h1>
+        //     <p className="profile-email">Mail id: {email}</p>
+        //  {/* <p className="profile-contact">Contact Number: {contactNumber}</p> */}
+        //     <p className="profile-role">Role: {role}</p>
+        //      <Button onClick={handleLogout} size="sm" colorScheme="red">Logout</Button>
+        // </div>
+                <Box p={5}>
+            <Flex
+                direction={{ base: 'column', md: 'row' }}
+                p="6"
+                maxW="500px"
+                mx="auto"
+                boxShadow="lg"
+                borderWidth="1px"
+                borderRadius="lg"
+                bg="gray.50"
+            >
+                <Box flex="1" p="4">
+                    <Heading as="h3" size="lg" mb="3" color="gray.700">
+                       Hello! Admin
+                    </Heading>
+                    <Text fontSize="md" mb="2" color="gray.600">
+                        <strong>Email:</strong> {email}
+                    </Text>
+                    <VStack spacing="4" mt="4">
+                       
+                        <Button onClick={handleLogout} colorScheme="red" width="30%">
+                            Logout
+                        </Button>
+                    </VStack>
+                </Box>
+            </Flex>
+        </Box>
     );
 };
