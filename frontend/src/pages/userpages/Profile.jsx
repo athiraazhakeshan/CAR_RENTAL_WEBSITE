@@ -17,6 +17,7 @@ export const Profile = () => {
         city: '',
         state: '',
         country: '',
+        contactNumber:'',
         role: '',
     });
   
@@ -50,6 +51,11 @@ export const Profile = () => {
     //     console.log("logout successfully")
     //     navigate('/user/signin');
     // };
+    // Initialize navigate hook
+
+const handleUpdate = () => {
+    navigate(`/user/update/${userProfile._id}`); // Navigating to UpdateUser page
+};
   
     const handleLogout = async () => {
         try {
@@ -87,18 +93,10 @@ export const Profile = () => {
     }
 
     // Destructure the profile data
-    const { firstName, lastName, email, address, city, state, country, role } = userProfile;
+    const { firstName, lastName, email, address, city, state, country, contactNumber,role } = userProfile;
 
     // Render the profile data
     return (
-        // <div className="profile">
-        //     <h1 className="profile-name">Hello! {firstName} {lastName}</h1>
-        //     <p className="profile-email">Mail id: {email}</p>
-        //     <p className="profile-address">Address: {address}, {city}, {state}, {country}</p>
-        //     {/* <p className="profile-contact">Contact Number: {contactNumber}</p> */}
-        //     <p className="profile-role">Role: {role}</p>
-        //      <Button onClick={handleLogout} size="sm" colorScheme="red">Logout</Button>
-        // </div>
         <Box p={5}>
     <Flex
         direction={{ base: 'column', md: 'row' }}
@@ -129,12 +127,18 @@ export const Profile = () => {
             <Text fontSize="md" mb="2" color="gray.600">
                 <strong>City:</strong> {city}
             </Text>
+            <Text fontSize="md" mb="2" color="gray.600">
+                <strong>contact:</strong> {contactNumber}
+            </Text>
             <VStack spacing="4" mt="4">
                
                 <Button onClick={handleLogout} colorScheme="red" width="30%">
                     
                     Logout
                 </Button>
+                <Button onClick={handleUpdate} colorScheme="blue" width="30%">
+    Update User
+</Button>
               
             </VStack>
         </Box>

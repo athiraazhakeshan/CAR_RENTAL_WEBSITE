@@ -199,7 +199,7 @@ export const Signin = async (req, res) => {
     console.log(id);
 
     let imageUrl;
-    const { address, city, state, country, pin, countryCode, contactNumber } = req.body;
+    const { firstName,lastName,email,address, city, state, country, pin, countryCode, contactNumber } = req.body;
     console.log('image====',req.file);
         if(req.file){
           const cloudinaryRes=await cloudinaryInstance.uploader.upload(req.file.path)
@@ -213,7 +213,7 @@ export const Signin = async (req, res) => {
     try {
         const updatedUser = await UserModel.findByIdAndUpdate(
             { _id: id },
-            { address, city, state, country, pin, countryCode, contactNumber },
+            { firstName,lastName,email,address, city, state, country, pin, countryCode, contactNumber },
             { new: true, select: '-password' }
             
         );
