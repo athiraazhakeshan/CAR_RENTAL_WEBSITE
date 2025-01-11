@@ -1,5 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Table, Flex, Button, Tbody, Tr, Td, Spinner, Heading, Thead, Th } from '@chakra-ui/react';
+import {
+  Box,
+  Table,
+  Flex,
+  Button,
+  Tbody,
+  Tr,
+  Td,
+  Spinner,
+  Heading,
+  Thead,
+  Th,
+  useBreakpointValue,
+  Text,
+} from '@chakra-ui/react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { axiosInstance } from '../../config/axiosInstance';
 
@@ -9,6 +23,8 @@ const CarList = () => {
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   useEffect(() => {
     const getAllCars = async () => {
@@ -41,30 +57,40 @@ const CarList = () => {
   };
 
   if (loading) {
-    return <Box p={5}><Spinner /></Box>;
+    return (
+      <Box p={5} textAlign="center">
+        <Spinner size="lg" />
+        <Text mt={2}>Loading cars...</Text>
+      </Box>
+    );
   }
 
   if (error) {
-    return <Box p={5}><Heading size="md" color="red.500">{error}</Heading></Box>;
+    return (
+      <Box p={5}>
+        <Heading size="md" color="red.500">
+          {error}
+        </Heading>
+      </Box>
+    );
   }
 
   return (
     <Box p={5}>
       {/* Add Car Button */}
       <Flex justify="flex-end" mb={4}>
-        <Button colorScheme="blue" onClick={handleAddCarClick}>Add Car</Button>
+        <Button
+          colorScheme="blue"
+          onClick={handleAddCarClick}
+          width={{ base: "full", sm: "auto" }}
+        >
+          Add Car
+        </Button>
       </Flex>
 
-      {/* Responsive Table Container */}
-      <Box 
-        overflowX="auto" 
-        border="1px solid" 
-        borderColor="gray.200" 
-        borderRadius="md" 
-        p={2} 
-        shadow="sm"
-      >
-        <Table variant="simple">
+      {/* Responsive Table */}
+      <Box overflowX="auto" border="1px solid" borderColor="gray.200" borderRadius="md" shadow="sm">
+        <Table variant="simple" size={isMobile ? "sm" : "md"}>
           <Thead>
             <Tr>
               <Th>ID</Th>
@@ -76,21 +102,23 @@ const CarList = () => {
           <Tbody>
             {cars.length > 0 ? (
               cars.map((car) => (
-                <Tr 
-                  key={car._id} 
-                  onClick={() => handleRowClick(car._id)} 
-                  style={{ cursor: 'pointer' }}
+                <Tr
+                  key={car._id}
+                  onClick={() => handleRowClick(car._id)}
+                  cursor="pointer"
                   _hover={{ bg: "gray.100" }}
                 >
-                  <Td>{car._id}</Td>
+                  <Td>{isMobile ? car._id.slice(0, 8) + "..." : car._id}</Td>
                   <Td>{car.carName}</Td>
-                  <Td>{car.rentalPriceCharge}</Td>
+                  <Td>${car.rentalPriceCharge}/day</Td>
                   <Td>{car.transmission}</Td>
                 </Tr>
               ))
             ) : (
               <Tr>
-                <Td colSpan={4} textAlign="center">No cars available</Td>
+                <Td colSpan={4} textAlign="center">
+                  No cars available
+                </Td>
               </Tr>
             )}
           </Tbody>
