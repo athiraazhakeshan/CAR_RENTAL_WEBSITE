@@ -81,7 +81,7 @@ export const Home = () => {
         <div className={`w-full max-w-3xl p-8 mt-8 rounded-lg shadow-lg`}>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 sm:space-x-4">
             <div className="flex flex-col w-full sm:w-auto">
-              <label htmlFor="location" className="mb-2 font-semibold">
+              <label htmlFor="location" className="mb-2 font-semibold text-red-900">
                 Location
               </label>
               <select
@@ -102,7 +102,7 @@ export const Home = () => {
               {errors.location && <p className="text-red-500">{errors.location.message}</p>}
             </div>
             <div className="flex flex-col w-full sm:w-auto">
-              <label htmlFor="pickupDate" className="mb-2 font-semibold">
+              <label htmlFor="pickupDate" className="mb-2 font-semibold  text-red-900">
                 Pickup Date
               </label>
               <input
@@ -115,7 +115,7 @@ export const Home = () => {
               {errors.pickupDate && <p className="text-red-500">{errors.pickupDate.message}</p>}
             </div>
             <div className="flex flex-col w-full sm:w-auto">
-              <label htmlFor="returnDate" className="mb-2 font-semibold">
+              <label htmlFor="returnDate" className="mb-2 font-semibold  text-red-900">
                 Return Date
               </label>
               <input
@@ -144,13 +144,13 @@ export const Home = () => {
               <p data-aos="fade-up" className="text-primary text-2xl font-serif">
                 Effortless
               </p>
-              <h1 data-aos="fade-up" data-aos-delay="600" className="text-5xl lg:text-7xl font-semibold font-serif">
+              <h1 data-aos="fade-up" data-aos-delay="600" className="text-5xl lg:text-7xl font-semibold font-serif  text-red-900">
                 Car Rental
               </h1>
-              <p data-aos="fade-up" data-aos-delay="1000">
+              <p data-aos="fade-up" data-aos-delay="1000  " className=" text-red-900">
                 Renting a car is like borrowing freedom for a while
               </p>
-              <p className="">
+              <p className=" text-red-900">
                 Get Started
               </p>
             </div>

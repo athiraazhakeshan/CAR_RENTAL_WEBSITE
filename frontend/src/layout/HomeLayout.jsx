@@ -3,13 +3,13 @@ import React, { useEffect } from "react";
 import { Footer } from '../components/Footer'
 import { Outlet,useNavigate,useLocation } from 'react-router-dom'
 import { UserHeader } from "../pages/userpages/UserHeader";
-import TopBar from "../components/TopBar";
+
 import { axiosInstance } from "../config/axiosInstance";
 //import { ProtectRoute } from "../router/ProtectRoute";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser, saveUser } from "../redux/features/userSlice";
 import { Header } from "../components/Header";
-
+import UserTopbar from "./userTopbar";
 
 
 export const HomeLayout = () => {
@@ -37,7 +37,8 @@ export const HomeLayout = () => {
   return (
     
     <div className='text-black'> 
-    <TopBar/>
+    {/* <TopBar/> */}
+   <UserTopbar/>
     <nav>
     {userAutherized ? <UserHeader/>:  <Header /> } 
     {/* <Header/> */}

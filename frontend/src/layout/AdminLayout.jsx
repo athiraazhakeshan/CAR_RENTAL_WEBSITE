@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUser, saveUser } from "../redux/features/adminSlice";
 import { AdminHeader } from "../pages/adminpages/AdminHeader.jsx"
 import TopBar from "../components/TopBar.jsx";
+import AdminTopbar from "./AdminTopbar.jsx";
 
 export const AdminLayout = () => {
   const navigate = useNavigate();
@@ -32,7 +33,8 @@ export const AdminLayout = () => {
 
   return (
     <div className='text-black'>
-      <TopBar />
+      {/* <TopBar /> */}
+      <AdminTopbar/>
       <nav>
         {userAutherized ? <AdminHeader /> : <Header />} {/* Corrected spelling here */}
       </nav>

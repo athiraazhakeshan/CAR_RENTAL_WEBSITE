@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearUser } from '../redux/features/userSlice';
 import { useNavigate } from 'react-router-dom';
 
-export const UserTopbar = () => {
+export const AdminTopbar = () => {
   const user = useSelector(state => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,4 +38,4 @@ export const UserTopbar = () => {
   );
 };
 
-export default UserTopbar;
+export default AdminTopbar;
