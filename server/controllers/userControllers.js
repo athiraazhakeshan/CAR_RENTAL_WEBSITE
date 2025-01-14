@@ -1,71 +1,9 @@
 import UserModel from "../models/userModel.js";
-//import bcrypt from "bcrypt";
 import generateToken from "../util/token.js";
 import { cloudinaryInstance } from "../config/cloudinary.js";
 
 
-// export const Signup = async(req,res,next)=>{
-//     try {
-//       let imageUrl="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg";;
-        
-//         const {firstName,lastName,email,password,address,city,state,country,contactNumber,profilePicture}=req.body;
-//         console.log('image====',req.file);
-//         if(req.file){
-//           const cloudinaryRes=await cloudinaryInstance.uploader.upload(req.file.path)
-//           imageUrl=cloudinaryRes.url;
-//          //imageUrl=await handleImageUpload(req.file.path)
-//         }
- 
-//      console.log(imageUrl,"===imagrUrl");
-         
-//       if(!firstName||!lastName||!email||!password||!address||!city||!state||!country){
-//        return res.status(400).json({message:"All fields are required"})
-//       }
-//       const userExist = await UserModel.findOne({email})
-     
-      
-//       if(userExist)
-//         {
-//            return  res.status(400).json({error:"user already exist"})
-//         }
-      
-//     //     const salt = await bcrypt.genSalt(10)
-//     //     const hashPassword=await bcrypt.hash(password,salt);
 
-//     //  console.log(hashPassword,"hashedpassword");
-
-
-    
-
-//     //  return res.json({
-//        //   message: "signed up successfully",
-//          // role: userWithoutPassword.role})
- 
-
-
-
-//         const newUser =new UserModel({
-//             firstName,lastName,email,password,address,city,state,country,contactNumber,profilePicture:imageUrl
-//         })
-//         const savedUser= await newUser.save()
-
-//         if(savedUser){
-//             const token= await  generateToken(savedUser._id)
-            
-//             res.cookie("token", token, { sameSite:"None", httpOnly: true ,
-//               secure:true
-//             });
-//             return res.status(200).json({message:"user registration successfull",savedUser})
-           
-//         }
-//         return res.status(400).json({error:"something went wrong"})
-//     } 
-//     catch (error) {
-//         console.log(error);
-//         res.status(error.status||500).json({error:error.message || "internal server error"})
-        
-//     }
-// }
 export const Signup = async (req, res, next) => {
   try {
       let imageUrl = "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"; // Default image URL

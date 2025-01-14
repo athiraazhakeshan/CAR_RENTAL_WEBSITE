@@ -8,10 +8,10 @@ import authAdmin from '../middlewares/authAdmin.js';
 import { addOffice, deleteOffice, getAllOffice, getofficebyid, updateOffice } from '../controllers/officeController.js';
 //import { getuserAllOrders } from '../controllers/orderController.js';
 const router = express.Router();
-router.post('/adminsignup',adminSignup)
+router.post('/adminsignup',upload.single('profilePicture'),adminSignup)
 router.post('/adminlogin',adminSignin)
 router.get('/profile',authAdmin,adminProfile)
-router.put('/updateuser/:id',updateUser)
+router.patch('/updateuser/:id',upload.single('profilePicture'),updateUser)
 router.delete('/deleteuser/:id',deleteUserAcount)
 router.get('/getallusers',getAllUsers,authAdmin)
 router.get('/checkadmin',checkAdmin)

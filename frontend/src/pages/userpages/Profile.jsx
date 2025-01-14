@@ -46,13 +46,7 @@ export const Profile = () => {
         fetchProfile();
     }, []); // Empty dependency array means this runs once on mount
 
-    // Handle logout
-    // const handleLogout = () => {
-    //     dispatch(clearUser());
-    //     console.log("logout successfully")
-    //     navigate('/user/signin');
-    // };
-    // Initialize navigate hook
+ 
 
 const handleUpdate = () => {
     navigate(`/user/update/${userProfile._id}`); // Navigating to UpdateUser page

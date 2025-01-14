@@ -64,7 +64,17 @@ const UserDetails = () => {
             borderRadius="lg"
             bg="gray.50"
         >
-            <Box flex="1" p="4">
+             <Box flex="1" p="4" textAlign="center">
+                               {user.profilePicture && (
+                                   <Image
+                                       src={user.profilePicture}
+                                       // alt={`${firstName} ${lastName}'s profile`}
+                                       borderRadius="full"
+                                       boxSize="150px"
+                                       mb="4"
+                                       mx="auto"
+                                   />
+                               )}
                 <Heading as="h3" size="lg" mb="3" color="gray.700">
                     {user.firstName} {user.lastName}
                 </Heading>

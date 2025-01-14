@@ -4,15 +4,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { axiosInstance } from "../../config/axiosInstance";
 import { Box, Button, FormControl, FormLabel, Input, useToast, Image } from "@chakra-ui/react";
 
-export const UpdateUser = () => {
+export const UpdateAdmin= () => {
     const [userProfile, setUserProfile] = useState({
-        firstName: '',
-        lastName: '',
         email: '',
         address: '',
-        city: '',
-        state: '',
-        country: '',
         contactNumber: '',
         profilePicture: '', // To store the profile picture URL
     });
@@ -26,7 +21,7 @@ export const UpdateUser = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await axiosInstance.get(`/user/profile`);
+                const response = await axiosInstance.get(`/admin/profile`);
                 setUserProfile(response.data.userData);
             } catch (err) {
                 setError(err);
@@ -41,13 +36,9 @@ export const UpdateUser = () => {
             const formData = new FormData();
             
             // Append updated fields to formData
-            formData.append('firstName', userProfile.firstName);
-            formData.append('lastName', userProfile.lastName);
+         
             formData.append('email', userProfile.email);
             formData.append('address', userProfile.address);
-            formData.append('city', userProfile.city);
-            formData.append('state', userProfile.state);
-            formData.append('country', userProfile.country);
             formData.append('contactNumber', userProfile.contactNumber);
 
             // Append the profile picture file if a new one is selected
@@ -55,19 +46,19 @@ export const UpdateUser = () => {
                 formData.append('profilePicture', profilePictureFile);
             }
 
-            const response = await axiosInstance.patch(`/user/updateuser/${id}`, formData, {
+            const response = await axiosInstance.patch(`/admin/updateuser/${id}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
 
             toast({
-                title: "User Updated.",
+                title: "Admin Updated.",
                 description: "Your profile has been updated successfully.",
                 status: "success",
                 duration: 5000,
                 isClosable: true,
             });
 
-            navigate(`/user/profile`);
+            navigate(`/admin/profile`);
         } catch (error) {
             console.error("Error updating user:", error);
             toast({
@@ -96,16 +87,6 @@ export const UpdateUser = () => {
     return (
         <Box p={5}>
             <FormControl mb="4">
-                <FormLabel>First Name</FormLabel>
-                <Input name="firstName" value={userProfile.firstName} onChange={handleChange} />
-            </FormControl>
-
-            <FormControl mb="4">
-                <FormLabel>Last Name</FormLabel>
-                <Input name="lastName" value={userProfile.lastName} onChange={handleChange} />
-            </FormControl>
-
-            <FormControl mb="4">
                 <FormLabel>Email</FormLabel>
                 <Input name="email" value={userProfile.email} onChange={handleChange} />
             </FormControl>
@@ -113,21 +94,6 @@ export const UpdateUser = () => {
             <FormControl mb="4">
                 <FormLabel>Address</FormLabel>
                 <Input name="address" value={userProfile.address} onChange={handleChange} />
-            </FormControl>
-
-            <FormControl mb="4">
-                <FormLabel>City</FormLabel>
-                <Input name="city" value={userProfile.city} onChange={handleChange} />
-            </FormControl>
-
-            <FormControl mb="4">
-                <FormLabel>State</FormLabel>
-                <Input name="state" value={userProfile.state} onChange={handleChange} />
-            </FormControl>
-
-            <FormControl mb="4">
-                <FormLabel>Country</FormLabel>
-                <Input name="country" value={userProfile.country} onChange={handleChange} />
             </FormControl>
 
             <FormControl mb="4">
@@ -150,8 +116,7 @@ export const UpdateUser = () => {
             </FormControl>
 
             <Button onClick={handleUpdate} colorScheme="blue" width="30%">
-                Update User
-            </Button>
+                Update             </Button>
         </Box>
     );
 };

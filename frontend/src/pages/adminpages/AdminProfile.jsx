@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearUser } from "../../redux/features/userSlice";
 import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from "../../config/axiosInstance";
-import {  Box, Button, Flex, Heading, Text, VStack } from '@chakra-ui/react';
+import {  Box, Button, Flex, Heading, Image, Text, VStack } from '@chakra-ui/react';
 import "./adminprofile.css"
 
 export const AdminProfile = () => {
@@ -13,6 +13,9 @@ export const AdminProfile = () => {
        
         email: '',
         role: '',
+        address: '',
+        contactNumber: '',
+        profilePicture: '',
     });
 
     const [isLoading, setIsLoading] = useState(true);
@@ -38,13 +41,12 @@ export const AdminProfile = () => {
 
         fetchProfile();
     }, []); // Empty dependency array means this runs once on mount
+    
 
-    // Handle logout
-    // const handleLogout = () => {
-    //     dispatch(clearUser());
-    //     console.log("logout successfully")
-    //     navigate('/user/signin');
-    // };
+    const handleUpdate = () => {
+        navigate(`/admin/update/${userProfile._id}`); // Navigating to UpdateUser page
+    };
+  
     const handleLogout = async () => {
         try {
             // Call backend logout endpoint to clear cookies
@@ -81,17 +83,11 @@ export const AdminProfile = () => {
     }
 
     // Destructure the profile data
-    const { firstName, lastName, email, address, city, state, country, role } = userProfile;
+    const { email,profilePicture,address, contactNumber,role } = userProfile;
 
     // Render the profile data
     return (
-        // <div className="profile">
-        //     <h1 className="profile-name">Hello!Admin</h1>
-        //     <p className="profile-email">Mail id: {email}</p>
-        //  {/* <p className="profile-contact">Contact Number: {contactNumber}</p> */}
-        //     <p className="profile-role">Role: {role}</p>
-        //      <Button onClick={handleLogout} size="sm" colorScheme="red">Logout</Button>
-        // </div>
+       
                 <Box p={5}>
             <Flex
                 direction={{ base: 'column', md: 'row' }}
@@ -103,18 +99,41 @@ export const AdminProfile = () => {
                 borderRadius="lg"
                 bg="gray.50"
             >
-                <Box flex="1" p="4">
+                
+                <Box flex="1" p="4" textAlign="center">
+                                   {profilePicture && (
+                                       <Image
+                                           src={profilePicture}
+                                           // alt={`${firstName} ${lastName}'s profile`}
+                                           borderRadius="full"
+                                           boxSize="150px"
+                                           mb="4"
+                                           mx="auto"
+                                       />
+                                   )}
                     <Heading as="h3" size="lg" mb="3" color="gray.700">
                        Hello! Admin
                     </Heading>
-                    <Text fontSize="md" mb="2" color="gray.600">
+                   <Text fontSize="md" mb="2" color="gray.600">
                         <strong>Email:</strong> {email}
-                    </Text>
+                     </Text>
+                     <Text fontSize="md" mb="2" color="gray.600">
+                        <strong>Address:</strong> {address}
+                     </Text>
+                     <Text fontSize="md" mb="2" color="gray.600">
+                        <strong>contactNumber:</strong> {contactNumber}
+                     </Text>
+                     <Text fontSize="md" mb="2" color="gray.600">
+                        <strong>roll:</strong> {role}
+                     </Text>
                     <VStack spacing="4" mt="4">
                        
                         <Button onClick={handleLogout} colorScheme="red" width="30%">
                             Logout
                         </Button>
+                         <Button onClick={handleUpdate} colorScheme="blue" width="30%">
+                                                    Edit 
+                                                </Button>
                     </VStack>
                 </Box>
             </Flex>

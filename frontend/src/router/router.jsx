@@ -38,6 +38,7 @@ import { Hero } from "../pages/userpages/Hero.jsx";
 import CarDetailsHero from "../pages/userpages/carDetailsHero.jsx";
 import CarByLocationHero from "../pages/userpages/CarByLocationHero.jsx";
 import { UpdateUser } from "../pages/userpages/UpdateUser.jsx";
+import { UpdateAdmin } from "../pages/adminpages/UpdateAdmin.jsx";
 //import UpdateUserForm from "../pages/userpages/UpdateUserForm.jsx";
 // import Car from "../../../server/models/carModel.js";
 
@@ -214,6 +215,10 @@ export const router = createBrowserRouter(
         {
           path: "/admin/updatecar/:carId",
           element:<UpdateCarForm/>
+        },
+        {
+          path:"/admin/update/:id",
+          element:<UpdateAdmin/>
         },
         // {
         //   path: "homme",
