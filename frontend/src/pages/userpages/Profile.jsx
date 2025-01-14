@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { axiosInstance } from "../../config/axiosInstance";
 
 import "./profile.css"; // Ensure the path is correct
-import { Box, Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Image, Text, VStack } from "@chakra-ui/react";
 
 export const Profile = () => {
     // State to store user profile, loading state, and error message
@@ -18,6 +18,7 @@ export const Profile = () => {
         state: '',
         country: '',
         contactNumber:'',
+        profilePicture:'',
         role: '',
     });
   
@@ -93,57 +94,63 @@ const handleUpdate = () => {
     }
 
     // Destructure the profile data
-    const { firstName, lastName, email, address, city, state, country, contactNumber,role } = userProfile;
+    const { firstName, lastName, email, address, city, state, country, contactNumber,role,profilePicture } = userProfile;
 
     // Render the profile data
     return (
         <Box p={5}>
-    <Flex
-        direction={{ base: 'column', md: 'row' }}
-        p="6"
-        maxW="500px"
-        mx="auto"
-        boxShadow="lg"
-        borderWidth="1px"
-        borderRadius="lg"
-        bg="gray.50"
-    >
-        <Box flex="1" p="4">
-            <Heading as="h3" size="lg" mb="3" color="gray.700">
-               Hello! {firstName} {lastName}
-            </Heading>
-            <Text fontSize="md" mb="2" color="gray.600">
-                <strong>Email:</strong> {email}
-            </Text>
-            <Text fontSize="md" mb="2" color="gray.600">
-                <strong>Address:</strong> {address}
-            </Text>
-            <Text fontSize="md" mb="2" color="gray.600">
-                <strong>Country:</strong> {country}
-            </Text>
-            <Text fontSize="md" mb="2" color="gray.600">
-                <strong>State:</strong> {state}
-            </Text>
-            <Text fontSize="md" mb="2" color="gray.600">
-                <strong>City:</strong> {city}
-            </Text>
-            <Text fontSize="md" mb="2" color="gray.600">
-                <strong>contact:</strong> {contactNumber}
-            </Text>
-            <VStack spacing="4" mt="4">
-               
-                <Button onClick={handleLogout} colorScheme="red" width="30%">
-                    
-                    Logout
-                </Button>
-                <Button onClick={handleUpdate} colorScheme="blue" width="30%">
-    Update User
-</Button>
-              
-            </VStack>
+            <Flex
+                direction={{ base: 'column', md: 'row' }}
+                p="6"
+                maxW="500px"
+                mx="auto"
+                boxShadow="lg"
+                borderWidth="1px"
+                borderRadius="lg"
+                bg="gray.50"
+            >
+                <Box flex="1" p="4" textAlign="center">
+                    {profilePicture && (
+                        <Image
+                            src={profilePicture}
+                            // alt={`${firstName} ${lastName}'s profile`}
+                            borderRadius="full"
+                            boxSize="150px"
+                            mb="4"
+                            mx="auto"
+                        />
+                    )}
+                    <Heading as="h3" size="lg" mb="3" color="gray.700">
+                        Hello! {firstName} {lastName}
+                    </Heading>
+                    <Text fontSize="md" mb="2" color="gray.600">
+                        <strong>Email:</strong> {email}
+                    </Text>
+                    <Text fontSize="md" mb="2" color="gray.600">
+                        <strong>Address:</strong> {address}
+                    </Text>
+                    <Text fontSize="md" mb="2" color="gray.600">
+                        <strong>Country:</strong> {country}
+                    </Text>
+                    <Text fontSize="md" mb="2" color="gray.600">
+                        <strong>State:</strong> {state}
+                    </Text>
+                    <Text fontSize="md" mb="2" color="gray.600">
+                        <strong>City:</strong> {city}
+                    </Text>
+                    <Text fontSize="md" mb="2" color="gray.600">
+                        <strong>Contact:</strong> {contactNumber}
+                    </Text>
+                    <VStack spacing="4" mt="4">
+                        <Button onClick={handleLogout} colorScheme="red" width="30%">
+                            Logout
+                        </Button>
+                        <Button onClick={handleUpdate} colorScheme="blue" width="30%">
+                            Update User
+                        </Button>
+                    </VStack>
+                </Box>
+            </Flex>
         </Box>
-    </Flex>
-</Box>
-
     );
 };

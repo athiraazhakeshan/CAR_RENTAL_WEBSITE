@@ -9,10 +9,10 @@ import { getAllOffice, getOfficebylocation } from '../controllers/officeControll
 
 const router = express.Router();
 
-router.post("/signup",Signup)
+router.post("/signup",upload.single('profilePicture'),Signup)
 router.post("/signin",Signin)
 router.get('/profile',authUser,Profile)
-router.patch('/updateuser/:id',authUser,userUpdate)
+router.patch('/updateuser/:id',upload.single('profilePicture'),authUser,userUpdate)
 router.post("/logout",User_Logout)
 router.get('/checkuser',checkUser)
 

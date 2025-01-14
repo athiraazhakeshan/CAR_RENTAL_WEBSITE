@@ -4,68 +4,136 @@ import generateToken from "../util/token.js";
 import { cloudinaryInstance } from "../config/cloudinary.js";
 
 
-export const Signup = async(req,res,next)=>{
-    try {
-      let imageUrl;
+// export const Signup = async(req,res,next)=>{
+//     try {
+//       let imageUrl="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg";;
         
-        const {firstName,lastName,email,password,address,city,state,country,contactNumber}=req.body;
-        console.log('image====',req.file);
-        if(req.file){
-          const cloudinaryRes=await cloudinaryInstance.uploader.upload(req.file.path)
-          imageUrl=cloudinaryRes.url;
-         //imageUrl=await handleImageUpload(req.file.path)
-        }
+//         const {firstName,lastName,email,password,address,city,state,country,contactNumber,profilePicture}=req.body;
+//         console.log('image====',req.file);
+//         if(req.file){
+//           const cloudinaryRes=await cloudinaryInstance.uploader.upload(req.file.path)
+//           imageUrl=cloudinaryRes.url;
+//          //imageUrl=await handleImageUpload(req.file.path)
+//         }
  
-     console.log(imageUrl,"===imagrUrl");
+//      console.log(imageUrl,"===imagrUrl");
          
-      if(!firstName||!lastName||!email||!password||!address||!city||!state||!country){
-       return res.status(400).json({message:"All fields are required"})
-      }
-      const userExist = await UserModel.findOne({email})
+//       if(!firstName||!lastName||!email||!password||!address||!city||!state||!country){
+//        return res.status(400).json({message:"All fields are required"})
+//       }
+//       const userExist = await UserModel.findOne({email})
      
       
-      if(userExist)
-        {
-           return  res.status(400).json({error:"user already exist"})
-        }
+//       if(userExist)
+//         {
+//            return  res.status(400).json({error:"user already exist"})
+//         }
       
-    //     const salt = await bcrypt.genSalt(10)
-    //     const hashPassword=await bcrypt.hash(password,salt);
+//     //     const salt = await bcrypt.genSalt(10)
+//     //     const hashPassword=await bcrypt.hash(password,salt);
 
-    //  console.log(hashPassword,"hashedpassword");
+//     //  console.log(hashPassword,"hashedpassword");
 
 
     
 
-    //  return res.json({
-       //   message: "signed up successfully",
-         // role: userWithoutPassword.role})
+//     //  return res.json({
+//        //   message: "signed up successfully",
+//          // role: userWithoutPassword.role})
  
 
 
 
-        const newUser =new UserModel({
-            firstName,lastName,email,password,address,city,state,country,contactNumber
-        })
-        const savedUser= await newUser.save()
+//         const newUser =new UserModel({
+//             firstName,lastName,email,password,address,city,state,country,contactNumber,profilePicture:imageUrl
+//         })
+//         const savedUser= await newUser.save()
 
-        if(savedUser){
-            const token= await  generateToken(savedUser._id)
+//         if(savedUser){
+//             const token= await  generateToken(savedUser._id)
             
-            res.cookie("token", token, { sameSite:"None", httpOnly: true ,
-              secure:true
-            });
-            return res.status(200).json({message:"user registration successfull",savedUser})
+//             res.cookie("token", token, { sameSite:"None", httpOnly: true ,
+//               secure:true
+//             });
+//             return res.status(200).json({message:"user registration successfull",savedUser})
            
-        }
-        return res.status(400).json({error:"something went wrong"})
-    } 
-    catch (error) {
-        console.log(error);
-        res.status(error.status||500).json({error:error.message || "internal server error"})
+//         }
+//         return res.status(400).json({error:"something went wrong"})
+//     } 
+//     catch (error) {
+//         console.log(error);
+//         res.status(error.status||500).json({error:error.message || "internal server error"})
         
-    }
-}
+//     }
+// }
+export const Signup = async (req, res, next) => {
+  try {
+      let imageUrl = "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"; // Default image URL
+      
+      const { firstName, lastName, email, password, address, city, state, country, contactNumber } = req.body;
+
+      console.log('image====', req.file);
+
+      // If a file is uploaded, upload it to Cloudinary
+      if (req.file) {
+          const cloudinaryRes = await cloudinaryInstance.uploader.upload(req.file.path);
+          imageUrl = cloudinaryRes.url;
+      }
+
+      console.log(imageUrl, "===imageUrl");
+
+      // Validate required fields
+      if (!firstName || !lastName || !email || !password || !address || !city || !state || !country) {
+          return res.status(400).json({ message: "All fields are required" });
+      }
+
+      // Check if the user already exists
+      const userExist = await UserModel.findOne({ email });
+      if (userExist) {
+          return res.status(400).json({ error: "User already exists" });
+      }
+
+      // Create a new user with the provided details
+      const newUser = new UserModel({
+          firstName,
+          lastName,
+          email,
+          password,
+          address,
+          city,
+          state,
+          country,
+          contactNumber,
+          profilePicture: imageUrl, // Use the default or uploaded image URL
+      });
+
+      const savedUser = await newUser.save();
+
+      if (savedUser) {
+          const token = await generateToken(savedUser._id);
+
+          // Set the token as a cookie
+          res.cookie("token", token, {
+              sameSite: "None",
+              httpOnly: true,
+              secure: true,
+          });
+
+          return res.status(200).json({
+              message: "User registration successful",
+              savedUser,
+          });
+      }
+
+      return res.status(400).json({ error: "Something went wrong" });
+  } catch (error) {
+      console.log(error);
+      res.status(error.status || 500).json({
+          error: error.message || "Internal server error",
+      });
+  }
+};
+
 export const Signin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -174,7 +242,7 @@ export const Signin = async (req, res) => {
   try {
     // The userId is now available in req.user because of the authUser middleware
     const userId = req.user.id; // Assuming the token includes userId
-    const userData = await UserModel.findById(userId).select('-password').select('-profilePicture').select('-order'); // Exclude password from the response
+    const userData = await UserModel.findById(userId).select('-password').select('-order'); // Exclude password from the response
    
     if (!userData) {
       return res.status(404).json({ success: false, message: 'User not found' });
@@ -199,7 +267,7 @@ export const Signin = async (req, res) => {
     console.log(id);
 
     let imageUrl;
-    const { firstName,lastName,email,address, city, state, country, pin, countryCode, contactNumber } = req.body;
+    const { firstName,lastName,email,address, city, state, country, pin, countryCode, contactNumber,profilePicture } = req.body;
     console.log('image====',req.file);
         if(req.file){
           const cloudinaryRes=await cloudinaryInstance.uploader.upload(req.file.path)
@@ -213,7 +281,7 @@ export const Signin = async (req, res) => {
     try {
         const updatedUser = await UserModel.findByIdAndUpdate(
             { _id: id },
-            { firstName,lastName,email,address, city, state, country, pin, countryCode, contactNumber },
+            { firstName,lastName,email,address, city, state, country, pin, countryCode, contactNumber,profilePicture:imageUrl },
             { new: true, select: '-password' }
             
         );
