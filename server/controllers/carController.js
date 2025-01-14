@@ -8,55 +8,111 @@ import OfficeLocation from "../models/officelocationModel.js";
 
 //createcar
 
-export const createCar = async (req, res) => {
-    try {
+// export const createCar = async (req, res) => {
+//     try {
 
 
 
-      let imageUrl;
-      const { carName, carModel,transmission, carCompany,carPicture,carCategory,
-        carEngine,carMileage, carSeatCapacity, carFuelType,rentalPriceCharge,office } = req.body;
-        const { city } = office;
-        const findlocation = await OfficeLocation.findOne({ office:city });
-        console.log(findlocation)
-                if (!findlocation) {
-                  return res.send("please add instructor first");
-                }
+//       let imageUrl;
+//       const { carName, carModel,transmission, carCompany,carPicture,carCategory,
+//         carEngine,carMileage, carSeatCapacity, carFuelType,rentalPriceCharge,office } = req.body;
+//         const { city } = office;
+//         const findlocation = await OfficeLocation.findOne({ office:city });
+//         console.log(findlocation)
+//                 if (!findlocation) {
+//                   return res.send("please add instructor first");
+//                 }
           
    
-        console.log('image====',req.file);
+//         console.log('image====',req.file);
 
-       if(req.file){
-         const cloudinaryRes=await cloudinaryInstance.uploader.upload(req.file.path)
-         imageUrl=cloudinaryRes.url;
-        //imageUrl=await handleImageUpload(req.file.path)
-       }
+//        if(req.file){
+//          const cloudinaryRes=await cloudinaryInstance.uploader.upload(req.file.path)
+//          imageUrl=cloudinaryRes.url;
+//         //imageUrl=await handleImageUpload(req.file.path)
+//        }
 
-    console.log(imageUrl,"===imagrUrl");
+//     console.log(imageUrl,"===imagrUrl");
         
        
 
-        const createCar = new Car({carName, carModel,transmission, carCompany,carPicture:imageUrl, carCategory,
-            carEngine,carMileage, carSeatCapacity, carFuelType,rentalPriceCharge,office:findlocation._id});
+//         const createCar = new Car({carName, carModel,transmission, carCompany,carPicture:imageUrl, carCategory,
+//             carEngine,carMileage, carSeatCapacity, carFuelType,rentalPriceCharge,office:findlocation._id});
            
          
-            const newCarCreated = await createCar.save();;
-        if (!newCarCreated) {
-          return res.send("car is not created");
-        }
-        //    const {id}=req.params;
-        // const carExist = await Car.findById(id)
-        // if(carExist)
-        //   {
-        //      return  res.status(400).json({error:"car already exist"})
-        //   }
+//             const newCarCreated = await createCar.save();;
+//         if (!newCarCreated) {
+//           return res.send("car is not created");
+//         }
+//         //    const {id}=req.params;
+//         // const carExist = await Car.findById(id)
+//         // if(carExist)
+//         //   {
+//         //      return  res.status(400).json({error:"car already exist"})
+//         //   }
         
-      res.json({message:"car is created",data:newCarCreated});
+//       res.json({message:"car is created",data:newCarCreated});
       
-    }catch(error){
-        console.log(error);
-        res.status(error.statusCode || 500).json(error.message || "internal server error");
+//     }catch(error){
+//         console.log(error);
+//         res.status(error.statusCode || 500).json(error.message || "internal server error");
+//     }
+// };
+export const createCar = async (req, res) => {
+  try {
+    let imageUrl;
+    const {
+      carName,
+      carModel,
+      transmission,
+      carCompany,
+      carCategory,
+      carEngine,
+      carMileage,
+      carSeatCapacity,
+      carFuelType,
+      rentalPriceCharge,
+      office, // This should be a city name
+    } = req.body;
+
+    // Find the office location by city
+    const findlocation = await OfficeLocation.findOne({ city: office });
+    if (!findlocation) {
+      return res.status(400).json({ message: "Office location not found. Please add the office first." });
     }
+
+    // Handle image upload if file is provided
+    if (req.file) {
+      const cloudinaryRes = await cloudinaryInstance.uploader.upload(req.file.path);
+      imageUrl = cloudinaryRes.url;
+    }
+
+    // Create the car with the associated office ID
+    const createCar = new Car({
+      carName,
+      carModel,
+      transmission,
+      carCompany,
+      carPicture: imageUrl,
+      carCategory,
+      carEngine,
+      carMileage,
+      carSeatCapacity,
+      carFuelType,
+      rentalPriceCharge,
+      office: findlocation._id, // Use the ObjectId of the office
+    });
+
+    const newCarCreated = await createCar.save();
+    if (!newCarCreated) {
+      return res.status(500).json({ message: "Car creation failed" });
+    }
+
+    res.status(201).json({ message: "Car created successfully", data: newCarCreated });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error", error });
+  }
 };
 
 
@@ -90,74 +146,102 @@ export const createCar = async (req, res) => {
 
 
 //getcarby officelocation ref:pfficelocation
- 
-  export const getcarbylocation=async  (req,res)=>{
-    const officeLocation= req.params.city
-    console.log(officeLocation)
-    console.log(officeLocation)
-    try {
-      if (typeof officeLocation !== 'string') {
-        throw new Error(`officeLocation is not a string: ${typeof officeLocation}`);
-      }
-      const offices = await OfficeLocation.find({ city: officeLocation });
-      
-      const officeIds = offices.map(office => office._id);
-      console.log(officeIds)
-  
-      const cars = await Car.find({ office: { $in: officeIds } }).populate('office');
-  
-      res.status(200).json(cars);
-    } catch (error) {
-      res.status(500).json({ message: 'Error fetching cars', error });
+export const getcarbylocation = async (req, res) => {
+  const officeLocation = req.params.city;
+
+  try {
+    if (!officeLocation || typeof officeLocation !== "string") {
+      return res.status(400).json({ message: "Invalid location provided" });
     }
-  };
+
+    const offices = await OfficeLocation.find({ city: officeLocation });
+    if (offices.length === 0) {
+      return res.status(404).json({ message: "No office found for the given city" });
+    }
+
+    const officeIds = offices.map((office) => office._id);
+
+    const cars = await Car.find({ office: { $in: officeIds } }).populate("office");
+
+    if (cars.length === 0) {
+      return res.status(404).json({ message: "No cars available for the given location" });
+    }
+
+    // Return only the cars array
+    res.status(200).json(cars);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error", error });
+  }
+};
+
+  // export const getcarbylocation=async  (req,res)=>{
+  //   const officeLocation= req.params.city
+  //   console.log(officeLocation)
+  //   console.log(officeLocation)
+  //   try {
+  //     if (typeof officeLocation !== 'string') {
+  //       throw new Error(`officeLocation is not a string: ${typeof officeLocation}`);
+  //     }
+  //     const offices = await OfficeLocation.find({ city: officeLocation });
+      
+  //     const officeIds = offices.map(office => office._id);
+  //     console.log(officeIds)
+  
+  //     const cars = await Car.find({ office: { $in: officeIds } }).populate('office');
+  
+  //     res.status(200).json(cars);
+  //   } catch (error) {
+  //     res.status(500).json({ message: 'Error fetching cars', error });
+  //   }
+  // };
   
 
 
 
 
     //update 
-    export const updateCar = async (req, res) => {
-      try {
-          const id = req.params.id;
-          const { carName, carModel, transmission, carCompany, carCategory, carEngine, carMileage, carFuelType, rentalPriceCharge } = req.body;
-  
-          let imageUrl = null;
-  
-          // Handle image upload if file exists
-          if (req.file) {
-              const cloudinaryRes = await cloudinaryInstance.uploader.upload(req.file.path);
-              imageUrl = cloudinaryRes.url;
-          }
-  
-          // Update car details
-          const updatedCar = await Car.findByIdAndUpdate(
-              { _id: id },
-              {
-                  carName,
-                  carModel,
-                  transmission,
-                  carCompany,
-                  carCategory,
-                  carEngine,
-                  carMileage,
-                  carFuelType,
-                  rentalPriceCharge,
-                  ...(imageUrl && { carPicture: imageUrl }),
-              },
-              { new: true }
-          );
-  
-          if (!updatedCar) {
-              return res.status(404).json({ message: "Car not found or update failed" });
-          }
-  
-          res.status(200).json({ message: "Car updated successfully", data: updatedCar });
-      } catch (error) {
-          console.error(error);
-          res.status(500).json({ message: "Internal server error", error });
-      }
-  };
+  export const updateCar = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const { carName, carModel, transmission, carCompany, carCategory, carEngine, carMileage, carFuelType, rentalPriceCharge } = req.body;
+
+        let imageUrl = null;
+
+        // Handle image upload if file exists
+        if (req.file) {
+            const cloudinaryRes = await cloudinaryInstance.uploader.upload(req.file.path);
+            imageUrl = cloudinaryRes.url;
+        }
+
+        // Update car details
+        const updatedCar = await Car.findByIdAndUpdate(
+            { _id: id },
+            {
+                carName,
+                carModel,
+                transmission,
+                carCompany,
+                carCategory,
+                carEngine,
+                carMileage,
+                carFuelType,
+                rentalPriceCharge,
+                ...(imageUrl && { carPicture: imageUrl }),
+            },
+            { new: true }
+        );
+
+        if (!updatedCar) {
+            return res.status(404).json({ message: "Car not found or update failed" });
+        }
+
+        res.status(200).json({ message: "Car updated successfully", data: updatedCar });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error", error });
+    }
+};
 // export const updateCar = async (req, res) => {
 //   const id = req.params.id;
 //     console.log("updated")
