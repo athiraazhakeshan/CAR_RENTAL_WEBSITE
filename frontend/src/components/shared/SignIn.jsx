@@ -97,7 +97,7 @@ export const SignIn = ({ role = "user" }) => {
     role: "user",
     login_api: "user/signin",
     profile_route: "/user/profile",
-    signup_route: "signup",
+    signup_route: "/signup",
   };
 
   const onSubmit = async (data) => {
