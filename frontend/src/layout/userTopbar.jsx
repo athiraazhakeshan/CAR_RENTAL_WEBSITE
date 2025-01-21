@@ -12,7 +12,7 @@ export const UserTopbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("Current user state in Redux:", user); // Debugging log
+    console.log("Current user state in Redux:", user); 
   }, [user]);
 
   const handleLogout = () => {

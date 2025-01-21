@@ -13,6 +13,7 @@ import UserTopbar from "./UserTopbar";
 
 
 
+
 export const HomeLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -39,7 +40,7 @@ export const HomeLayout = () => {
     
     <div className='text-black'> 
     {/* <TopBar/> */}
-   <UserTopbar/>
+    <UserTopbar/>
     <nav>
     {userAutherized ? <UserHeader/>:  <Header /> } 
     {/* <Header/> */}
