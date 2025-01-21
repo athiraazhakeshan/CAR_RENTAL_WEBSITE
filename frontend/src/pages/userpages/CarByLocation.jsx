@@ -46,7 +46,7 @@ const CarByLocation = () => {
   return (
     <Box py="8">
       <Box maxW="1200px" mx="auto" px="4">
-        <Heading as="h1" size="2xl" mb="8">Cars Available </Heading>
+        <Heading as="h1" size="2xl" mb="8">Cars Available in {officeLocation}</Heading>
         <Grid templateColumns="repeat(auto-fill, minmax(300px, 1fr))" gap="8">
           {cars.length > 0 ? (
             cars.map((car, index) => (
