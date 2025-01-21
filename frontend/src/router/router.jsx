@@ -141,23 +141,24 @@ export const router = createBrowserRouter(
           path:"/user/update/:id",
           element:<UpdateUser/>
         },
-      
+        {
+          path: "/user/profile",
+          element: <Profile />,
+        },
+        {
+          path: "/user/cart",
+          element:<Cart/>,
+        },
         {
           path: "user",
           element: <ProtectRouter />,
           children: [
-            {
-              path: "profile",
-              element: <Profile />,
-            },
+           
             {
               path: "booking",
               element: <Home />,
             },
-            {
-              path: "cart",
-              element:<Cart/>,
-            },
+           
            
             {
               path: "payment/cancel",

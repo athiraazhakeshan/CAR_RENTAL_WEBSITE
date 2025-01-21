@@ -9,7 +9,7 @@ import { axiosInstance } from "../config/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser, saveUser } from "../redux/features/userSlice";
 import { Header } from "../components/Header";
-import UserTopbar from "./userTopbar";
+import UserTopbar from "./UserTopbar";
 
 
 export const HomeLayout = () => {

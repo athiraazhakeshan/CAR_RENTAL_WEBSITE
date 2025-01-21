@@ -65,7 +65,7 @@ const handleUpdate = () => {
             dispatch(clearUser());
     
             console.log("Logout successful");
-            navigate("user/signin");
+            navigate("/user/signin");
         } catch (error) {
             console.error("Error logging out:", error);
             alert("Failed to log out. Please try again.");
