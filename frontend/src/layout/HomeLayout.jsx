@@ -9,7 +9,8 @@ import { axiosInstance } from "../config/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser, saveUser } from "../redux/features/userSlice";
 import { Header } from "../components/Header";
-import UserTopbar from "./UserTopbar";
+import AdminTopbar from "./AdminTopbar";
+
 
 
 
@@ -40,7 +41,7 @@ export const HomeLayout = () => {
     
     <div className='text-black'> 
     {/* <TopBar/> */}
-    <UserTopbar/>
+   <AdminTopbar/>
     <nav>
     {userAutherized ? <UserHeader/>:  <Header /> } 
     {/* <Header/> */}
