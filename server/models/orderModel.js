@@ -1,45 +1,8 @@
-// import mongoose, { Schema } from "mongoose";
 
-// const orderSchema = new Schema(
-//   {
-//     userId: {
-//       type: Schema.Types.ObjectId,
-//       ref: "UserModel",
-//       required: true,
-//     },
-//     car: [
-//       {
-//         carId: {
-//           type: Schema.Types.ObjectId,
-//           ref: "Car",
-//           required: true,
-//         },
-//         rentalPriceCharge: {
-//           type: Number,
-//           required: true,
-//         },
-//       },
-//     ],
-//     totalPrice: {
-//       type: Number,
-//       required: true,
-//     },
-//     stripePaymentIntentId: {
-//       type: String,
-//       required: true,
-//     },
-//     pickedAt: Date,
-//     returnedAt: Date,
-//   },
-//   {
-//     timestamps: true,
-//   }
-// );
-
-// export const Order = mongoose.model("Order", orderSchema);
 
 
 import mongoose, { Schema } from "mongoose";
+import moment from "moment";
 
 const orderSchema = new Schema(
   {
@@ -73,8 +36,8 @@ const orderSchema = new Schema(
       type: String,
       required: true,
     },
-    pickedAt: { type: Date, default: null }, 
-    returnedAt: { type: Date, default: null }, 
+    pickedAt: { type: String, set: (value) => moment(value).format('YYYY-MM-DD') },
+    returnedAt: { type: String, set: (value) => moment(value).format('YYYY-MM-DD') },
     orderStatus: {
       type: String,
       enum: [
